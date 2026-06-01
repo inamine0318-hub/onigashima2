@@ -369,6 +369,7 @@ function drawCharacter(sx,sy,ci,facing,walkFrame,moving,atkAnim,isJetting,isAirb
     ctx.fillStyle=gi;ctx.beginPath();ctx.arc(27+bodyX,22,6,Math.PI*1.4,Math.PI*.6);ctx.fill();
 
     // 腕と槍
+    const spearCol='#8B7355', spearTip='#DAA520', spearTipDark='#CD853F';
     if(atk===0){
       // 待機：両手で腰に槍を構える
       // 後の腕（槍の下を握る）
@@ -380,18 +381,23 @@ function drawCharacter(sx,sy,ci,facing,walkFrame,moving,atkAnim,isJetting,isAirb
       // 手
       _r(skin, 0,28, 8, 8); _r(skinS, 1,29, 6, 6);
       _r(skin,21,27, 10,10); _r(skinS,22,28, 8, 8);
-      // 槍（腰に構える）
-      _r('#8B7355',12,26, 2,10); // 槍の柄
-      _r('#DAA520',11,24, 4, 3); _r('#CD853F',12,27, 2, 2); // 槍先
+      // 槍（腰に構える・少しはみ出す）
+      _r(spearCol,10,24, 3,14); _r(spearCol,11,24, 2,12); // 槍の柄（左側）
+      _r(spearCol,13,24, 2,14); // 槍の柄（中央）
+      _r(spearCol,15,24, 3,12); _r(spearCol,16,24, 2,10); // 槍の柄（右側）
+      // 槍先（少しはみ出す・上に突き出す）
+      _r(spearTip, 10,18, 6, 5); _r(spearTipDark,11,18, 4, 2); // 槍先（上部）
+      _r(spearTip, 11,23, 4, 2); _r(spearTipDark,12,23, 2, 1); // 槍先（接続部）
     } else {
       // 攻撃：槍を突き出す
       _r(OL,-bkPull,21, 5,14); _r(gi,1-bkPull,22, 3,12); _r(skin,1-bkPull,22, 3, 3);
       const eA=Math.floor(ext*.22);
       _r(OL,22,16, 8+eA, 8); _r(gi,23,17, 6+eA, 6); _r(skin,23,17, 6+eA, 2);
-      // 槍を前に出す
-      _r('#8B7355',12,26,20+eA,10); // 槍の柄（延伸）
-      const spx=26+ext;
-      _r('#DAA520',spx, 24, 4, 3); _r('#CD853F',spx, 27, 2, 2); // 槍先
+      // 槍を前に出す（伸びる）
+      _r(spearCol,12,26,20+eA, 3); // 槍の柄（延伸）
+      const spx=28+ext;
+      _r(spearTip, spx, 24, 6, 4); // 槍先
+      _r(spearTipDark,spx+1, 24, 4, 1); // 槍先ハイライト
       // 手
       _r(skin,20,26, 10, 10); _r(skinS,21,27, 8, 8);
     }
