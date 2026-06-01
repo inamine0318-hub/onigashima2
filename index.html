@@ -319,19 +319,19 @@ function drawCharacter(sx,sy,ci,facing,walkFrame,moving,atkAnim,isJetting,isAirb
     ctx.globalAlpha=1;
     rr6(OL, 3+bodyX,35,24, 4,3); rr6('#88ccff',4+bodyX,36,22,2,2);
   } else if(ci===0 || ci===3 || ci===4){ // ===== 烏丸/十兵衛/マタキチ - 人間の道着 =====
-    const giCol=ci===0?'#1a1a1a':(ci===3?'#0a1a3a':'#cc6600'); // 道着色（十兵衛は濃紺・武芸家風）
-    const giBright=ci===0?'#2a2a2a':(ci===3?'#1a2a5a':'#dd8822');
-    const giDark=ci===0?'#0a0a0a':(ci===3?'#000a1a':'#883300');
+    const giCol=ci===0?'#1a1a1a':(ci===3?'#000814':'#cc6600'); // 道着色（十兵衛は濃黒紺・武闘家風）
+    const giBright=ci===0?'#2a2a2a':(ci===3?'#0a1a3a':'#dd8822');
+    const giDark=ci===0?'#0a0a0a':(ci===3?'#000008':'#883300');
     const obi=ci===3?'#000000':'#1a1a1a'; // 帯（十兵衛は黒）
     _r(OL, 3+bodyX,19,24,17); _r(giCol, 4+bodyX,20,22,15); _r(HL, 4+bodyX,20,22, 2); _r(SH, 4+bodyX,32,22, 2);
-    // 胸部の立体感（中央に暗い縦線）
-    _r(giDark, 10+bodyX,20, 6, 12);
+    // 胸部の立体感（中央に暗い縦線・武闘家風）
+    _r(giDark, 9+bodyX,19, 8, 14);
     // 肩と腋
     ctx.fillStyle=OL;ctx.beginPath();ctx.arc(4+bodyX,22,7,Math.PI*.4,Math.PI*1.6);ctx.fill();
     ctx.fillStyle=OL;ctx.beginPath();ctx.arc(27+bodyX,22,7,Math.PI*1.4,Math.PI*.6);ctx.fill();
     ctx.fillStyle=giCol;ctx.beginPath();ctx.arc(4+bodyX,22,6,Math.PI*.4,Math.PI*1.6);ctx.fill();
     ctx.fillStyle=giCol;ctx.beginPath();ctx.arc(27+bodyX,22,6,Math.PI*1.4,Math.PI*.6);ctx.fill();
-    // 帯（腰・武芸家風に太めに）
+    // 帯（腰・武闘家風に太めに）
     _r(obi, 3+bodyX,29,24, 4); _r('#1a1a2a', 4+bodyX,30,22, 2); _r('#0a0a1a', 4+bodyX,32,22, 1);
     // 裾（下部・より立体感）
     _r(OL, 3+bodyX,35,24, 4); _r(giCol, 4+bodyX,36,22, 2); _r(giBright, 4+bodyX,36, 8, 1); _r(HL, 4+bodyX,37,10, 1);
@@ -351,28 +351,28 @@ function drawCharacter(sx,sy,ci,facing,walkFrame,moving,atkAnim,isJetting,isAirb
   const ext=atk===1?7:atk===2?13:atk>=3?19:0;
   const bkPull=atk>0?4:0;
 
-  if(ci===3){ // ===== 十兵衛 - 槍を構える =====
+  if(ci===3){ // ===== 十兵衛 - 武闘家が槍を構える =====
     const skin='#DEAA58', skinS='#B88030';
     if(atk===0){
       // 槍を腰で構える（待機状態）
       const sw=moving?(wf===0?1:-1):0;
       // 槍の柄（茶色・腰から前方へ）
-      _r('#5a3a1a',10,28,20, 3); _r('#7a4a2a',11,28,18, 1);
+      _r('#4a2a0a',10,28,20, 3); _r('#6a3a1a',11,28,18, 1);
       // 槍の先端（金色・腰の高さ）
-      _r('#666666',28, 24, 8, 1); _r('#888888',27, 25, 10, 1);
-      _r('#ccaa55',26, 26, 12, 1); _r('#ffdd77',26, 27, 12, 2);
-      _r('#ccaa55',26, 29, 12, 1); _r('#888888',27, 30, 10, 1);
-      _r('#666666',28, 31, 8, 1);
+      _r('#555555',28, 24, 8, 1); _r('#777777',27, 25, 10, 1);
+      _r('#bbaa44',26, 26, 12, 1); _r('#ffdd77',26, 27, 12, 2);
+      _r('#bbaa44',26, 29, 12, 1); _r('#777777',27, 30, 10, 1);
+      _r('#555555',28, 31, 8, 1);
       // 後腕（槍の下を握る・太く）
       _r(OL, 1,20, 6,12); _r(SC, 2,21, 4,10); _r(AC, 2,21, 4, 3);
       _r(OL, 4,16, 9, 8); _r(SC, 5,17, 7, 6); _r(AC, 5,17, 7, 2);
-      // 後の手（肌色・大きく）
-      _r(skin, 1,28, 6, 8); _r(skinS, 2,29, 4, 6);
-      // 前腕（槍を握る・太く・最後に描画で最前面）
+      // 前腕（槍を握る・太く）
       _r(OL,16+sw,24, 8,14); _r(SC,17+sw,25, 6,12); _r(AC,17+sw,25, 6, 3);
       _r(OL,22+sw,20, 10,10); _r(SC,23+sw,21, 8, 8); _r(AC,23+sw,21, 8, 2);
-      // 前の手（肌色・大きく）
-      _r(skin,22+sw,28, 8, 10); _r(skinS,23+sw,29, 6, 8);
+      // 後の手（肌色・大きく・最後に描画で最前面）
+      _r(skin, 0,28, 8, 10); _r(skinS, 1,29, 6, 8);
+      // 前の手（肌色・大きく・槍をしっかり握る）
+      _r(skin,21+sw,27, 10, 12); _r(skinS,22+sw,28, 8, 10);
     } else {
       // 攻撃時：槍を突き出す
       _r(OL,-bkPull,21, 5,14); _r(SC,1-bkPull,22, 3,12); _r(AC,1-bkPull,22, 3, 3);
@@ -380,16 +380,16 @@ function drawCharacter(sx,sy,ci,facing,walkFrame,moving,atkAnim,isJetting,isAirb
       const eA=Math.floor(ext*.22),eB=Math.floor(ext*.38);
       _r(OL,22,16, 8+eA, 8); _r(SC,23,17, 6+eA, 6); _r(AC,23,17, 6+eA, 2);
       _r(OL,28+eB,12, 8+eA,10); _r(SC,29+eB,13, 6+eA, 8); _r(AC,29+eB,13, 6+eA, 2);
-      // 攻撃時の手（肌色・大きく）
-      _r(skin,22,26, 8, 10); _r(skinS,23,27, 6, 8);
       // 槍の柄（前方へ延伸）
-      _r('#5a3a1a',10,28,20+eA, 3); _r('#7a4a2a',11,28,18+eA, 1);
+      _r('#4a2a0a',10,28,20+eA, 3); _r('#6a3a1a',11,28,18+eA, 1);
       // 槍の先端（攻撃時は前に出す・金色）
       const spx=26+ext;
-      _r('#666666',spx, 24, 8, 1); _r('#888888',spx-1, 25, 10, 1);
-      _r('#ccaa55',spx-2, 26, 12, 1); _r('#ffdd77',spx-2, 27, 12, 2);
-      _r('#ccaa55',spx-2, 29, 12, 1); _r('#888888',spx-1, 30, 10, 1);
-      _r('#666666',spx, 31, 8, 1);
+      _r('#555555',spx, 24, 8, 1); _r('#777777',spx-1, 25, 10, 1);
+      _r('#bbaa44',spx-2, 26, 12, 1); _r('#ffdd77',spx-2, 27, 12, 2);
+      _r('#bbaa44',spx-2, 29, 12, 1); _r('#777777',spx-1, 30, 10, 1);
+      _r('#555555',spx, 31, 8, 1);
+      // 攻撃時の手（肌色・大きく・最前面）
+      _r(skin,20,26, 10, 12); _r(skinS,21,27, 8, 10);
     }
   } else if(ci===4){ // ===== マタキチ - 肌色グローブ + オレンジ道着 =====
     const skin='#DEAA58', skinS='#B88030';
