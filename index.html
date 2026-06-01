@@ -6,7 +6,7 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<title>月の裏側 - THE RABBIT ORBS</title>
+<title>鬼ヶ島 - DEMON ISLAND</title>
 <style>
 html,body { margin:0; padding:0; width:100%; height:100%; background:#000; overflow:hidden; overscroll-behavior:none; touch-action:none; }
 * { box-sizing:border-box; }
@@ -206,6 +206,12 @@ function toLogical(cx,cy){
 
 const GRAVITY = 0.32, WORLD_W = 9000, P = 3;
 const BOSS_ARENA_LEFT = 7100, BOSS_ARENA_RIGHT = 8650;
+
+// ================================================================
+//  キャラクター画像化用定数（ドット絵対応：十兵衛・烏丸用）
+// ================================================================
+const CHAR_IMG_SIZE = { w: 64, h: 96 };  // 画像サイズ（ピクセル）
+const CHAR_DRAW_SCALE = 1.28;              // 描画時のスケール倍率
 
 // ================================================================
 //  敵スプライト (月面生命体)
@@ -964,14 +970,14 @@ function drawAnimalHead(ci,_r,AC,atk){
 //  キャラ定義
 // ================================================================
 const CHARS=[
-  {name:'タカ型',   nick:'ブルース', dna:'鷹DNA',  col:'#c07828',w:30,h:42,spd:5.2,jmp:-8.8,maxHp:5,atkCd:18,atkLabel:'急降下斬',  glide:true, djump:true, wallSlide:false,ability:'滑空・二段J・空中ATKで急降下爆撃'},
-  {name:'クマ型',   nick:'ラルク',   dna:'熊DNA',  col:'#7a4a22',w:34,h:46,spd:5.5,jmp:-8.5,maxHp:5,atkCd:20,atkLabel:'熊パンチ',  glide:false,djump:true, wallSlide:false,ability:'攻撃力2倍・被ダメ時40%で怒り発動(1.6倍速)'},
-  {name:'オオカミ型',nick:'ミゲル',  dna:'狼DNA',  col:'#3a4aaa',w:30,h:48,spd:5.5,jmp:-9.0,maxHp:5,atkCd:16,atkLabel:'剣閃撃',    glide:false,djump:true, wallSlide:true, ability:'二段ジャンプ・壁張付き【主人公】'},
-  {name:'サル型',   nick:'キバ',     dna:'猿DNA',  col:'#aa7722',w:28,h:44,spd:6.8,jmp:-10.0,maxHp:5,atkCd:14,atkLabel:'電磁ムチ',  glide:false,djump:true, wallSlide:true, ability:'最速・電磁ムチ引寄せ・壁張付き・二段J・踏みつけトランポリン'},
-  {name:'サイ型',   nick:'レックス', dna:'犀DNA',  col:'#556677',w:36,h:46,spd:5.5,jmp:-9.0, maxHp:7, atkCd:20,atkLabel:'猛突進',    glide:false,djump:true, wallSlide:false,ability:'HP最大・攻撃1.5倍・ボス被ダメ軽減・突進無敵'},
-  {name:'ロボ型',   nick:'ゴッドバスター',dna:'メカコア',col:'#1e2c3a',w:36,h:48,spd:4.8,jmp:-9.2, maxHp:10,atkCd:22,atkLabel:'レーザー砲', glide:true, djump:true, wallSlide:false,ability:'レーザー砲・アーマー(2回に1回無効化)・ホーミングミサイル・空中突進無制限'},
-  {name:'ツクヨミ',  nick:'ツクヨミ', dna:'月霊DNA', col:'#c0ddff',w:30,h:44,spd:6.4,jmp:-9.6, maxHp:12,atkCd:14,atkLabel:'瞬身斬',   glide:false,djump:true, wallSlide:true, ability:'瞬身斬（ワープ斬）・幻影分身3体・常時半透明・残像移動'},
-  {name:'わらしべ走者',nick:'わらしべ走者',dna:'わらDNA',col:'#8b7040',w:28,h:42,spd:5.8,jmp:-9.2, maxHp:6,  atkCd:16,atkLabel:'わら投げ', glide:false,djump:true, wallSlide:false,ability:'わら・アブ・ミカン投げ・馬突進の連携攻撃'},
+  {name:'タカ型',   nick:'烏丸', dna:'鷹DNA',  col:'#c07828',w:30,h:42,spd:5.2,jmp:-8.8,maxHp:5,atkCd:18,atkLabel:'急降下斬',  glide:true, djump:true, wallSlide:false,ability:'滑空・二段J・空中ATKで急降下爆撃'},
+  null,
+  null,
+  {name:'サル型',   nick:'十兵衛',     dna:'猿DNA',  col:'#aa7722',w:28,h:44,spd:6.8,jmp:-10.0,maxHp:5,atkCd:14,atkLabel:'電磁ムチ',  glide:false,djump:true, wallSlide:true, ability:'最速・電磁ムチ引寄せ・壁張付き・二段J・踏みつけトランポリン'},
+  {name:'サイ型',   nick:'マタキチ', dna:'犀DNA',  col:'#556677',w:36,h:46,spd:5.5,jmp:-9.0, maxHp:7, atkCd:20,atkLabel:'猛突進',    glide:false,djump:true, wallSlide:false,ability:'HP最大・攻撃1.5倍・ボス被ダメ軽減・突進無敵'},
+  null,
+  null,
+  null,
 ];
 
 // ================================================================
@@ -1252,30 +1258,24 @@ let HAZARD_LASERS=[],HAZARD_SPIKES=[],ZERO_G_ZONES=[];
 let hitStop=0;
 let currentStage=1;
 const STAGE_CFG=[
-  {name:'月面遺跡',  sub:'LUNAR RUINS',   bgMain:'#01010a',bossType:'susanoo',   bossHp:30, bossW:60,bossH:78,bossName:'スサノオ',
-   tMain:'#1e1e2a',tHL:'#3a3a4e',tHL2:'#5a5a70',tSide:'#2e2e3e',tAcc:'#2a1a3a',nebula:['#110033','#001133'],gimmick:null},
-  {name:'雷峰',      sub:'THUNDER PEAK',  bgMain:'#010208',bossType:'takemikazu',bossHp:40, bossW:60,bossH:80,bossName:'タケミカヅチ',
-   tMain:'#14182a',tHL:'#283050',tHL2:'#3a4868',tSide:'#101828',tAcc:'#0a1838',nebula:['#001144','#002266'],gimmick:'thunder'},
-  {name:'炎窟',      sub:'FIRE CAVERN',   bgMain:'#0a0100',bossType:'kagutsuchi',bossHp:50, bossW:62,bossH:72,bossName:'カグヅチ',
-   tMain:'#2a1006',tHL:'#4a2010',tHL2:'#6a3818',tSide:'#1e0c04',tAcc:'#3a1008',nebula:['#220800','#440a00'],gimmick:'lava'},
-  {name:'深海神殿',  sub:'DEEP TEMPLE',   bgMain:'#000a08',bossType:'yamata',    bossHp:60, bossW:70,bossH:62,bossName:'ヤマタノオロチ',
-   tMain:'#082820',tHL:'#104a30',tHL2:'#186a40',tSide:'#062016',tAcc:'#0a2a1a',nebula:['#002211','#003322'],gimmick:'water'},
-  {name:'月宮殿',    sub:'MOON PALACE',   bgMain:'#030109',bossType:'tajikarao', bossHp:80, bossW:68,bossH:86,bossName:'タジカラオ',
-   tMain:'#1c1a38',tHL:'#2e2c58',tHL2:'#4040aa',tSide:'#141230',tAcc:'#2a1a50',nebula:['#110033','#220044'],gimmick:'wind'},
-  {name:'崩落回廊',  sub:'COLLAPSED RUINS',bgMain:'#0a0806',bossType:'tsukuyomi', bossHp:90, bossW:46,bossH:62,bossName:'ツクヨミ',
-   tMain:'#2e2418',tHL:'#4a3c28',tHL2:'#625040',tSide:'#1e1810',tAcc:'#3a2c1a',nebula:['#1a1008','#0c0804'],gimmick:'quake'},
-  {name:'機械神殿の核',sub:'MECH CORE',   bgMain:'#010509',bossType:'izanami',   bossHp:130, bossW:68,bossH:94,bossName:'イザナミ',
-   tMain:'#0c1c28',tHL:'#163040',tHL2:'#1e4860',tSide:'#081018',tAcc:'#0e2030',nebula:['#001a20','#002030'],gimmick:'core'},
+  {name:'鬼ヶ島入口',  sub:'ONI ISLAND ENTRANCE',  bgMain:'#0d0d0d',bossType:'akakuni',    bossHp:30, bossW:60,bossH:78,bossName:'赤鬼門番',
+   tMain:'#1f1f1f',tHL:'#2a2a2a',tHL2:'#1a1a1a',tSide:'#0f0f0f',tAcc:'#4a0a0a',nebula:['#330000','#550000'],gimmick:null},
+  {name:'地下坑道',    sub:'UNDERGROUND CAVERN',  bgMain:'#1a0800',bossType:'iwakui',      bossHp:40, bossW:60,bossH:80,bossName:'岩喰い',
+   tMain:'#0f0f0f',tHL:'#1a1a1a',tHL2:'#0a0a0a',tSide:'#050505',tAcc:'#2a1a0a',nebula:['#1a1010','#2a1a0a'],gimmick:'rockfall'},
+  {name:'鬼の釜地帯',  sub:'DEMON CAULDRON',  bgMain:'#1a0200',bossType:'kamayu',     bossHp:50, bossW:62,bossH:72,bossName:'釜茹で鬼',
+   tMain:'#1a0a00',tHL:'#2a1a08',tHL2:'#3a2a10',tSide:'#0a0500',tAcc:'#5a1a08',nebula:['#330800','#550a00'],gimmick:'lava'},
+  {name:'封印神殿',    sub:'SEALING TEMPLE',   bgMain:'#0a0010',bossType:'fuin',       bossHp:60, bossW:70,bossH:62,bossName:'封印守',
+   tMain:'#0a0a15',tHL:'#15151f',tHL2:'#1a1a2a',tSide:'#050508',tAcc:'#1a0a2a',nebula:['#110011','#220022'],gimmick:'seal'},
+  {name:'深淵',        sub:'ABYSS',           bgMain:'#050205',bossType:'rankaishin',  bossHp:80, bossW:68,bossH:86,bossName:'鬼神ランカイ',
+   tMain:'#0a0a0a',tHL:'#141414',tHL2:'#1a1a1a',tSide:'#050505',tAcc:'#1a0a20',nebula:['#0a0010','#100020'],gimmick:'void'},
 ];
 const TOTAL_STAGES=STAGE_CFG.length;
 const STAGE_BRIEF=[
-  '月面遺跡に磁気生命体が出現。\n最初のオーブを確保せよ。',
-  '雷嵐の山岳地帯。\n天井レーザーと落雷に警戒しろ。',
-  '火山エネルギーが充満している。\nO2消費が加速する高熱エリアだ。',
-  '古代封印の深海神殿。\n水圧でO2が急速に失われる。',
-  '月の引力が歪んでいる。\n月面風が常に左へ引っ張る。',
-  '崩れゆく古代回廊。\n遺跡の奥で何かが目覚めつつある。',
-  '機械神殿の核心へ。\n古代エネルギーが暴走を始めた。',
+  '鬼ヶ島の入口。\n古い砦の跡が残っている。',
+  '地下の採掘坑道。\n落石に注意しろ。',
+  '巨大な鬼の釜がある地帯。\n熱に警戒しろ。',
+  '古い神殿の内部。\n強い封印の力が渦巻いている。',
+  '地下の深淵へ向かう。\n暗い空間に何かが待っている。',
 ];
 
 // ================================================================
@@ -1405,9 +1405,10 @@ document.addEventListener('keydown',e=>{
   if(state==='cutscene'){if(e.key==='Enter'||e.key===' ')advanceCutscene();return;}
   if(state==='ending'){if((e.key==='Enter'||e.key===' ')&&endingDone){clearSave();currentStage=1;state='charselect';bgmPlay('title');}return;}
   if(state==='charselect'){
-    { const maxSel=CHARS.length-1;
-      if(e.key==='ArrowLeft'){selChar=(selChar-1+maxSel+1)%(maxSel+1);}
-      if(e.key==='ArrowRight'){selChar=(selChar+1)%(maxSel+1);} }
+    const validChars=[0,3,4];
+    const curIdx=validChars.indexOf(selChar);
+    if(e.key==='ArrowLeft'){selChar=validChars[(curIdx-1+validChars.length)%validChars.length];}
+    if(e.key==='ArrowRight'){selChar=validChars[(curIdx+1)%validChars.length];}
     if(e.key==='Enter')startGame(true);return;
   }
   if(state==='gameover'&&(e.key==='Enter'||e.key===' ')){retryStage();return;}
@@ -1739,7 +1740,7 @@ function doAttack(){
   for(let pi=_pl;pi<projectiles.length;pi++)projectiles[pi].wlv=lv;
 }
 function doJet(){
-  if(!player||player.jetCd>0||player.jetActive)return;
+  if(!player||player.jetCd>0||player.jetActive||!player.onGround)return;
   const jtCol='#88aaff';
   player.jetActive=true;
   player.jetTimer=22;
@@ -2307,8 +2308,8 @@ function update(){
     // 毒ダメージ (80フレーム毎・最大3回)
     if(e.poisoned>0){e.poisonTimer++;if(e.poisonTimer>=80){e.poisonTimer=0;e.poisoned--;if(e.hp>0)hitE(i,1);}}
     if(e.hp<=0)continue;
-    // KIBA ストンプ: 落下中に敵頭上へ着地→ダメージ1＋トランポリン跳ね
-    if(player.ci===3&&player.vy>2&&ov(e,player)&&player.y+player.h<=e.y+e.h*.52){
+    // ストンプ（ブルース・キバ・レックス）: 落下中に敵頭上へ着地→ダメージ1＋トランポリン跳ね
+    if([0,3,4].includes(player.ci)&&player.vy>2&&ov(e,player)&&player.y+player.h<=e.y+e.h*.52){
       hitE(i,1);
       player.vy=-8.5;player.onGround=false;
       player.invincible=Math.max(player.invincible,14);
@@ -2743,8 +2744,8 @@ function updateBoss(){
       if(currentStage>=5&&enemies.filter(e=>e.fromBoss).length<2)spawnBossMinion();
     }
   }
-  // KIBA ボスストンプ
-  if(player.ci===3&&player.vy>2&&ov(boss,player)&&player.y+player.h<=boss.y+boss.h*.4){
+  // ボスストンプ（ブルース・キバ・レックス）
+  if([0,3,4].includes(player.ci)&&player.vy>2&&ov(boss,player)&&player.y+player.h<=boss.y+boss.h*.4){
     hitBoss(1);
     player.vy=-8.5;player.onGround=false;
     player.invincible=Math.max(player.invincible,14);
@@ -3553,69 +3554,120 @@ function drawStageClear(){
     ctx.font=`bold ${Math.min(W*.030,18)}px monospace`;ctx.textAlign='center';
     ctx.fillText(isLast?'>> PRESS START TO TITLE <<':'>> PRESS START - NEXT STAGE >>',W/2,H*.96);
   }
-  scanlines();
 }
 
 // ================================================================
 //  ステージ別背景フレア (drawBg冒頭から呼ぶ・既存コード不変)
 // ================================================================
 function drawStageBgFlair(st,t){
-  // 空グラデーション
-  const tops=['#080e2a','#080c1c','#1e0500','#001820','#0e0228','#130c04','#021220'];
-  const top=tops[(st-1)%7];
+  // 鬼ヶ島全5ステージ：時間帯別空グラデーション + ステージ固有フレア
+  const skies=[
+    {top:'#0d0d0d',bot:'#1a0a0a'},     // Stage1: 昼間の青空→暗い赤
+    {top:'#c84400',bot:'#1a0800'},     // Stage2: 夕焼け→暗い
+    {top:'#1a0200',bot:'#0a0000'},     // Stage3: 赤黒い夜
+    {top:'#0a0010',bot:'#050008'},     // Stage4: 深夜・紫闇
+    {top:'#050205',bot:'#020203'}      // Stage5: 完全闇
+  ];
+  const sky=skies[Math.min(st-1,4)];
   const grd=ctx.createLinearGradient(0,0,0,H*.7);
-  grd.addColorStop(0,top);grd.addColorStop(1,top+'00');
+  grd.addColorStop(0,sky.top);grd.addColorStop(1,sky.bot);
   ctx.fillStyle=grd;ctx.fillRect(0,0,W,H*.7);
 
-  if(st===2){ // 雷峰: 嵐雲シルエット
-    ctx.globalAlpha=0.32;
-    for(let k=0;k<6;k++){
-      const cx=((k*183+cam.x*.04)%(W+160)+W+160)%(W+160)-80;
-      dr(cx,k%2?2:0,Math.floor(160+k*20),Math.floor(36+k*7),'#06070f');
-      dr(cx+10,k%2?6:4,Math.floor(90+k*14),Math.floor(20+k*4),'#09091c');
+  // ステージ固有フレア処理
+  if(st===1){
+    // 朝日：画面左上に太陽
+    const sunX=W*.15, sunY=H*.15;
+    // 太陽の光輪（大）
+    ctx.globalAlpha=0.2;ctx.fillStyle='#ffaa00';
+    ctx.beginPath();ctx.arc(sunX,sunY,60,0,Math.PI*2);ctx.fill();
+    // 太陽の光輪（中）
+    ctx.globalAlpha=0.4;ctx.fillStyle='#ffcc00';
+    ctx.beginPath();ctx.arc(sunX,sunY,45,0,Math.PI*2);ctx.fill();
+    // 太陽の本体
+    ctx.globalAlpha=0.8;ctx.fillStyle='#ffdd00';
+    ctx.beginPath();ctx.arc(sunX,sunY,30,0,Math.PI*2);ctx.fill();
+    ctx.globalAlpha=1;
+    // 白い雲（視差付き）
+    ctx.globalAlpha=0.35;ctx.fillStyle='#ffffff';
+    for(let k=0;k<5;k++){
+      const cx=((k*150+cam.x*.08)%W);
+      const cy=H*.08+k*20;
+      dr(cx,cy,120,30,'#ffffff');
+      dr(cx+40,cy+8,90,22,'#f0f0ff');
+    }
+    ctx.globalAlpha=1;
+    // 砦跡から立ち昇る煙
+    for(let k=0;k<2;k++){
+      const sy=H*.3-(t/1200+k*4000)%H*.4;
+      ctx.globalAlpha=0.08+k*0.04;
+      ctx.fillStyle='#3a2a2a';
+      ctx.fillRect(W*(0.1+k*0.7),sy,W*.08,12);
     }
     ctx.globalAlpha=1;
   }
-  if(st===3){ // 炎窟: 赤い地底グロー
+  if(st===2){
+    // 夕方：地平線に沈む太陽
+    const sunX=W*.75, sunY=H*.48; // 地平線に近い位置
+    // 太陽の光輪（大）
+    ctx.globalAlpha=0.25;ctx.fillStyle='#ff9900';
+    ctx.beginPath();ctx.arc(sunX,sunY,80,0,Math.PI*2);ctx.fill();
+    // 太陽の光輪（中）
+    ctx.globalAlpha=0.4;ctx.fillStyle='#ffaa00';
+    ctx.beginPath();ctx.arc(sunX,sunY,60,0,Math.PI*2);ctx.fill();
+    // 太陽の本体
+    ctx.globalAlpha=0.9;ctx.fillStyle='#ff7700';
+    ctx.beginPath();ctx.arc(sunX,sunY,40,0,Math.PI*2);ctx.fill();
+    ctx.globalAlpha=1;
+    // 海面への太陽反射（光のライン）
+    ctx.globalAlpha=0.3;ctx.fillStyle='#ffcc66';
+    ctx.fillRect(W*.6,H*.48,W*.3,H*.08);
+    ctx.globalAlpha=1;
+  }
+  if(st===3){
+    // 夜：月を追加
+    const moonX=W*.8, moonY=H*.15;
+    // 月の光輪
+    ctx.globalAlpha=0.12;ctx.fillStyle='#ccbbaa';
+    ctx.beginPath();ctx.arc(moonX,moonY,50,0,Math.PI*2);ctx.fill();
+    // 月の本体
+    ctx.globalAlpha=0.6;ctx.fillStyle='#eeddcc';
+    ctx.beginPath();ctx.arc(moonX,moonY,35,0,Math.PI*2);ctx.fill();
+    // 月のクレーター（暗い部分）
+    ctx.globalAlpha=0.3;ctx.fillStyle='#221100';
+    ctx.beginPath();ctx.arc(moonX-10,moonY-8,6,0,Math.PI*2);ctx.fill();
+    ctx.beginPath();ctx.arc(moonX+8,moonY+5,5,0,Math.PI*2);ctx.fill();
+    ctx.globalAlpha=1;
+    // 釜地帯の赤いグロー
     const fl=Math.sin(t/280)*.25+.75;
     ctx.globalAlpha=fl*.28;dr(0,H*.52,W,H*.48,'#bb1a00');
     ctx.globalAlpha=fl*.18;dr(0,H*.68,W,H*.32,'#ff5500');
     ctx.globalAlpha=1;
   }
-  if(st===4){ // 深海神殿: 深海グロー + 発光粒子
-    ctx.globalAlpha=0.22;dr(0,0,W,H,'#001a18');ctx.globalAlpha=1;
-    for(let k=0;k<14;k++){
-      const bx=((k*131+t*.007)%W);
-      const by=H*.08+(k*41+t*.004)%(H*.8);
-      ctx.globalAlpha=Math.sin(t/500+k)*.5+.5;
-      ctx.globalAlpha*=0.14;dr(bx,by,3,3,'#00ffcc');ctx.globalAlpha=1;
+  if(st===4){
+    // 深夜の星（まばたくアニメーション）
+    const stars=[
+      {x:W*.1,y:H*.1},{x:W*.25,y:H*.05},{x:W*.4,y:H*.12},
+      {x:W*.7,y:H*.08},{x:W*.85,y:H*.15},{x:W*.15,y:H*.25},
+      {x:W*.6,y:H*.2},{x:W*.9,y:H*.22}
+    ];
+    for(let k=0;k<stars.length;k++){
+      const s=stars[k];
+      const blink=Math.sin(t/500+k*1.5)*.5+.5; // 星がまばたく
+      ctx.globalAlpha=blink*.6;ctx.fillStyle='#ffeecc';
+      ctx.fillRect(s.x,s.y,2,2);
     }
-  }
-  if(st===5){ // 月宮殿: 大きな満月
-    const mx=W*.75,my=H*.17,mr=46;
-    ctx.globalAlpha=0.18;ctx.fillStyle='#8898cc';
-    ctx.beginPath();ctx.arc(mx,my,mr+24,0,Math.PI*2);ctx.fill();
-    ctx.globalAlpha=0.35;ctx.fillStyle='#c8d8ff';
-    ctx.beginPath();ctx.arc(mx,my,mr,0,Math.PI*2);ctx.fill();
-    ctx.globalAlpha=0.6;ctx.fillStyle='#e8eeff';
-    ctx.beginPath();ctx.arc(mx,my,mr*.78,0,Math.PI*2);ctx.fill();
-    ctx.globalAlpha=0.14;ctx.fillStyle='#aab0cc';
-    ctx.beginPath();ctx.arc(mx+15,my+10,10,0,Math.PI*2);ctx.fill();
-    ctx.beginPath();ctx.arc(mx-18,my-10,7,0,Math.PI*2);ctx.fill();
     ctx.globalAlpha=1;
+    // 深夜：呪いの光グロー
+    ctx.globalAlpha=0.08;dr(0,0,W,H,'#440044');ctx.globalAlpha=1;
   }
-  if(st===6){ // 崩落回廊: 天井の暗帯 + 廊下の奥行き
-    ctx.globalAlpha=0.32;dr(0,0,W,H*.22,'#08060200');
-    ctx.globalAlpha=0.32;dr(0,0,W,H*.22,'#080602');ctx.globalAlpha=1;
-    ctx.globalAlpha=0.18;dr(0,H*.22,W,3,'#665544');ctx.globalAlpha=1;
-  }
-  if(st===7){ // 機械神殿: グリッド + 赤脈動
-    const gl=Math.sin(t/500)*.35+.65;
-    for(let k=0;k<8;k++){dr(0,Math.floor(H*k/8),W,1,'rgba(0,80,100,0.06)');}
-    for(let k=0;k<12;k++){dr(Math.floor(W*k/12),0,1,H,'rgba(0,80,100,0.06)');}
-    ctx.globalAlpha=gl*.16;dr(0,0,W,H*.3,'#001e2e');ctx.globalAlpha=1;
-    // 赤いコアパルス
-    ctx.globalAlpha=gl*.1;dr(Math.floor(W*.2),Math.floor(H*.3),Math.floor(W*.6),Math.floor(H*.4),'#440000');ctx.globalAlpha=1;
+  if(st===5){
+    // 完全闇：微かな呪いの光点
+    for(let k=0;k<6;k++){
+      const bx=((k*101+t*.003)%W);
+      const by=H*.1+(k*71+t*.002)%(H*.8);
+      ctx.globalAlpha=Math.sin(t/800+k)*.3+.15;
+      dr(bx,by,2,2,'#cc3333');ctx.globalAlpha=1;
+    }
   }
 }
 
@@ -3631,96 +3683,209 @@ function drawBg(){
   drawStageBgFlair(st,t);
 
   if(st<=5){
-  // 星雲ヒント (ステージ別カラー)
-  ctx.globalAlpha=0.07;
-  dr(W*.1,0,W*.32,H*.44,scfg.nebula[0]);
-  dr(W*.58,H*.06,W*.28,H*.36,scfg.nebula[1]);
-  ctx.globalAlpha=0.04;
-  dr(W*.38,H*.12,W*.24,H*.3,scfg.nebula[0]);
-  ctx.globalAlpha=1;
+  // 鬼ヶ島全5ステージ背景
 
-  // 星 (視差・カラーバリエーション・明るい星は光芒)
-  STARS.forEach(s=>{
-    const sx=((s.x-cam.x*s.p)%W+W)%W;
-    if(s.b&&Math.floor(t/500)%2)return;
-    const n=Math.floor(s.x*1.37+s.y)%9;
-    const scol=n<2?'#aabbff':n<4?'#ffddaa':n<5?'#ccffee':'#eeeeff';
-    if(s.s>1){
-      ctx.globalAlpha=0.45;
-      dr(sx-2,s.y,5,1,scol);dr(sx,s.y-2,1,5,scol);
-      ctx.globalAlpha=1;
+  if(st===1){
+    // Stage1：朝の砂浜・砦入口（鬼ヶ島の洞窟外をイメージ）
+    // 朝日が照らす背景グラデーション
+    const bgGrd=ctx.createLinearGradient(0,0,0,H);
+    bgGrd.addColorStop(0,'#ffaa55');     // 上部：朝日色（オレンジ）
+    bgGrd.addColorStop(0.4,'#ff8844');   // 中部：暖かいオレンジ
+    bgGrd.addColorStop(1,'#4a2a1a');     // 下部：暗い赤茶（砂浜）
+    ctx.fillStyle=bgGrd;ctx.fillRect(0,0,W,H);
+    // 海の水平線（波状）
+    ctx.globalAlpha=0.5;ctx.fillStyle='#4a7aaa';
+    for(let k=0;k<Math.ceil(W/20);k++){
+      const wx=k*20;
+      const wy=H*.42+Math.sin(wx*0.05+t*.002)*2;
+      ctx.fillRect(wx,wy,20,H*.08);
     }
-    dr(sx,s.y,s.s,s.s,scol);
-  });
-
-  // 地球 (左上・遠景の青い球体)
-  const EX=70,EY=52,ER=34;
-  // 大気グロー (arc=真円)
-  ctx.globalAlpha=0.07;ctx.fillStyle='#2255ff';
-  ctx.beginPath();ctx.arc(EX,EY,ER+14,0,Math.PI*2);ctx.fill();
-  ctx.globalAlpha=0.05;ctx.fillStyle='#1144dd';
-  ctx.beginPath();ctx.arc(EX,EY,ER+7,0,Math.PI*2);ctx.fill();
-  ctx.globalAlpha=1;
-  // 地球本体 pixel by pixel (海・陸・雲)
-  for(let dy=-ER;dy<=ER;dy+=2)for(let dx=-ER;dx<=ER;dx+=2){
-    const d2=dx*dx+dy*dy;if(d2>ER*ER)continue;
-    const r=Math.sqrt(d2)/ER;
-    const edge=r>0.86;
-    const v=(dx*.65+dy*.4+ER*1.4)%16;
-    const cloud=(dx*.5-dy*.35+ER)%12;
-    let col;
-    if(cloud<2.2)    col=edge?'#8ab4cc':'#c0d8f2';
-    else if(v<5)     col=edge?'#0a2a10':'#1a6a28';
-    else             col=edge?'#071535':'#1a4a90';
-    ctx.fillStyle=col;ctx.fillRect(EX+dx,EY+dy,2,2);
+    // 砂浜のグラデーション（朝日に照らされた）
+    const sandGrd=ctx.createLinearGradient(0,H*.42,0,H);
+    sandGrd.addColorStop(0,'#c89060');sandGrd.addColorStop(1,'#d8a880');
+    ctx.fillStyle=sandGrd;ctx.fillRect(0,H*.42,W,H*.58);
+    // 砂浜の波の縞模様（質感）
+    ctx.globalAlpha=0.08;ctx.fillStyle='#000000';
+    for(let k=0;k<Math.ceil(H/8);k++){
+      ctx.fillRect(0,H*.42+k*8,W,2);
+    }
+    // 岩山シルエット（左右・とんがった頂点）
+    ctx.globalAlpha=0.25;ctx.fillStyle='#1a0a00';
+    ctx.beginPath();ctx.moveTo(W*.05,H*.45);ctx.lineTo(W*.15,H*.05);ctx.lineTo(W*.25,H*.45);ctx.fill();
+    ctx.beginPath();ctx.moveTo(W*.75,H*.45);ctx.lineTo(W*.88,H*.08);ctx.lineTo(W,H*.45);ctx.fill();
+    ctx.globalAlpha=1;
   }
-  // 大気の縁リング
-  ctx.globalAlpha=0.20;ctx.strokeStyle='#4488ff';ctx.lineWidth=2.5;
-  ctx.beginPath();ctx.arc(EX,EY,ER+1,0,Math.PI*2);ctx.stroke();
-  ctx.globalAlpha=1;
-  // 光沢ハイライト
-  ctx.globalAlpha=0.18;ctx.fillStyle='#ddeeff';
-  ctx.beginPath();ctx.arc(EX-ER*.28,EY-ER*.28,ER*.26,0,Math.PI*2);ctx.fill();
-  ctx.globalAlpha=1;
 
-  // 遠景月面山脈 (視差0.08・サイン合成)
-  const hY=H-60;
-  for(let sx=0;sx<W+4;sx+=4){
-    const wx=sx+cam.x*0.08;
-    const mh=Math.floor(26+Math.sin(wx*.011)*19+Math.sin(wx*.027)*11+Math.sin(wx*.006)*16);
-    dr(sx,hY-mh,4,mh+2,'#060612');
+  if(st===2){
+    // Stage2：夕方から地下への入口
+    const bgGrd=ctx.createLinearGradient(0,0,0,H);
+    bgGrd.addColorStop(0,'#c84400');bgGrd.addColorStop(1,'#1a0800');
+    ctx.fillStyle=bgGrd;ctx.fillRect(0,0,W,H);
+    // 坑道への段階的な暗化（奥行き表現・3段階）
+    ctx.globalAlpha=0.08;ctx.fillStyle='#000000';
+    ctx.fillRect(0,H*.4,W,H*.6);
+    ctx.globalAlpha=0.15;
+    ctx.fillRect(0,H*.5,W,H*.5);
+    ctx.globalAlpha=0.1;
+    ctx.fillRect(0,H*.65,W,H*.35);
+    // 岩壁（左右・段階化）
+    ctx.globalAlpha=0.3;ctx.fillStyle='#0a0000';
+    ctx.fillRect(0,H*.25,W*.1,H*.6);ctx.fillRect(W*.9,H*.25,W*.1,H*.6);
+    ctx.globalAlpha=0.5;ctx.fillStyle='#050000'; // 奥行き：さらに暗い
+    ctx.fillRect(0,H*.5,W*.08,H*.35);ctx.fillRect(W*.92,H*.5,W*.08,H*.35);
+    // 岩山シルエット（左右）
+    ctx.globalAlpha=0.5;ctx.fillStyle='#0a0500';
+    ctx.beginPath();ctx.moveTo(0,H*.65);ctx.lineTo(W*.2,H*.2);ctx.lineTo(W*.4,H*.65);ctx.fill();
+    ctx.beginPath();ctx.moveTo(W,H*.65);ctx.lineTo(W*.8,H*.2);ctx.lineTo(W*.6,H*.65);ctx.fill();
+    // 坑道入口
+    ctx.globalAlpha=0.35;ctx.fillStyle='#0a0000';ctx.beginPath();
+    ctx.arc(W*.5,H*.5,W*.1,0,Math.PI,true);ctx.fill();
+    // 採掘場の支柱（梁の両端）
+    ctx.globalAlpha=0.25;ctx.fillStyle='#0f0800';
+    for(let k=0;k<4;k++){
+      ctx.fillRect(W*.08+k*W*.2,H*.35,W*.02,H*.35);
+    }
+    // 採掘場の梁（横木3本・奥ほど暗い）
+    ctx.globalAlpha=0.4;ctx.fillStyle='#1a0f00';
+    ctx.fillRect(0,H*.3,W,8);
+    ctx.globalAlpha=0.3;ctx.fillStyle='#0f0800';
+    ctx.fillRect(0,H*.45,W,8);ctx.fillRect(0,H*.55,W,10);
+    // 坑道奥からの光漏れ
+    ctx.globalAlpha=0.1;ctx.fillStyle='#ffaa44';
+    ctx.fillRect(W*.35,H*.45,W*.3,H*.3);
+    ctx.globalAlpha=1;
   }
+
+  if(st===3){
+    // Stage3：夜・鬼の釜地帯
+    const bgGrd=ctx.createLinearGradient(0,0,0,H);
+    bgGrd.addColorStop(0,'#1a0200');bgGrd.addColorStop(1,'#0a0000');
+    ctx.fillStyle=bgGrd;ctx.fillRect(0,0,W,H);
+    // 岩山シルエット（釜地帯・とんがった頂点）
+    ctx.globalAlpha=0.28;ctx.fillStyle='#1a0000';
+    ctx.beginPath();ctx.moveTo(W*.25,H*.45);ctx.lineTo(W*.5,H*.05);ctx.lineTo(W*.75,H*.45);ctx.fill();
+    const lavaGlow=Math.sin(t/250)*.2+.3;
+    ctx.globalAlpha=lavaGlow*.15;ctx.fillStyle='#ff4400';ctx.fillRect(W*.2,H*.5,W*.6,H*.4);
+    // 釜から揺れる炎アニメーション（華やか・6層）
+    for(let k=0;k<6;k++){
+      const fx=W*.5+Math.sin(t/180+k*1.2)*20;
+      const fy=H*.18-k*7;
+      const colors=['#ffff00','#ffcc00','#ff9900','#ff6600','#ff3300','#ff1100'];
+      ctx.globalAlpha=0.8-k*0.13;ctx.fillStyle=colors[k];
+      ctx.beginPath();ctx.moveTo(fx,fy+16);ctx.lineTo(fx-8,fy+16);ctx.lineTo(fx,fy);ctx.fill();
+    }
+    // 釜上部からの煙（濃い）
+    for(let k=0;k<4;k++){
+      const sy=H*.2-(t/800+k*5000)%H*.35;
+      ctx.globalAlpha=0.06+k*0.025;ctx.fillStyle='#555555';
+      ctx.fillRect(W*.42,sy,W*.16,10);
+    }
+    // 溶岩波紋テクスチャ（細かく）
+    for(let k=0;k<8;k++){
+      const wy=H*.55+k*6+Math.sin(t/250+k*1.2)*3;
+      ctx.globalAlpha=lavaGlow*.06*(1-k*0.12);ctx.fillStyle=['#ff6600','#ff7700','#ff8800'][k%3];
+      ctx.fillRect(W*.2,wy,W*.6,1.5);
+    }
+    ctx.globalAlpha=1;
+  }
+
+  if(st===4){
+    // Stage4：深夜・封印神殿
+    const bgGrd=ctx.createLinearGradient(0,0,0,H);
+    bgGrd.addColorStop(0,'#0a0010');bgGrd.addColorStop(1,'#050008');
+    ctx.fillStyle=bgGrd;ctx.fillRect(0,0,W,H);
+    // 岩山シルエット（神殿を岩山化・とんがった頂点）
+    ctx.globalAlpha=0.22;ctx.fillStyle='#0a0000';
+    ctx.beginPath();ctx.moveTo(W*.2,H*.45);ctx.lineTo(W*.5,H*.02);ctx.lineTo(W*.8,H*.45);ctx.fill();
+    // 奥行き感：手前の岩山
+    ctx.globalAlpha=0.15;ctx.fillStyle='#1a0a00';
+    ctx.beginPath();ctx.moveTo(W*.15,H*.5);ctx.lineTo(W*.35,H*.15);ctx.lineTo(W*.55,H*.5);ctx.fill();
+    ctx.beginPath();ctx.moveTo(W*.45,H*.5);ctx.lineTo(W*.65,H*.15);ctx.lineTo(W*.85,H*.5);ctx.fill();
+    // 壁画の光グロー（sin脈動）
+    const glow=Math.sin(t/600)*0.06+0.08;
+    ctx.globalAlpha=glow;ctx.fillStyle='#aa0000';
+    ctx.fillRect(0,H*.2,W*.05,H*.6);ctx.fillRect(W*.95,H*.2,W*.05,H*.6);
+    // 壁に薄く浮かぶ鬼の顔
+    ctx.globalAlpha=0.08;ctx.fillStyle='#330000';
+    ctx.beginPath();ctx.arc(W*.5,H*.35,W*.08,0,Math.PI*2);ctx.fill(); // 顔
+    ctx.fillRect(W*.46,H*.32,W*.015,W*.015);ctx.fillRect(W*.54,H*.32,W*.015,W*.015); // 目
+    ctx.fillRect(W*.48,H*.38,W*.04,W*.02); // 口
+    // 鬼の角シルエット（遠景・より目立つ）
+    ctx.globalAlpha=0.12;ctx.fillStyle='#220000';
+    ctx.beginPath();ctx.moveTo(W*.45,H*.15);ctx.lineTo(W*.48,H*.08);ctx.lineTo(W*.50,H*.12);ctx.fill();
+    ctx.beginPath();ctx.moveTo(W*.52,H*.15);ctx.lineTo(W*.50,H*.08);ctx.lineTo(W*.55,H*.12);ctx.fill();
+    ctx.globalAlpha=1;
+  }
+
+  if(st===5){
+    // Stage5：完全闇・深淵
+    const bgGrd=ctx.createLinearGradient(0,0,0,H);
+    bgGrd.addColorStop(0,'#050205');bgGrd.addColorStop(1,'#020203');
+    ctx.fillStyle=bgGrd;ctx.fillRect(0,0,W,H);
+    // 鍾乳石（固定位置）
+    ctx.globalAlpha=0.18;ctx.fillStyle='#1a0a0a';
+    const stalactitePosY=Math.floor(frameTime/100)%200; // フレームごとに固定値
+    for(let k=0;k<6;k++){const sx=W*(k*0.16+0.02);const sh=H*.12+Math.sin(frameTime*.002+k)*H*.08;ctx.fillRect(sx,0,W*.08,sh);}
+    // 脈動する肉壁
+    const pulse=Math.sin(t/300)*.06+.12;
+    ctx.globalAlpha=pulse;ctx.fillStyle='#4a0a0a';
+    ctx.fillRect(0,H*.2,W*.08,H*.6);ctx.fillRect(W*.92,H*.2,W*.08,H*.6);
+    // 敵視認性：底部に微弱グロー
+    ctx.globalAlpha=0.15;ctx.fillStyle='#2a0a1a';
+    ctx.fillRect(0,H*.7,W,H*.3);
+    // 洞窟感：多段階の暗化（奥行き表現）
+    ctx.globalAlpha=0.05;ctx.fillStyle='#000000';
+    ctx.fillRect(0,H*.3,W,H*.7);
+    ctx.globalAlpha=0.08;
+    ctx.fillRect(0,H*.5,W,H*.5);
+    ctx.globalAlpha=0.1;
+    ctx.fillRect(0,H*.65,W,H*.35);
+    // 霧エフェクト
+    const mistGrd=ctx.createLinearGradient(0,H*.5,0,H);
+    mistGrd.addColorStop(0,'rgba(0,0,0,0)');
+    mistGrd.addColorStop(1,'rgba(20,0,10,0.4)');
+    ctx.fillStyle=mistGrd;ctx.fillRect(0,H*.5,W,H*.5);
+    // 呪いの光点を増やす（12個に拡大）
+    for(let k=0;k<12;k++){
+      const bx=((k*87+t*.003)%W);
+      const by=H*.1+(k*69+t*.002)%(H*.8);
+      ctx.globalAlpha=Math.sin(t/800+k)*.4+.2;
+      dr(bx,by,2,2,'#cc3333');ctx.globalAlpha=1;
+    }
+    ctx.globalAlpha=1;
+  }
+
   } // end if(st<=5)
 
-  if(st<=6){
-  // 崩れた柱シルエット (詳細・グロー)
+  if(st<=5){
+  // 崩れた石造り柱シルエット (暗いグレー + 松明風グロー)
   PILLARS.forEach(p=>{
     const px=Math.floor(p.x-cam.x*.15);
     if(px<-40||px>W+40)return;
     const bw=22,bh=p.h,by=H-60-bh;
-    // 柱本体
-    dr(px-bw/2,by,bw,bh,'#09091a');
-    dr(px-bw/2,by,bw,Math.floor(bh*.28),'#0b0b1c');
+    // 柱本体（石造り暗グレー）
+    dr(px-bw/2,by,bw,bh,'#1a1818');
+    dr(px-bw/2,by,bw,Math.floor(bh*.28),'#201e1e');
     // 欠け (崩壊表現)
-    if(bh>100)dr(px+bw/2-5,by+Math.floor(bh*.27),5,8,'#01010a');
-    // 頭部笠石
-    dr(px-bw/2-3,by,bw+6,4,'#141428');
-    dr(px-bw/2-3,by,bw+6,2,'#1a1a30');
+    if(bh>100)dr(px+bw/2-5,by+Math.floor(bh*.27),5,8,'#0a0a08');
+    // 頭部笠石（石造り）
+    dr(px-bw/2-3,by,bw+6,4,'#2a2020');
+    dr(px-bw/2-3,by,bw+6,2,'#302828');
     // 根元影
-    dr(px-bw/2-2,by+bh-5,bw+4,5,'#080812');
+    dr(px-bw/2-2,by+bh-5,bw+4,5,'#080806');
     // 石目 (水平ライン)
-    for(let ly=by+16;ly<by+bh-10;ly+=20)dr(px-bw/2+1,ly,bw-2,1,'#13131f');
-    // 古代紋様グロー
+    for(let ly=by+16;ly<by+bh-10;ly+=20)dr(px-bw/2+1,ly,bw-2,1,'#131010');
+    // 松明風グロー（赤橙）
     if(bh>130){
       const gl=Math.sin(t/1400+p.x*.003)*.5+.5;
       const gy=by+Math.floor(bh*.42);
       ctx.globalAlpha=0.07+gl*.12;
-      dr(px-4,gy,8,2,'#3300cc');dr(px-2,gy-3,4,8,'#3300cc');
-      dr(px-5,gy+8,10,1,'#5500ff');
+      dr(px-4,gy,8,2,'#cc4400');dr(px-2,gy-3,4,8,'#cc4400');
+      dr(px-5,gy+8,10,1,'#ff6600');
       ctx.globalAlpha=1;
     }
   });
-  } // end if(st<=6)
+  } // end if(st<=5)
 
   // Stage 7: エネルギー導管 (石柱の代わり)
   if(st===7){
@@ -3841,6 +4006,15 @@ function drawBg(){
     }
     // 全体に青みの暗さ
     ctx.globalAlpha=0.07;dr(0,0,W,H,'#000a18');ctx.globalAlpha=1;
+  }
+
+  // ================================================================
+  //  時間帯フィルター（ステージ進行に伴う段階的暗化）
+  // ================================================================
+  if(st<=5){
+    const timeAlphas=[0, 0.05, 0.1, 0.15, 0.2]; // Stage1→5へ向かうにつれ暗くなる
+    const filterAlpha=timeAlphas[st-1]||0;
+    ctx.globalAlpha=filterAlpha;dr(0,0,W,H,'#000000');ctx.globalAlpha=1;
   }
 }
 
@@ -4269,11 +4443,11 @@ function drawBtns(){
      bg:'#0f1828',hbg:'#2244aa',br:'#334466',hbr:'#55aaff',tc:'#8899cc'},
     {b:z.right, lb:'▶',   held:touchHeld.right||keys['ArrowRight']||keys['d'],
      bg:'#0f1828',hbg:'#2244aa',br:'#334466',hbr:'#55aaff',tc:'#8899cc'},
-    {b:z.jump,  lb:'JUMP',held:touchHeld.jumpHeld,
+    {b:z.jump,  lb:'飛',held:touchHeld.jumpHeld,
      bg:'#0a1a44',hbg:'#1144dd',br:'#2255aa',hbr:'#66aaff',tc:'#6699ee'},
-    {b:z.atk,   lb:'ATK', held:false,
+    {b:z.atk,   lb:'攻', held:false,
      bg:'#2a0a08',hbg:'#bb2200',br:'#662200',hbr:'#ff6644',tc:'#cc4422'},
-    {b:z.jet,   lb:'JET', held:!!jetOn,
+    {b:z.jet,   lb:'避', held:!!jetOn,
      bg:jetBg,hbg:jetHbg,br:jetBr,hbr:jetHbr,tc:jetTc},
   ];
   btns.forEach(({b,lb,held,bg,hbg,br,hbr,tc})=>{
@@ -4323,10 +4497,7 @@ function drawBtns(){
   }
 }
 
-// ================================================================
-//  スキャンライン
-// ================================================================
-function scanlines(){ctx.fillStyle='rgba(0,0,0,0.14)';for(let y=0;y<H;y+=4)ctx.fillRect(0,y,W,1);}
+// スキャンライン削除
 
 // ================================================================
 //  カットシーン (ステージ7ボス前)
@@ -4459,7 +4630,6 @@ function drawCutscene(){
     ctx.globalAlpha=0.12+Math.sin(frameTime/200)*.08;
     dr(0,0,W,H,'#440022');ctx.globalAlpha=1;
   }
-  scanlines();
 }
 
 // ================================================================
@@ -4547,64 +4717,53 @@ function drawEnding(){
     ctx.fillStyle='#8899bb';ctx.font=`bold ${Math.min(W*.030,16)}px monospace`;ctx.textAlign='center';
     ctx.fillText('>> PRESS TO TITLE <<',W/2,H*.94);
   }
-  scanlines();
 }
 
 // ================================================================
 //  ストーリー画面
 // ================================================================
 function drawStory(){
-  dr(0,0,W,H,'#02020e');
-  STARS.forEach(s=>{const sx=(s.x%W+W)%W;if(!(s.b&&Math.floor(frameTime/500)%2))dr(sx,s.y,s.s,s.s,'#fff');});
+  // 鬼ヶ島の背景：暗く赤黒い雰囲気
+  dr(0,0,W,H,'#1a0a0a');
+  // 背景グラデーション：上は暗く、下は赤黒く
+  const grad=ctx.createLinearGradient(0,0,0,H);
+  grad.addColorStop(0,'#0f0505');
+  grad.addColorStop(1,'#2a0a0a');
+  ctx.fillStyle=grad;
+  ctx.fillRect(0,0,W,H);
   const fs=Math.min(W*.042,17), lh=fs+10;
   const lines=[
-    ['月の裏側','#d8eaff',true],
-    ['THE RABBIT ORBS','#8899cc',false],
+    ['鬼ヶ島','#d8eaff',true],
+    ['DEMON ISLAND EXPEDITION','#8899cc',false],
     ['','',''],
-    ['人類は長年、「月には兎がいる」という','#b8ccff',false],
-    ['言い伝えをただの昔話だと考えていた。','#b8ccff',false],
+    ['桃太郎たちによる鬼退治から数年後。','#b8ccff',false],
+    ['鬼ヶ島の財宝伝説を聞いた十兵衛、カラス丸、','#b8ccff',false],
+    ['マタキチの3人は、一攫千金を狙い島へ向かう。','#b8ccff',false],
     ['','',''],
-    ['しかしある日、月の裏側で','#b8ccff',false],
-    ['異常な磁気反応が観測される。','#b8ccff',false],
+    ['島にはすでに鬼の姿は少なく、廃墟となっていた。','#ccddff',false],
+    ['崩れた砦、荒れ果てた地下坑道、不気味な封印神殿。','#ccddff',false],
     ['','',''],
-    ['調査の結果、月の裏側には "兎" の形をした','#ccddff',false],
-    ['7つの謎のオーブが存在することが判明した。','#ccddff',false],
+    ['しかし地下を探索するうちに、','#aabbee',false],
+    ['鬼たちが何か "ある存在" を封印するために','#aabbee',false],
+    ['財宝を管理していたという事実が判明する。','#aabbee',false],
     ['','',''],
-    ['そのオーブは強力な磁気エネルギーを放ち続けており、','#aabbee',false],
-    ['このまま放置すれば太陽系の惑星すべてを','#aabbee',false],
-    ['崩壊へ導く危険性があるという。','#aabbee',false],
+    ['地下深くでは、封印の弱体化によって','#ffddaa',false],
+    ['鬼ヶ島そのものが異形化していた。','#ffddaa',false],
     ['','',''],
-    ['世界中の研究機関が調査を進めた結果、','#b8ccff',false],
-    ['唯一 "海水" にだけオーブの力を','#b8ccff',false],
-    ['弱める性質があることが発見される。','#b8ccff',false],
+    ['巨大な鼓動、脈打つ壁、呪いに侵された鬼たち。','#ddbbaa',false],
     ['','',''],
-    ['人類は極秘任務を決行する。','#ffee99',true],
+    ['欲に取り憑かれた探索者たちは気づかない。','#ffbbbb',false],
+    ['財宝を持ち帰るほど、','#ffbbbb',false],
+    ['地下深くの何かが目覚めていることに――。','#ffbbbb',false],
     ['','',''],
-    ['それは――','#aabbee',false],
-    ['月へ特殊部隊を送り込み、','#aabbee',false],
-    ['7つの兎オーブを回収し、','#aabbee',false],
-    ['地球最深部の深海へ沈め封印するという','#aabbee',false],
-    ['危険な計画だった。','#aabbee',false],
+    ['鬼たちすら恐れていた災厄。','#ffaaee',true],
     ['','',''],
-    ['しかし月の裏側は、強烈な磁気嵐、','#ddbbaa',false],
-    ['低重力地帯、崩壊した月面遺跡、','#ddbbaa',false],
-    ['未知の生命反応など、','#ddbbaa',false],
-    ['人類が想定していた以上に危険な場所だった。','#ddbbaa',false],
+    ['それは、"鬼神ランカイ"。','#ffaaee',true],
     ['','',''],
-    ['さらに通常の人間では任務に耐えられないことが判明。','#aabbee',false],
+    ['十兵衛たちは財宝を持ち帰るのか。','#d8eaff',false],
+    ['それとも封印を守るのか。','#d8eaff',false],
     ['','',''],
-    ['そこで研究者たちは、地球上のあらゆる生物の','#b8ccff',false],
-    ['DNAを組み込み、身体能力を極限まで強化した','#b8ccff',false],
-    ['特殊調査部隊を編成する。','#b8ccff',false],
-    ['','',''],
-    ['これは人類を救うための任務なのか。','#ffbbbb',false],
-    ['それとも――','#eeccdd',false],
-    ['決して触れてはならない','#eeccdd',false],
-    ['"月の真実" を目覚めさせる行為なのか。','#ffaaee',true],
-    ['','',''],
-    ['特殊部隊は月の裏側へ降り立つ。','#d8eaff',true],
-    ['','',''],
-    ['人類、そして太陽系の未来を懸けて。','#ffee99',true],
+    ['彼らの選択が、世界の運命を変える。','#ffee99',true],
     ['','',''],['','',''],['','',''],
   ];
   const totalH=lines.length*lh;
@@ -4653,7 +4812,6 @@ function drawStory(){
     ctx.font=`bold ${Math.min(W*.036,15)}px monospace`;ctx.textAlign='center';
     ctx.fillText('▼  GAME  START  ▼',W/2,by+bh*.68);
   }
-  scanlines();
 }
 
 // ================================================================
@@ -4673,25 +4831,32 @@ function drawSplash(){
   ctx.globalAlpha=1;
 }
 function drawTitle(){
-  dr(0,0,W,H,'#02020e');
-  STARS.forEach(s=>{const sx=(s.x%W+W)%W;if(!(s.b&&Math.floor(frameTime/500)%2))dr(sx,s.y,s.s,s.s,'#fff');});
-  const EX=70,EY=55,ER=44;
-  for(let dy=-ER;dy<=ER;dy+=2)for(let dx=-ER;dx<=ER;dx+=2){if(dx*dx+dy*dy<=ER*ER)dr(EX+dx,EY+dy,2,2,(dx+dy)%8<3?'#1a4a90':'#1a6a28');}
-  // 月面
-  dr(0,H-60,W,60,'#111118');dr(0,H-62,W,4,'#1e1e2a');
-  // クレーター
-  [[W*.2,H-45,28],[W*.5,H-40,18],[W*.78,H-48,24]].forEach(([cx,cy,r])=>{
-    for(let dy=-6;dy<=6;dy+=2)for(let dx=-r;dx<=r;dx+=2){if(Math.abs(dx)/r+Math.abs(dy)/6<1.1)dr(cx+dx,cy+dy,2,2,'#0a0a14');}
-  });
-  // 遺跡シルエット
-  [[W*.3,90,16],[W*.5,120,20],[W*.7,80,14],[W*.85,110,18]].forEach(([px,ph,pw])=>{
-    dr(px-pw/2,H-60-ph,pw,ph,'#070710');dr(px-pw/2,H-60-ph,pw,3,'#0f0f1e');
-  });
+  // 鬼ヶ島タイトル画面背景：朝日の砂浜
+  const bgGrd=ctx.createLinearGradient(0,0,0,H);
+  bgGrd.addColorStop(0,'#ffaa55');bgGrd.addColorStop(0.4,'#ff8844');bgGrd.addColorStop(1,'#4a2a1a');
+  ctx.fillStyle=bgGrd;ctx.fillRect(0,0,W,H);
+  // 太陽（大きく）
+  const sunX=W*.2, sunY=H*.15;
+  ctx.globalAlpha=0.2;ctx.fillStyle='#ffaa00';ctx.beginPath();ctx.arc(sunX,sunY,80,0,Math.PI*2);ctx.fill();
+  ctx.globalAlpha=0.4;ctx.fillStyle='#ffcc00';ctx.beginPath();ctx.arc(sunX,sunY,60,0,Math.PI*2);ctx.fill();
+  ctx.globalAlpha=0.8;ctx.fillStyle='#ffdd00';ctx.beginPath();ctx.arc(sunX,sunY,40,0,Math.PI*2);ctx.fill();
+  ctx.globalAlpha=1;
+  // 岩山シルエット（左右）
+  ctx.globalAlpha=0.3;ctx.fillStyle='#1a0a00';
+  ctx.beginPath();ctx.moveTo(W*.05,H*.5);ctx.lineTo(W*.2,H*.08);ctx.lineTo(W*.35,H*.5);ctx.fill();
+  ctx.beginPath();ctx.moveTo(W*.65,H*.5);ctx.lineTo(W*.85,H*.08);ctx.lineTo(W,H*.5);ctx.fill();
+  // 海の水平線
+  ctx.globalAlpha=0.5;ctx.fillStyle='#4a7aaa';ctx.fillRect(0,H*.5,W,H*.1);
+  // 砂浜グラデーション
+  const sandGrd=ctx.createLinearGradient(0,H*.5,0,H);
+  sandGrd.addColorStop(0,'#c89060');sandGrd.addColorStop(1,'#d8a880');
+  ctx.fillStyle=sandGrd;ctx.fillRect(0,H*.5,W,H*.5);
+  ctx.globalAlpha=1;
   ctx.textAlign='center';
-  ctx.fillStyle='#050510';ctx.font=`bold ${Math.min(W*.068,54)}px monospace`;ctx.fillText('月の裏側',W/2+2,H*.3+2);
-  ctx.fillStyle='#c8d8ff';ctx.fillText('月の裏側',W/2,H*.3);
-  ctx.fillStyle='#222244';ctx.font=`bold ${Math.min(W*.028,22)}px monospace`;ctx.fillText('- THE RABBIT ORBS -',W/2+1,H*.3+44);
-  ctx.fillStyle='#6677bb';ctx.fillText('- THE RABBIT ORBS -',W/2,H*.3+42);
+  ctx.fillStyle='#330000';ctx.font=`bold ${Math.min(W*.068,54)}px monospace`;ctx.fillText('鬼ヶ島',W/2+2,H*.3+2);
+  ctx.fillStyle='#ff6644';ctx.fillText('鬼ヶ島',W/2,H*.3);
+  ctx.fillStyle='#441100';ctx.font=`bold ${Math.min(W*.028,22)}px monospace`;ctx.fillText('- DEMON ISLAND -',W/2+1,H*.3+44);
+  ctx.fillStyle='#cc5533';ctx.fillText('- DEMON ISLAND -',W/2,H*.3+42);
   const sv=getSave();
   if(sv){
     const tb=getTitleSaveBtns();
@@ -4710,20 +4875,19 @@ function drawTitle(){
   }else{
     if(Math.floor(frameTime/500)%2){ctx.fillStyle='#ffee44';ctx.font=`bold ${Math.min(W*.033,20)}px monospace`;ctx.fillText('>> PRESS START <<',W/2,H*.8);}
   }
-  scanlines();
 }
 
 // ================================================================
 //  キャラ選択
 // ================================================================
 function csLayout(){
-  const bw=90,bh=70,gap=4;
-  const r1y=Math.floor(H*0.17), r2y=Math.floor(H*0.17)+bh+6;
-  const totalW=4*(bw+gap)-gap, sx=(W-totalW)/2;
-  const chars=[
-    ...Array.from({length:4},(_,i)=>({x:sx+i*(bw+gap),y:r1y,w:bw,h:bh})),
-    ...Array.from({length:4},(_,i)=>({x:sx+i*(bw+gap),y:r2y,w:bw,h:bh})),
-  ];
+  const bw=100,bh=80,gap=6;
+  const r1y=Math.floor(H*0.15);
+  const totalW=3*(bw+gap)-gap, sx=(W-totalW)/2;
+  const chars=[];
+  chars[0]={x:sx,y:r1y,w:bw,h:bh};
+  chars[3]={x:sx+(bw+gap),y:r1y,w:bw,h:bh};
+  chars[4]={x:sx+2*(bw+gap),y:r1y,w:bw,h:bh};
   return{
     chars,
     start:{x:W/2-78,y:H*.78,w:156,h:42},
@@ -4732,6 +4896,8 @@ function csLayout(){
 }
 function drawCharSelect(){
   const t=frameTime;
+  // selCharが[0,3,4]に含まれない場合は0に修正
+  if(![0,3,4].includes(selChar))selChar=0;
   dr(0,0,W,H,'#01010c');
   // 背景: 放射状グロー (選択キャラ色)
   const selCol=CHARS[selChar].col;
@@ -4750,14 +4916,13 @@ function drawCharSelect(){
   ctx.fillStyle='#aabbff';ctx.font=`bold ${Math.min(W*.04,16)}px monospace`;
   ctx.fillText('SELECT  CHARACTER',W/2,H*.07);
 
-  // ── キャラカード (全8体) ──
+  // ── キャラカード (3体: index 0, 3, 4) ──
   const z=csLayout();
-  const tsukuUnlocked=getTsukuyomiUnlocked();
-  Array.from({length:8},(_,i)=>{
-    const b=z.chars[i],sel=i===selChar;
-    const isTsuku=(i===6);
-    const locked=isTsuku&&!tsukuUnlocked;
-    const c=locked?{col:'#334466',nick:'？？？'}:CHARS[i];
+  [0,3,4].forEach(i=>{
+    const b=z.chars[i];
+    if(!b)return;
+    const sel=i===selChar;
+    const c=CHARS[i];
     const glow=sel?(Math.sin(t/180)*.12+.88):0;
     // カード背景
     dr(b.x,b.y,b.w,b.h,sel?'#0d1628':'#06060f');
@@ -4765,107 +4930,61 @@ function drawCharSelect(){
     dr(b.x,b.y,b.w,b.h,sel?'#0d1628':'#06060f');
     dr(b.x,b.y,b.w,2,sel?c.col:'#222');
     dr(b.x,b.y+b.h-2,b.w,2,sel?'#111':'#0a0a0a');
-    if(locked){
-      // 未解放: 三日月＋ロック表示
-      const pulse=Math.sin(t/700)*.15+.35;
-      ctx.globalAlpha=pulse;
-      ctx.fillStyle='#5588aa';ctx.font=`bold ${Math.min(W*.052,20)}px monospace`;ctx.textAlign='center';
-      ctx.fillText('☽',b.x+b.w/2,b.y+b.h*.5);
-      ctx.font=`${Math.min(W*.030,13)}px monospace`;
-      ctx.fillText('？？？',b.x+b.w/2,b.y+b.h-10);
-      ctx.globalAlpha=1;
-    } else {
-      // 通常: キャラスプライト
-      ctx.save();ctx.translate(b.x+b.w/2-13,b.y+4);ctx.scale(0.88,0.88);
-      drawCharacter(0,0,i,1,0,false,0);ctx.restore();
-      ctx.fillStyle=sel?'#ffffff':'#778';ctx.font=`bold ${Math.min(W*.026,11)}px monospace`;ctx.textAlign='center';
-      ctx.fillText(c.nick,b.x+b.w/2,b.y+b.h-8);
-    }
-    // 主人公バッジ
-    if(i===2){ctx.fillStyle='#ffdd22';ctx.font=`${Math.min(W*.032,13)}px monospace`;ctx.fillText('★',b.x+b.w-7,b.y+8);}
+    // キャラスプライト
+    ctx.save();ctx.translate(b.x+b.w/2-13,b.y+4);ctx.scale(0.88,0.88);
+    drawCharacter(0,0,i,1,0,false,0);ctx.restore();
+    ctx.fillStyle=sel?'#ffffff':'#778';ctx.font=`bold ${Math.min(W*.026,11)}px monospace`;ctx.textAlign='center';
+    ctx.fillText(c.nick,b.x+b.w/2,b.y+b.h-8);
   });
 
   // ── 選択キャラ 詳細パネル ──
   const c=CHARS[selChar];
   const AC=SC_ACCNT[selChar];
-  const isTsukuLocked=(selChar===6&&!tsukuUnlocked);
-  const panAC=isTsukuLocked?'#334466':AC;
   const panY=H*.47, panH=H*.44;
   dr(W*.03,panY,W*.94,panH,'#06080f');
-  dr(W*.03,panY,W*.94,2,panAC);dr(W*.03,panY+panH-2,W*.94,2,'#111');
+  dr(W*.03,panY,W*.94,2,AC);dr(W*.03,panY+panH-2,W*.94,2,'#111');
   // コーナー装飾
-  dr(W*.03,panY,6,6,panAC);dr(W*.97-6,panY,6,6,panAC);
+  dr(W*.03,panY,6,6,AC);dr(W*.97-6,panY,6,6,AC);
 
   // 左: 大きいキャラプレビュー
   ctx.save();ctx.translate(W*.03+24,panY+8);ctx.scale(1.32,1.32);
-  if(isTsukuLocked){
-    ctx.globalAlpha=0.25+Math.sin(t/500)*.12;
-    ctx.fillStyle='#5588aa';ctx.font=`bold ${Math.min(W*.14,48)}px monospace`;ctx.textAlign='center';
-    ctx.fillText('？',16,40);ctx.globalAlpha=1;
-  } else {
-    drawCharacter(0,0,selChar,1,Math.floor(t/200)%4>2?1:0,Math.floor(t/300)%2===0,0);
-  }
+  drawCharacter(0,0,selChar,1,Math.floor(t/200)%4>2?1:0,Math.floor(t/300)%2===0,0);
   ctx.restore();
 
   // 右: 名前・ステータス
   const rx=W*.03+90,ry=panY+14,rw=W*.94-95;
   ctx.textAlign='left';
-  if(isTsukuLocked){
-    // ── ロック中: 全情報を隠す ──
-    ctx.fillStyle='#5588aa';ctx.font=`bold ${Math.min(W*.036,14)}px monospace`;
-    ctx.fillText('？？？',rx,ry+14);
-    ctx.fillStyle='#334466';ctx.font=`${Math.min(W*.033,13)}px monospace`;
-    ctx.fillText('？？？  /  ？？？',rx,ry+28);
-    ['HP','SPD','ATK','JMP'].forEach((lbl,si)=>{
-      const sy=ry+42+si*18, bw2=Math.floor(rw*.42);
-      ctx.fillStyle='#1a1a2a';ctx.fillRect(rx,sy,bw2,10);
-      ctx.fillStyle='#223344';ctx.fillRect(rx,sy,Math.floor(bw2*.5),10);
-      ctx.fillStyle='#556688';ctx.font=`${Math.min(W*.036,15)}px monospace`;ctx.textAlign='left';
-      ctx.fillText(lbl,rx-30,sy+9);
-      ctx.fillStyle='#4477aa';ctx.font=`bold ${Math.min(W*.036,14)}px monospace`;
-      ctx.fillText('？',rx+bw2+8,sy+9);
-      ctx.fillStyle='#334455';ctx.font=`${Math.min(W*.036,15)}px monospace`;
-      ctx.fillText('？？？',rx+bw2+26,sy+9);
-    });
-    // 解放条件テキスト
-    ctx.fillStyle='#7799bb';ctx.font=`bold ${Math.min(W*.028,11)}px monospace`;ctx.textAlign='left';
-    ctx.fillText('【解放条件】',rx,ry+122);
-    ctx.fillStyle='#556688';ctx.font=`${Math.min(W*.028,11)}px monospace`;
-    ctx.fillText('全ステージクリア後、エンディングを',rx,ry+136);
-    ctx.fillText('最後までスクロールする',rx,ry+150);
-  } else {
-    // ── 通常表示 ──
-    ctx.fillStyle='#ffffff';ctx.font=`bold ${Math.min(W*.036,14)}px monospace`;
-    ctx.fillText(c.nick,rx,ry+14);
-    ctx.fillStyle=AC;ctx.font=`${Math.min(W*.033,13)}px monospace`;
-    ctx.fillText(c.name+'  /  '+c.dna,rx,ry+28);
-    const stats=[
-      ['HP',   (c.maxHp-4)/6,  '#44ff88'],
-      ['SPD',  (c.spd-3)/4,    '#44ccff'],
-      ['ATK',  1-(c.atkCd-12)/22,'#ffaa44'],
-      ['JMP',  (-c.jmp-8.5)/2, '#ff88ff'],
-    ];
-    const grade=r=>r>=.85?'S':r>=.65?'A':r>=.40?'B':'C';
-    stats.forEach(([lbl,ratio,col],si)=>{
-      const sy=ry+42+si*18, bw2=Math.floor(rw*.42), r=Math.min(1,Math.max(0,ratio));
-      ctx.fillStyle='#1a1a2a';ctx.fillRect(rx,sy,bw2,10);
-      ctx.fillStyle=col;ctx.fillRect(rx,sy,Math.floor(bw2*r),10);
-      ctx.fillStyle='#aabbcc';ctx.font=`${Math.min(W*.036,15)}px monospace`;ctx.textAlign='left';
-      ctx.fillText(lbl,rx-30,sy+9);
-      ctx.fillStyle=col;ctx.font=`bold ${Math.min(W*.036,14)}px monospace`;
-      ctx.fillText(grade(r),rx+bw2+8,sy+9);
-      ctx.fillStyle='#556677';ctx.font=`${Math.min(W*.036,15)}px monospace`;
-      ctx.fillText(['タフさ','素早さ','攻撃力','跳躍力'][si],rx+bw2+26,sy+9);
-    });
-    // ABILITY テキスト
-    ctx.fillStyle='#88bbdd';ctx.font=`bold ${Math.min(W*.026,10)}px monospace`;ctx.textAlign='left';
-    ctx.fillText('ABILITY:',rx,panY+panH-32);
-    ctx.fillStyle='#aaccee';ctx.font=`${Math.min(W*.024,10)}px monospace`;
-    const abl=c.ability||'';
-    const mid=Math.ceil(abl.length/2);
-    ctx.fillText(abl.slice(0,mid),rx,panY+panH-20);
-    ctx.fillText(abl.slice(mid),rx,panY+panH-8);
-  }
+  // ── 通常表示 ──
+  ctx.fillStyle='#ffffff';ctx.font=`bold ${Math.min(W*.036,14)}px monospace`;
+  ctx.fillText(c.nick,rx,ry+14);
+  ctx.fillStyle=AC;ctx.font=`${Math.min(W*.033,13)}px monospace`;
+  ctx.fillText(c.name+'  /  '+c.dna,rx,ry+28);
+  const stats=[
+    ['HP',   (c.maxHp-4)/6,  '#44ff88'],
+    ['SPD',  (c.spd-3)/4,    '#44ccff'],
+    ['ATK',  1-(c.atkCd-12)/22,'#ffaa44'],
+    ['JMP',  (-c.jmp-8.5)/2, '#ff88ff'],
+  ];
+  const grade=r=>r>=.85?'S':r>=.65?'A':r>=.40?'B':'C';
+  stats.forEach(([lbl,ratio,col],si)=>{
+    const sy=ry+42+si*18, bw2=Math.floor(rw*.42), r=Math.min(1,Math.max(0,ratio));
+    ctx.fillStyle='#1a1a2a';ctx.fillRect(rx,sy,bw2,10);
+    ctx.fillStyle=col;ctx.fillRect(rx,sy,Math.floor(bw2*r),10);
+    ctx.fillStyle='#aabbcc';ctx.font=`${Math.min(W*.036,15)}px monospace`;ctx.textAlign='left';
+    ctx.fillText(lbl,rx-30,sy+9);
+    ctx.fillStyle=col;ctx.font=`bold ${Math.min(W*.036,14)}px monospace`;
+    ctx.fillText(grade(r),rx+bw2+8,sy+9);
+    ctx.fillStyle='#556677';ctx.font=`${Math.min(W*.036,15)}px monospace`;
+    ctx.fillText(['タフさ','素早さ','攻撃力','跳躍力'][si],rx+bw2+26,sy+9);
+  });
+  // ABILITY テキスト
+  ctx.fillStyle='#88bbdd';ctx.font=`bold ${Math.min(W*.026,10)}px monospace`;ctx.textAlign='left';
+  ctx.fillText('ABILITY:',rx,panY+panH-32);
+  ctx.fillStyle='#aaccee';ctx.font=`${Math.min(W*.024,10)}px monospace`;
+  const abl=c.ability||'';
+  const mid=Math.ceil(abl.length/2);
+  ctx.fillText(abl.slice(0,mid),rx,panY+panH-20);
+  ctx.fillText(abl.slice(mid),rx,panY+panH-8);
 
   // STARTボタン
   const s=z.start;
@@ -4878,16 +4997,6 @@ function drawCharSelect(){
   ctx.fillText('▶  START MISSION',W/2,s.y+s.h*.65);
   ctx.globalAlpha=1;
 
-  // ── 解放済みなら7枠目にグローヒント ──
-  if(tsukuUnlocked&&selChar===6){
-    const b=z.chars[6];
-    ctx.globalAlpha=Math.sin(t/200)*.2+.6;
-    ctx.fillStyle='#88ccff';ctx.font=`${Math.min(W*.030,13)}px monospace`;ctx.textAlign='center';
-    ctx.fillText('▲ SELECTED',b.x+b.w/2,b.y-5);
-    ctx.globalAlpha=1;
-  }
-
-  scanlines();
 }
 
 function drawArenaWalls(){
@@ -5496,7 +5605,6 @@ function drawPlay(){
     ctx.fillStyle='#334455';ctx.font=`${Math.min(W*.025,13)}px monospace`;
     ctx.fillText('P / ESC でつづける',W/2,H*.92);
   }
-  scanlines();
 }
 
 // ================================================================
@@ -5535,7 +5643,6 @@ function drawGameOver(){
   ctx.fillText('キャラ選択へ',W/2,gb.charsel.y+gb.charsel.h*.68);
   ctx.fillStyle='#334455';ctx.font=`${Math.min(W*.025,13)}px monospace`;
   ctx.fillText('ENTER:リトライ  ESC:キャラ選択',W/2,H*.94);
-  scanlines();
 }
 
 // ================================================================
