@@ -1657,18 +1657,14 @@ function doAttack(){
       }
       break;
     }
-    case 3:{ // KIBA サル - 電磁ムチ (近接引寄せ)
-      const wr=step<2?58:80;
-      const wpull=step===2;
+    case 3:{ // 十兵衛 - 槍突進攻撃
+      const wr=step<2?48:72;
       const wdmg=step<2?2:lv>=2?4:3;
-      const wx=f>0?px+pw:px-wr, wy=py+6;
-      projectiles.push({x:wx,y:wy,vx:f*1,vy:0,w:wr,h:ph-12,col:'#ffcc00',dmg:wdmg,life:9,hit:[],pierce:true,homing:false,whip:true,pull:wpull});
-      burst(wx+wr/2,wy+ph/2,'#ffdd44',step<2?4:9);sfx('slash');
+      const wx=f>0?px+pw:px-wr, wy=py+10;
+      projectiles.push({x:wx,y:wy,vx:f*6,vy:0,w:wr,h:ph-16,col:'#8B7355',dmg:wdmg,life:6,hit:[],pierce:true,homing:false,whip:false});
+      burst(wx+wr/2,wy+ph/2,'#DAA520',step<2?3:6);sfx('slash');
       if(lv>=2&&step===2){
-        // lv2: 前後両方向ムチ
-        const wx2=f>0?px-38:px+pw;
-        projectiles.push({x:wx2,y:wy,vx:-f*1,vy:0,w:38,h:ph-12,col:'#ffee66',dmg:2,life:7,hit:[],pierce:true,homing:false,whip:true,pull:true});
-        addShake(3);
+        addShake(2);
       }
       break;
     }
