@@ -1307,7 +1307,11 @@ let frameTime=0;
 // ================================================================
 //  ゲーム変数
 // ================================================================
-let state='title', selChar=2, player=null, cam={x:0}, score=0;
+let state='splash', selChar=2, player=null, cam={x:0}, score=0;
+let splashImg=new Image(), splashReady=false, splashTimer=0;
+splashImg.onload=()=>{splashReady=true;};
+splashImg.onerror=()=>{splashReady=false;};
+splashImg.src='logo.png';
 let storyStartTime=0, storyHeld=false, storyDone=false;
 let lvupFlash=0, stageBriefTimer=0, bossPhase2Started=false;
 let clearHp=5, clearTime=0, clearResultTimer=0;
@@ -1928,7 +1932,7 @@ function spawnBoss(){
 //  UPDATE
 // ================================================================
 function update(){
-  
+  if(state==='splash'){splashTimer++;if(splashTimer>200||!splashReady){state='title';splashTimer=0;}return;}
   if(clearResultTimer>0)clearResultTimer--;
   if(state!=='play'||!player||paused)return;
   if(hitStop>0){hitStop--;return;}
@@ -5712,6 +5716,23 @@ function drawGameOver(){
   ctx.fillText('キャラ選択へ',W/2,gb.charsel.y+gb.charsel.h*.68);
   ctx.fillStyle='#334455';ctx.font=`${Math.min(W*.025,13)}px monospace`;
   ctx.fillText('ENTER:リトライ  ESC:キャラ選択',W/2,H*.94);
+}
+
+// ================================================================
+//  スプラッシュ画面
+// ================================================================
+function drawSplash(){
+  ctx.fillStyle='#000';ctx.fillRect(0,0,W,H);
+  const fi=Math.min(1,splashTimer/40);
+  const fo=splashTimer>150?Math.max(0,1-(splashTimer-150)/50):1;
+  ctx.globalAlpha=fi*fo;
+  if(splashReady){
+    const asp=splashImg.naturalWidth/splashImg.naturalHeight;
+    let dw=W*.6,dh=dw/asp;
+    if(dh>H*.8){dh=H*.8;dw=dh*asp;}
+    ctx.drawImage(splashImg,Math.round((W-dw)/2),Math.round((H-dh)/2),Math.round(dw),Math.round(dh));
+  }
+  ctx.globalAlpha=1;
 }
 
 // ================================================================
