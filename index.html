@@ -3784,6 +3784,10 @@ function drawBg(){
     for(let k=0;k<Math.ceil(H/8);k++){
       ctx.fillRect(0,H*.42+k*8,W,2);
     }
+    // 海に浮かぶ遠い島（奥行き表現）
+    ctx.globalAlpha=0.15;ctx.fillStyle='#1a3a5a';
+    ctx.beginPath();ctx.moveTo(W*.3,H*.36);ctx.lineTo(W*.38,H*.28);ctx.lineTo(W*.46,H*.36);ctx.fill(); // 左の島
+    ctx.beginPath();ctx.moveTo(W*.65,H*.36);ctx.lineTo(W*.75,H*.25);ctx.lineTo(W*.85,H*.36);ctx.fill(); // 右の島
     // 岩山シルエット（左右・とんがった頂点）
     ctx.globalAlpha=0.25;ctx.fillStyle='#1a0a00';
     ctx.beginPath();ctx.moveTo(W*.05,H*.45);ctx.lineTo(W*.15,H*.05);ctx.lineTo(W*.25,H*.45);ctx.fill();
