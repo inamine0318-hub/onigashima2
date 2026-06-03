@@ -1194,49 +1194,6 @@ function buildStageData(){
       // ボス前セクション
       G(5500,450,200);G(5850,440,180);G(6200,450,200);G(6550,460,250);
       break;
-    case 6: // 荒野: クライミング変種 - 高低差メイン
-      G(0,460,200);G(280,440,180);G(620,455,200);G(980,438,180);
-      G(1300,420,200);G(1680,440,220);G(2060,455,200);G(2420,435,200);
-      G(2820,415,220);G(3240,430,200);G(3640,450,220);G(4080,438,200);
-      G(4480,420,220);G(4920,450,240);G(5360,445,180);G(5720,430,200);
-      P(80,375,70);P(280,315,70);P(550,265,70);P(850,240,70);
-      P(1150,310,70);P(1500,365,70);P(1900,310,70);P(2250,275,70);
-      P(2650,340,70);P(3100,380,70);P(3550,375,70);P(4000,330,70);
-      P(4400,305,70);P(4850,370,70);P(5300,315,70);
-      T(650,400,80);T(1550,360,80);T(2900,370,80);T(4300,380,80);
-      E(80,428,'patrol');E(350,323,'flyer');E(700,235,'sniper');
-      E(1100,408,'patrol');E(1500,348,'flyer');E(2000,428,'charger');
-      E(2400,408,'patrol');E(2900,328,'sniper');E(3500,408,'charger');
-      E(4000,408,'patrol');E(4600,318,'flyer');E(5200,408,'charger');
-      IT(200,310,'hp');IT(750,240,'hp');IT(1500,300,'hp');IT(2700,310,'hp');IT(4000,305,'hp');
-      IT(50,437,'power');IT(450,410,'shield');IT(1100,380,'power');IT(1900,410,'shield');IT(3200,410,'power');IT(4600,435,'shield');
-      IT(150,330,'chip');IT(600,260,'chip');IT(1600,280,'chip');IT(2850,340,'chip');IT(4100,340,'chip');IT(5000,350,'chip');
-      // ボス前セクション
-      G(6100,440,200);G(6450,455,220);G(6850,445,200);
-      break;
-    case 7: // 最終地: 浮遊島完全版 - 総合テスト
-      G(0,460,150);G(220,440,120);G(420,425,130);G(640,410,120);
-      G(840,435,140);G(1060,450,120);G(1280,430,140);G(1520,415,110);
-      G(1720,445,130);G(1960,435,120);G(2200,420,140);G(2460,405,110);
-      G(2680,440,130);G(2920,450,120);G(3160,428,140);G(3420,415,110);
-      G(3640,445,130);G(3900,438,120);G(4140,423,140);G(4400,408,110);
-      G(4620,443,130);G(4880,453,120);G(5140,430,140);
-      P(60,355,75);P(290,295,75);P(550,245,75);P(820,205,75);
-      P(1100,270,75);P(1380,335,75);P(1680,275,75);P(1980,215,75);
-      P(2300,295,75);P(2680,355,75);P(3060,295,75);P(3480,215,75);
-      P(3900,295,75);P(4320,350,75);P(4760,260,75);
-      T(450,370,80);T(1400,350,80);T(2500,330,80);T(3800,340,80);T(4900,360,80);
-      E(60,428,'flyer');E(300,263,'sniper');E(600,183,'bomber');
-      E(1000,378,'flyer');E(1350,288,'charger');E(1750,213,'sniper');
-      E(2100,298,'flyer');E(2500,328,'charger');E(3100,258,'sniper');
-      E(3600,298,'flyer');E(4100,318,'charger');E(4700,258,'sniper');
-      E(5000,318,'flyer');E(5400,348,'charger');
-      IT(150,310,'hp');IT(650,205,'hp');IT(1400,280,'hp');IT(2500,310,'hp');IT(3800,280,'hp');IT(4800,310,'hp');
-      IT(30,437,'power');IT(400,390,'shield');IT(1000,355,'power');IT(1900,355,'shield');IT(3200,355,'power');IT(4500,355,'shield');
-      IT(100,320,'chip');IT(550,215,'chip');IT(1550,265,'chip');IT(2700,330,'chip');IT(4000,280,'chip');IT(5100,310,'chip');
-      // ボス前セクション
-      G(5500,445,200);G(5880,438,180);G(6220,450,200);G(6580,460,250);
-      break;
   }
   // 各ステージの穴配置（範囲）
   const holes_data=[
@@ -1245,8 +1202,6 @@ function buildStageData(){
     [{x1:300,x2:500},{x1:1100,x2:1300},{x1:2100,x2:2300},{x1:3300,x2:3500},{x1:4500,x2:4700}],
     [{x1:200,x2:400},{x1:900,x2:1100},{x1:1800,x2:2000},{x1:2900,x2:3100},{x1:4200,x2:4500}],
     [{x1:400,x2:600},{x1:1500,x2:1700},{x1:2800,x2:3000},{x1:4200,x2:4400}],
-    [{x1:350,x2:550},{x1:1400,x2:1600},{x1:2600,x2:2800},{x1:4000,x2:4300}],
-    [{x1:450,x2:650},{x1:1600,x2:1800},{x1:3000,x2:3200},{x1:4400,x2:4700}],
   ];
   STAGE_HOLES=holes_data[currentStage-1]||[];
 }
@@ -1291,15 +1246,15 @@ let HAZARD_LASERS=[],HAZARD_SPIKES=[],ZERO_G_ZONES=[];
 let hitStop=0;
 let currentStage=1;
 const STAGE_CFG=[
-  {name:'鬼ヶ島入口',  sub:'ONI ISLAND ENTRANCE',  bgMain:'#0d0d0d',bossType:'akakuni',    bossHp:30, bossW:60,bossH:78,bossName:'赤鬼門番',
+  {name:'鬼ヶ島入口',  sub:'ONI ISLAND ENTRANCE',  bgMain:'#0d0d0d',bossType:'susanoo',    bossHp:30, bossW:60,bossH:78,bossName:'赤鬼門番',
    tMain:'#1f1f1f',tHL:'#2a2a2a',tHL2:'#1a1a1a',tSide:'#0f0f0f',tAcc:'#4a0a0a',nebula:['#330000','#550000'],gimmick:null},
-  {name:'地下坑道',    sub:'UNDERGROUND CAVERN',  bgMain:'#1a0800',bossType:'iwakui',      bossHp:40, bossW:60,bossH:80,bossName:'岩喰い',
+  {name:'地下坑道',    sub:'UNDERGROUND CAVERN',  bgMain:'#1a0800',bossType:'takemikazu',      bossHp:40, bossW:60,bossH:80,bossName:'岩喰い',
    tMain:'#0f0f0f',tHL:'#1a1a1a',tHL2:'#0a0a0a',tSide:'#050505',tAcc:'#2a1a0a',nebula:['#1a1010','#2a1a0a'],gimmick:'rockfall'},
-  {name:'鬼の釜地帯',  sub:'DEMON CAULDRON',  bgMain:'#1a0200',bossType:'kamayu',     bossHp:50, bossW:62,bossH:72,bossName:'釜茹で鬼',
+  {name:'鬼の釜地帯',  sub:'DEMON CAULDRON',  bgMain:'#1a0200',bossType:'kagutsuchi',     bossHp:50, bossW:62,bossH:72,bossName:'釜茹で鬼',
    tMain:'#1a0a00',tHL:'#2a1a08',tHL2:'#3a2a10',tSide:'#0a0500',tAcc:'#5a1a08',nebula:['#330800','#550a00'],gimmick:'lava'},
-  {name:'封印神殿',    sub:'SEALING TEMPLE',   bgMain:'#0a0010',bossType:'fuin',       bossHp:60, bossW:70,bossH:62,bossName:'封印守',
+  {name:'封印神殿',    sub:'SEALING TEMPLE',   bgMain:'#0a0010',bossType:'yamata',       bossHp:60, bossW:70,bossH:62,bossName:'封印守',
    tMain:'#0a0a15',tHL:'#15151f',tHL2:'#1a1a2a',tSide:'#050508',tAcc:'#1a0a2a',nebula:['#110011','#220022'],gimmick:'seal'},
-  {name:'深淵',        sub:'ABYSS',           bgMain:'#050205',bossType:'rankaishin',  bossHp:80, bossW:68,bossH:86,bossName:'鬼神ランカイ',
+  {name:'深淵',        sub:'ABYSS',           bgMain:'#050205',bossType:'tsukuyomi',  bossHp:80, bossW:68,bossH:86,bossName:'鬼神ランカイ',
    tMain:'#0a0a0a',tHL:'#141414',tHL2:'#1a1a1a',tSide:'#050505',tAcc:'#1a0a20',nebula:['#0a0010','#100020'],gimmick:'void'},
 ];
 const TOTAL_STAGES=STAGE_CFG.length;
@@ -2406,20 +2361,6 @@ function update(){
   if(boss&&boss.hp>0)updateBoss();
   else if(boss&&boss.hp<=0&&!bossDefeated){
     bossDefeated=true;score+=1000;addShake(10);
-    bossOrb={x:boss.x+boss.w/2,baseY:boss.y-20,anim:0,collected:false,stage:currentStage};
-  }
-  // オーブ更新
-  if(bossOrb&&!bossOrb.collected){
-    bossOrb.anim+=0.045;
-    bossOrb.y=bossOrb.baseY+Math.sin(bossOrb.anim)*9;
-    if(Math.random()<0.06)particles.push({x:bossOrb.x+(Math.random()-.5)*18,y:bossOrb.y+(Math.random()-.5)*18,vx:(Math.random()-.5)*1.5,vy:-Math.random()*2-0.5,col:ORB_COLORS[bossOrb.stage-1],life:28});
-    if(player&&ov({x:bossOrb.x-16,y:bossOrb.y-16,w:32,h:32},player)){
-      bossOrb.collected=true;
-      if(!orbsCollected.includes(bossOrb.stage))orbsCollected.push(bossOrb.stage);
-      score+=500;
-      for(let k=0;k<24;k++){const a=Math.random()*Math.PI*2,s=Math.random()*5+2;particles.push({x:bossOrb.x,y:bossOrb.y,vx:Math.cos(a)*s,vy:Math.sin(a)*s-2,col:ORB_COLORS[bossOrb.stage-1],life:36});}
-      sfx('lvup');
-    }
   }
   // ゴール判定
   if(bossDefeated&&player&&player.x>=GOAL_X){
@@ -5029,7 +4970,6 @@ function drawPlay(){
   drawArenaWalls();
   drawPitSpikes();
   drawStageItems();
-  drawBossOrb();
   // 壁スライドスパーク
   if(player&&player.onWall&&player.wallSlide&&!player.onGround&&Math.random()<.4)
     burst(player.x-cam.x+(player.wallDir>0?player.w:0),player.y+player.h*.6,'#aabbff',1);
