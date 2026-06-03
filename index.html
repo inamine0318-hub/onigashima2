@@ -5111,25 +5111,22 @@ function drawArenaWalls(){
 
 function drawHazards(){
   const now=frameTime;
-  // 天井レーザー
+  // 落ちてくる岩
   HAZARD_LASERS.forEach(l=>{
     const sx=Math.floor(l.x-cam.x);
     if(sx<-30||sx>W+30)return;
     const cy=l.ceilY;
     if(l.warn){
+      // 警告：岩が赤く点滅
       const pulse=Math.sin(now/80)*.4+.6;
-      ctx.globalAlpha=pulse*.35;ctx.fillStyle='#ffdd44';ctx.fillRect(sx,cy,10,H-cy);
-      ctx.globalAlpha=pulse*.15;ctx.fillStyle='#ffee88';ctx.fillRect(sx-5,cy,20,H-cy);
-      ctx.globalAlpha=1;
-      // エミッター (天井接合部)
-      ctx.globalAlpha=pulse*.8;dr(sx-4,cy-6,18,8,'#cc8800');dr(sx-1,cy-2,12,4,'#ffdd44');
+      ctx.globalAlpha=pulse*.5;ctx.fillStyle='#884444';ctx.fillRect(sx-5,cy,20,16);
       ctx.globalAlpha=1;
     }else if(l.active){
-      ctx.globalAlpha=0.92;ctx.fillStyle='#ff2200';ctx.fillRect(sx,cy,10,H-cy);
-      ctx.globalAlpha=0.3;ctx.fillStyle='#ffaa00';ctx.fillRect(sx-6,cy,22,H-cy);
-      ctx.globalAlpha=0.8;ctx.fillStyle='#ffffff';ctx.fillRect(sx+3,cy,4,H-cy);
+      // 落下中：岩が降ってくる
+      const rockY=cy+(H-cy)*(Math.sin(gameTimer/120)*.5+.5);
+      ctx.globalAlpha=0.9;ctx.fillStyle='#774433';ctx.fillRect(sx-5,rockY,20,16);
+      ctx.globalAlpha=0.6;ctx.fillStyle='#aa6655';ctx.fillRect(sx-3,rockY+2,16,12);
       ctx.globalAlpha=1;
-      dr(sx-4,cy-6,18,8,'#ff4400');
     }
   });
   // 床スパイク
