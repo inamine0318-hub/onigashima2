@@ -1576,7 +1576,7 @@ function doAttack(){
       const wr=step<2?48:72;
       const wdmg=step<2?2:lv>=2?4:3;
       const wx=f>0?px+pw:px-wr, wy=py+10;
-      projectiles.push({x:wx,y:wy,vx:f*6,vy:0,w:wr,h:ph-16,col:'#8B7355',dmg:wdmg,life:6,hit:[],pierce:true,homing:false,whip:false});
+      projectiles.push({x:wx,y:wy,vx:f*6,vy:0,w:wr,h:ph-16,col:'#8B7355',dmg:wdmg,life:6,hit:[],pierce:true,homing:false,whip:false,spear:true});
       burst(wx+wr/2,wy+ph/2,'#DAA520',step<2?3:6);sfx('slash');
       if(lv>=2&&step===2){
         addShake(2);
@@ -5255,6 +5255,14 @@ function drawPlay(){
       ctx.globalAlpha=alpha*0.55;ctx.fillStyle='#99bbcc';
       ctx.beginPath();ctx.ellipse(bx+p.w/2,by+p.h/2,p.w/2-3,p.h/2-3,0,0,Math.PI*2);ctx.fill();
       ctx.globalAlpha=1;
+    }else if(p.spear){
+      // 十兵衛の槍：槍本体を主役に、白いビームなし
+      ctx.globalAlpha=0.25;dr(bx-1,by-2,p.w+2,p.h+4,p.col);ctx.globalAlpha=1;
+      dr(bx,by,p.w,p.h,p.col);
+      // 槍の穂先を強調（黄金色）
+      const tipX=bx+p.w-6, tipY=by+p.h/2-4;
+      ctx.fillStyle='#DAA520';ctx.fillRect(tipX,tipY,6,8);
+      ctx.fillStyle='#CD853F';ctx.fillRect(tipX+1,tipY+1,4,6);
     }else if(p.pierce&&p.w>=30){
       ctx.globalAlpha=0.35;dr(bx-2,by-3,p.w+4,p.h+6,p.col);ctx.globalAlpha=1;
       dr(bx,by,p.w,p.h,p.col);dr(bx,by+Math.floor(p.h*.35),p.w,Math.floor(p.h*.3),'#ffffff');
