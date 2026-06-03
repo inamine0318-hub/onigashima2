@@ -386,10 +386,19 @@ function drawCharacter(sx,sy,ci,facing,walkFrame,moving,atkAnim,isJetting,isAirb
       _r(spearCol, 8,24, 22, 4); // 槍の柄メイン（横向き・腰の高さ）
       _r(spearCol, 9,23, 20, 2); // 槍の柄上部
       _r(spearCol, 9,28, 20, 2); // 槍の柄下部
-      // 槍先（前方に向ける・大きく目立つ）
-      _r(spearTip, 26, 22, 12, 8); // 槍先（大きく目立つ）
-      _r(spearTipDark, 27, 22, 10, 3); // 槍先の濃い部分
-      _r('#ffff99', 28, 23, 6, 2); // 槍先の光沢
+      // 槍先（三角形の刃・金属製・スマホで見ても分かるサイズ）
+      // 刃の上部（三角形の先端）
+      _r(spearTip, 32, 18, 4, 4); // 刃の先端（黄金色・尖った部分）
+      _r(spearTipDark, 33, 19, 2, 2); // 先端の影
+      // 刃の中央（広がり）
+      _r(spearTip, 28, 22, 10, 6); // 刃のメイン（広い部分）
+      _r(spearTipDark, 29, 22, 2, 6); // 刃の左側の濃い部分
+      _r(spearTipDark, 36, 22, 2, 6); // 刃の右側の濃い部分
+      // 刃の下部（柄への接続）
+      _r(spearTip, 30, 28, 6, 2); // 刃から柄への接続部
+      // 光沢（刃の質感）
+      _r('#ffff99', 31, 23, 4, 3); // 刃上部の光沢
+      _r('#ffdd66', 33, 25, 2, 2); // 刃下部の光沢
     } else {
       // 攻撃：槍を突き出す
       _r(OL,-bkPull,21, 5,14); _r(gi,1-bkPull,22, 3,12); _r(skin,1-bkPull,22, 3, 3);
@@ -400,9 +409,19 @@ function drawCharacter(sx,sy,ci,facing,walkFrame,moving,atkAnim,isJetting,isAirb
       _r(spearCol, 9,23, 22+eA, 2); // 槍の柄上部
       _r(spearCol, 9,28, 22+eA, 2); // 槍の柄下部
       const spx=30+ext;
-      _r(spearTip, spx, 22, 12, 8); // 槍先（前方に向ける）
-      _r(spearTipDark, spx+1, 22, 10, 3); // 槍先の濃い部分
-      _r('#ffff99', spx+2, 23, 6, 2); // 槍先の光沢
+      // 槍先（三角形の刃・前方へ突き出す）
+      // 刃の上部（三角形の先端）
+      _r(spearTip, spx+2, 20, 4, 4); // 刃の先端（黄金色・尖った部分）
+      _r(spearTipDark, spx+3, 21, 2, 2); // 先端の影
+      // 刃の中央（広がり）
+      _r(spearTip, spx-2, 24, 10, 6); // 刃のメイン（広い部分）
+      _r(spearTipDark, spx-1, 24, 2, 6); // 刃の左側の濃い部分
+      _r(spearTipDark, spx+6, 24, 2, 6); // 刃の右側の濃い部分
+      // 刃の下部（柄への接続）
+      _r(spearTip, spx, 30, 6, 2); // 刃から柄への接続部
+      // 光沢（刃の質感）
+      _r('#ffff99', spx+1, 25, 4, 3); // 刃上部の光沢
+      _r('#ffdd66', spx+3, 27, 2, 2); // 刃下部の光沢
       // 手
       _r(skin,20,26, 10, 10); _r(skinS,21,27, 8, 8);
     }
