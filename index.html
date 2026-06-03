@@ -2093,6 +2093,8 @@ function update(){
     }
   }
 
+  // 画面下に落ちたプレイヤーをリセット（ダメージ + 初期位置に戻す）
+  if(player.y>H+100){player.hp--;player.invincible=65;player.x=120;player.y=280;player.vy=0;player.canDjump=player.djump;addShake(8);sfx('phit');}
   player.onGround=false;player.onWall=false;player.wallDir=0;
   for(const t of TERRAIN){
     if(t.type==='trap'&&t.trapState==='gone')continue;
