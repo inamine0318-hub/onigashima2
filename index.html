@@ -1308,9 +1308,9 @@ let frameTime=0;
 //  ゲーム変数
 // ================================================================
 let state='splash', selChar=2, player=null, cam={x:0}, score=0;
-let splashImg=new Image(), splashReady=false, splashTimer=0;
+let splashImg=new Image(), splashReady=true, splashTimer=0;
 splashImg.onload=()=>{splashReady=true;};
-splashImg.onerror=()=>{splashReady=true;console.warn('[SPLASH] logo.png failed to load');};
+splashImg.onerror=()=>{console.warn('[SPLASH] logo.png failed to load');};
 splashImg.src='logo.png';
 let storyStartTime=0, storyHeld=false, storyDone=false;
 let lvupFlash=0, stageBriefTimer=0, bossPhase2Started=false;
@@ -2094,7 +2094,7 @@ function update(){
   }
 
   // 画面下に落ちたプレイヤーをリセット（ダメージ + 初期位置に戻す）
-  if(player.y>H+100){player.hp--;player.invincible=65;player.x=120;player.y=280;player.vy=0;player.canDjump=player.djump;addShake(8);sfx('phit');}
+  if(player.y>H+100){player.hp--;player.invincible=65;player.x=120;player.y=430;player.vy=0;player.onGround=true;player.canDjump=player.djump;addShake(8);sfx('phit');}
   player.onGround=false;player.onWall=false;player.wallDir=0;
   for(const t of TERRAIN){
     if(t.type==='trap'&&t.trapState==='gone')continue;
