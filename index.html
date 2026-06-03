@@ -1238,6 +1238,17 @@ function buildStageData(){
       G(5500,445,200);G(5880,438,180);G(6220,450,200);G(6580,460,250);
       break;
   }
+  // 各ステージの穴配置（範囲）
+  const holes_data=[
+    [{x1:400,x2:550},{x1:1300,x2:1450},{x1:2700,x2:2900},{x1:4200,x2:4400}],
+    [{x1:600,x2:800},{x1:1800,x2:2000},{x1:3200,x2:3400},{x1:4600,x2:4800}],
+    [{x1:300,x2:500},{x1:1100,x2:1300},{x1:2100,x2:2300},{x1:3300,x2:3500},{x1:4500,x2:4700}],
+    [{x1:200,x2:400},{x1:900,x2:1100},{x1:1800,x2:2000},{x1:2900,x2:3100},{x1:4200,x2:4500}],
+    [{x1:400,x2:600},{x1:1500,x2:1700},{x1:2800,x2:3000},{x1:4200,x2:4400}],
+    [{x1:350,x2:550},{x1:1400,x2:1600},{x1:2600,x2:2800},{x1:4000,x2:4300}],
+    [{x1:450,x2:650},{x1:1600,x2:1800},{x1:3000,x2:3200},{x1:4400,x2:4700}],
+  ];
+  STAGE_HOLES=holes_data[currentStage-1]||[];
 }
 
 // 星
@@ -1251,6 +1262,7 @@ let frameTime=0;
 //  ゲーム変数
 // ================================================================
 let state='splash', selChar=2, player=null, cam={x:0}, score=0;
+let STAGE_HOLES=[];
 let splashImg=new Image(), splashReady=false, splashTimer=0;
 splashImg.onload=()=>{splashReady=true;console.log('[SPLASH] logo loaded');};
 splashImg.onerror=()=>{splashReady=true;console.error('[SPLASH] logo.png failed to load');};
@@ -2037,8 +2049,11 @@ function update(){
     }
   }
 
-  // 画面下に落ちたプレイヤーをダメージ + その場で復帰（jump可能）
-  if(player.y>H+100){player.hp--;player.invincible=65;player.y=H-20;player.vy=-8;player.onGround=false;player.canDjump=player.djump;addShake(8);sfx('phit');}
+  // 穴に落ちたプレイヤーをダメージ + その場で復帰（jump可能）
+  if(player.y>H+100){
+    const inHole=STAGE_HOLES.some(h=>player.x+player.w/2>=h.x1&&player.x+player.w/2<=h.x2);
+    if(inHole){player.hp--;player.invincible=65;player.y=H-20;player.vy=-8;player.onGround=false;player.canDjump=player.djump;addShake(8);sfx('phit');}
+  }
   player.onGround=false;player.onWall=false;player.wallDir=0;
   for(const t of TERRAIN){
     if(t.type==='trap'&&t.trapState==='gone')continue;
@@ -3702,173 +3717,47 @@ function drawBg(){
   drawStageBgFlair(st,t);
 
   if(st<=5){
-  // 鬼ヶ島全5ステージ背景
+  // 鬼ヶ島全ステージ背景
 
-  if(st===1){
-    // Stage1：朝の砂浜・砦入口（鬼ヶ島の洞窟外をイメージ）
-    // 朝日が照らす背景グラデーション
+  if(st<=6){
+    // Stage 1-6：昼間・島の風景
     const bgGrd=ctx.createLinearGradient(0,0,0,H);
-    bgGrd.addColorStop(0,'#ffaa55');     // 上部：朝日色（オレンジ）
-    bgGrd.addColorStop(0.4,'#ff8844');   // 中部：暖かいオレンジ
-    bgGrd.addColorStop(1,'#4a2a1a');     // 下部：暗い赤茶（砂浜）
+    bgGrd.addColorStop(0,'#87ceeb');     // 上部：明るい青空
+    bgGrd.addColorStop(0.6,'#e0f6ff');   // 中部：薄い空色
+    bgGrd.addColorStop(1,'#90ee90');     // 下部：緑の地面
     ctx.fillStyle=bgGrd;ctx.fillRect(0,0,W,H);
-    // 海の水平線（波状・青色）
-    ctx.globalAlpha=0.7;ctx.fillStyle='#1a5a9a';
-    for(let k=0;k<Math.ceil(W/20);k++){
-      const wx=k*20;
-      const wy=H*.42+Math.sin(wx*0.05+t*.002)*2;
-      ctx.fillRect(wx,wy,20,H*.08);
-    }
-    // 砂浜のグラデーション（朝日に照らされた）
-    const sandGrd=ctx.createLinearGradient(0,H*.42,0,H);
-    sandGrd.addColorStop(0,'#c89060');sandGrd.addColorStop(1,'#d8a880');
-    ctx.fillStyle=sandGrd;ctx.fillRect(0,H*.42,W,H*.58);
-    // 砂浜の波の縞模様（質感）
-    ctx.globalAlpha=0.08;ctx.fillStyle='#000000';
-    for(let k=0;k<Math.ceil(H/8);k++){
-      ctx.fillRect(0,H*.42+k*8,W,2);
-    }
-    // 海に浮かぶ遠い島（奥行き表現）
-    ctx.globalAlpha=0.15;ctx.fillStyle='#1a3a5a';
-    ctx.beginPath();ctx.moveTo(W*.3,H*.36);ctx.lineTo(W*.38,H*.28);ctx.lineTo(W*.46,H*.36);ctx.fill(); // 左の島
-    ctx.beginPath();ctx.moveTo(W*.65,H*.36);ctx.lineTo(W*.75,H*.25);ctx.lineTo(W*.85,H*.36);ctx.fill(); // 右の島
-    // 岩山シルエット（左右・とんがった頂点）
-    ctx.globalAlpha=0.25;ctx.fillStyle='#1a0a00';
-    ctx.beginPath();ctx.moveTo(W*.05,H*.45);ctx.lineTo(W*.15,H*.05);ctx.lineTo(W*.25,H*.45);ctx.fill();
-    ctx.beginPath();ctx.moveTo(W*.75,H*.45);ctx.lineTo(W*.88,H*.08);ctx.lineTo(W,H*.45);ctx.fill();
+    // 遠景の山々（レイヤー表現）
+    ctx.globalAlpha=0.3;ctx.fillStyle='#7db8d4';
+    ctx.beginPath();ctx.moveTo(W*.1,H*.4);ctx.lineTo(W*.25,H*.15);ctx.lineTo(W*.4,H*.4);ctx.fill();
+    ctx.beginPath();ctx.moveTo(W*.5,H*.35);ctx.lineTo(W*.65,H*.08);ctx.lineTo(W*.8,H*.35);ctx.fill();
+    ctx.beginPath();ctx.moveTo(W*.75,H*.42);ctx.lineTo(W*.88,H*.2);ctx.lineTo(W,H*.42);ctx.fill();
     ctx.globalAlpha=1;
   }
 
-  if(st===2){
-    // Stage2：夕方から地下への入口
-    const bgGrd=ctx.createLinearGradient(0,0,0,H);
-    bgGrd.addColorStop(0,'#c84400');bgGrd.addColorStop(1,'#1a0800');
-    ctx.fillStyle=bgGrd;ctx.fillRect(0,0,W,H);
-    // 坑道への段階的な暗化（奥行き表現・3段階）
-    ctx.globalAlpha=0.08;ctx.fillStyle='#000000';
-    ctx.fillRect(0,H*.4,W,H*.6);
-    ctx.globalAlpha=0.15;
-    ctx.fillRect(0,H*.5,W,H*.5);
-    ctx.globalAlpha=0.1;
-    ctx.fillRect(0,H*.65,W,H*.35);
-    // 岩壁（左右・段階化）
-    ctx.globalAlpha=0.3;ctx.fillStyle='#0a0000';
-    ctx.fillRect(0,H*.25,W*.1,H*.6);ctx.fillRect(W*.9,H*.25,W*.1,H*.6);
-    ctx.globalAlpha=0.5;ctx.fillStyle='#050000'; // 奥行き：さらに暗い
-    ctx.fillRect(0,H*.5,W*.08,H*.35);ctx.fillRect(W*.92,H*.5,W*.08,H*.35);
-    // 岩山シルエット（左右）
-    ctx.globalAlpha=0.5;ctx.fillStyle='#0a0500';
-    ctx.beginPath();ctx.moveTo(0,H*.65);ctx.lineTo(W*.2,H*.2);ctx.lineTo(W*.4,H*.65);ctx.fill();
-    ctx.beginPath();ctx.moveTo(W,H*.65);ctx.lineTo(W*.8,H*.2);ctx.lineTo(W*.6,H*.65);ctx.fill();
-    // 坑道入口
-    ctx.globalAlpha=0.35;ctx.fillStyle='#0a0000';ctx.beginPath();
-    ctx.arc(W*.5,H*.5,W*.1,0,Math.PI,true);ctx.fill();
-    // 採掘場の支柱（梁の両端）
-    ctx.globalAlpha=0.25;ctx.fillStyle='#0f0800';
-    for(let k=0;k<4;k++){
-      ctx.fillRect(W*.08+k*W*.2,H*.35,W*.02,H*.35);
-    }
-    // 採掘場の梁（横木3本・奥ほど暗い）
-    ctx.globalAlpha=0.4;ctx.fillStyle='#1a0f00';
-    ctx.fillRect(0,H*.3,W,8);
-    ctx.globalAlpha=0.3;ctx.fillStyle='#0f0800';
-    ctx.fillRect(0,H*.45,W,8);ctx.fillRect(0,H*.55,W,10);
-    // 坑道奥からの光漏れ
-    ctx.globalAlpha=0.1;ctx.fillStyle='#ffaa44';
-    ctx.fillRect(W*.35,H*.45,W*.3,H*.3);
-    ctx.globalAlpha=1;
-  }
-
-  if(st===3){
-    // Stage3：夜・鬼の釜地帯
-    const bgGrd=ctx.createLinearGradient(0,0,0,H);
-    bgGrd.addColorStop(0,'#1a0200');bgGrd.addColorStop(1,'#0a0000');
-    ctx.fillStyle=bgGrd;ctx.fillRect(0,0,W,H);
-    // 岩山シルエット（釜地帯・とんがった頂点）
-    ctx.globalAlpha=0.28;ctx.fillStyle='#1a0000';
-    ctx.beginPath();ctx.moveTo(W*.25,H*.45);ctx.lineTo(W*.5,H*.05);ctx.lineTo(W*.75,H*.45);ctx.fill();
-    const lavaGlow=Math.sin(t/250)*.2+.3;
-    ctx.globalAlpha=lavaGlow*.15;ctx.fillStyle='#ff4400';ctx.fillRect(W*.2,H*.5,W*.6,H*.4);
-    // 釜から揺れる炎アニメーション（華やか・6層）
-    for(let k=0;k<6;k++){
-      const fx=W*.5+Math.sin(t/180+k*1.2)*20;
-      const fy=H*.18-k*7;
-      const colors=['#ffff00','#ffcc00','#ff9900','#ff6600','#ff3300','#ff1100'];
-      ctx.globalAlpha=0.8-k*0.13;ctx.fillStyle=colors[k];
-      ctx.beginPath();ctx.moveTo(fx,fy+16);ctx.lineTo(fx-8,fy+16);ctx.lineTo(fx,fy);ctx.fill();
-    }
-    // 釜上部からの煙（濃い）
-    for(let k=0;k<4;k++){
-      const sy=H*.2-(t/800+k*5000)%H*.35;
-      ctx.globalAlpha=0.06+k*0.025;ctx.fillStyle='#555555';
-      ctx.fillRect(W*.42,sy,W*.16,10);
-    }
-    // 溶岩波紋テクスチャ（細かく）
-    for(let k=0;k<8;k++){
-      const wy=H*.55+k*6+Math.sin(t/250+k*1.2)*3;
-      ctx.globalAlpha=lavaGlow*.06*(1-k*0.12);ctx.fillStyle=['#ff6600','#ff7700','#ff8800'][k%3];
-      ctx.fillRect(W*.2,wy,W*.6,1.5);
-    }
-    ctx.globalAlpha=1;
-  }
-
-  if(st===4){
-    // Stage4：深夜・封印神殿
-    const bgGrd=ctx.createLinearGradient(0,0,0,H);
-    bgGrd.addColorStop(0,'#0a0010');bgGrd.addColorStop(1,'#050008');
-    ctx.fillStyle=bgGrd;ctx.fillRect(0,0,W,H);
-    // 岩山シルエット（神殿を岩山化・とんがった頂点）
-    ctx.globalAlpha=0.22;ctx.fillStyle='#0a0000';
-    ctx.beginPath();ctx.moveTo(W*.2,H*.45);ctx.lineTo(W*.5,H*.02);ctx.lineTo(W*.8,H*.45);ctx.fill();
-    // 奥行き感：手前の岩山
-    ctx.globalAlpha=0.15;ctx.fillStyle='#1a0a00';
-    ctx.beginPath();ctx.moveTo(W*.15,H*.5);ctx.lineTo(W*.35,H*.15);ctx.lineTo(W*.55,H*.5);ctx.fill();
-    ctx.beginPath();ctx.moveTo(W*.45,H*.5);ctx.lineTo(W*.65,H*.15);ctx.lineTo(W*.85,H*.5);ctx.fill();
-    // 壁画の光グロー（sin脈動）
-    const glow=Math.sin(t/600)*0.06+0.08;
-    ctx.globalAlpha=glow;ctx.fillStyle='#aa0000';
-    ctx.fillRect(0,H*.2,W*.05,H*.6);ctx.fillRect(W*.95,H*.2,W*.05,H*.6);
-    // 壁に薄く浮かぶ鬼の顔
-    ctx.globalAlpha=0.08;ctx.fillStyle='#330000';
-    ctx.beginPath();ctx.arc(W*.5,H*.35,W*.08,0,Math.PI*2);ctx.fill(); // 顔
-    ctx.fillRect(W*.46,H*.32,W*.015,W*.015);ctx.fillRect(W*.54,H*.32,W*.015,W*.015); // 目
-    ctx.fillRect(W*.48,H*.38,W*.04,W*.02); // 口
-    // 鬼の角シルエット（遠景・より目立つ）
-    ctx.globalAlpha=0.12;ctx.fillStyle='#220000';
-    ctx.beginPath();ctx.moveTo(W*.45,H*.15);ctx.lineTo(W*.48,H*.08);ctx.lineTo(W*.50,H*.12);ctx.fill();
-    ctx.beginPath();ctx.moveTo(W*.52,H*.15);ctx.lineTo(W*.50,H*.08);ctx.lineTo(W*.55,H*.12);ctx.fill();
-    ctx.globalAlpha=1;
-  }
-
-  if(st===5){
-    // Stage5：完全闇・深淵
+  if(st===7){
+    // Stage 7：洞窟・最終地
     const bgGrd=ctx.createLinearGradient(0,0,0,H);
     bgGrd.addColorStop(0,'#050205');bgGrd.addColorStop(1,'#020203');
     ctx.fillStyle=bgGrd;ctx.fillRect(0,0,W,H);
     // 鍾乳石（固定位置）
     ctx.globalAlpha=0.18;ctx.fillStyle='#1a0a0a';
-    const stalactitePosY=Math.floor(frameTime/100)%200; // フレームごとに固定値
+    const stalactitePosY=Math.floor(frameTime/100)%200;
     for(let k=0;k<6;k++){const sx=W*(k*0.16+0.02);const sh=H*.12+Math.sin(frameTime*.002+k)*H*.08;ctx.fillRect(sx,0,W*.08,sh);}
     // 脈動する肉壁
     const pulse=Math.sin(t/300)*.06+.12;
     ctx.globalAlpha=pulse;ctx.fillStyle='#4a0a0a';
     ctx.fillRect(0,H*.2,W*.08,H*.6);ctx.fillRect(W*.92,H*.2,W*.08,H*.6);
-    // 敵視認性：底部に微弱グロー
-    ctx.globalAlpha=0.15;ctx.fillStyle='#2a0a1a';
-    ctx.fillRect(0,H*.7,W,H*.3);
-    // 洞窟感：多段階の暗化（奥行き表現）
+    // 洞窟感：暗化
     ctx.globalAlpha=0.05;ctx.fillStyle='#000000';
     ctx.fillRect(0,H*.3,W,H*.7);
-    ctx.globalAlpha=0.08;
-    ctx.fillRect(0,H*.5,W,H*.5);
-    ctx.globalAlpha=0.1;
-    ctx.fillRect(0,H*.65,W,H*.35);
+    ctx.globalAlpha=0.08;ctx.fillRect(0,H*.5,W,H*.5);
+    ctx.globalAlpha=0.1;ctx.fillRect(0,H*.65,W,H*.35);
     // 霧エフェクト
     const mistGrd=ctx.createLinearGradient(0,H*.5,0,H);
     mistGrd.addColorStop(0,'rgba(0,0,0,0)');
     mistGrd.addColorStop(1,'rgba(20,0,10,0.4)');
     ctx.fillStyle=mistGrd;ctx.fillRect(0,H*.5,W,H*.5);
-    // 呪いの光点を増やす（12個に拡大）
+    // 呪いの光点
     for(let k=0;k<12;k++){
       const bx=((k*87+t*.003)%W);
       const by=H*.1+(k*69+t*.002)%(H*.8);
