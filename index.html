@@ -1310,7 +1310,7 @@ let frameTime=0;
 let state='splash', selChar=2, player=null, cam={x:0}, score=0;
 let splashImg=new Image(), splashReady=false, splashTimer=0;
 splashImg.onload=()=>{splashReady=true;};
-splashImg.onerror=()=>{splashReady=false;};
+splashImg.onerror=()=>{splashReady=true;console.warn('[SPLASH] logo.png failed to load');};
 splashImg.src='logo.png';
 let storyStartTime=0, storyHeld=false, storyDone=false;
 let lvupFlash=0, stageBriefTimer=0, bossPhase2Started=false;
@@ -3768,8 +3768,8 @@ function drawBg(){
     bgGrd.addColorStop(0.4,'#ff8844');   // 中部：暖かいオレンジ
     bgGrd.addColorStop(1,'#4a2a1a');     // 下部：暗い赤茶（砂浜）
     ctx.fillStyle=bgGrd;ctx.fillRect(0,0,W,H);
-    // 海の水平線（波状）
-    ctx.globalAlpha=0.5;ctx.fillStyle='#4a7aaa';
+    // 海の水平線（波状・青色）
+    ctx.globalAlpha=0.7;ctx.fillStyle='#1a5a9a';
     for(let k=0;k<Math.ceil(W/20);k++){
       const wx=k*20;
       const wy=H*.42+Math.sin(wx*0.05+t*.002)*2;
