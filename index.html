@@ -1043,7 +1043,7 @@ function drawAnimalHead(ci,_r,AC,atk){
 //  キャラ定義
 // ================================================================
 const CHARS=[
-  {name:'タカ型',   nick:'烏丸', dna:'鷹DNA',  col:'#c07828',w:30,h:42,spd:5.2,jmp:-8.8,maxHp:5,atkCd:18,atkLabel:'急降下斬',  djump:true, wallSlide:false,ability:'二段J・空中ATKで急降下爆撃'},
+  {name:'タカ型',   nick:'烏丸', dna:'鷹DNA',  col:'#c07828',w:30,h:42,spd:5.2,jmp:-8.8,maxHp:5,atkCd:18,atkLabel:'急降下斬',  glide:true, djump:true, wallSlide:false,ability:'滑空・二段J・空中ATKで急降下爆撃'},
   null,
   null,
   {name:'サル型',   nick:'十兵衛',     dna:'猿DNA',  col:'#aa7722',w:28,h:44,spd:6.8,jmp:-10.0,maxHp:5,atkCd:14,atkLabel:'電磁ムチ',  glide:false,djump:true, wallSlide:true, ability:'最速・電磁ムチ引寄せ・壁張付き・二段J・踏みつけトランポリン'},
@@ -1518,7 +1518,7 @@ function mkPlayer(ci){
     hp:c.maxHp,maxHp:c.maxHp,
     powerTimer:0,shieldActive:false,
     spd:c.spd,jmp:c.jmp,djump:c.djump,canDjump:false,
-    wallSlide:c.wallSlide,
+    glide:c.glide,wallSlide:c.wallSlide,
     atkCd:0,jetCd:0,jetActive:false,jetTimer:0,comboStep:0,comboTimer:0,invincible:0,col:c.col,name:c.name,dna:c.dna,ci,frame:0,moving:false,
     charging:false,chargeTimer:0,chargeDir:1,chargeSpd:14,chargeAir:false,airTackleCount:0,diving:false,rageTimer:0,armorCounter:0,counterWindow:0,
     weaponLv:0,weaponGauge:0,weaponArmor:3};
@@ -1965,6 +1965,7 @@ function update(){
   player.vy+=inZeroG?0.04:GRAVITY;
   if(inZeroG&&Math.random()<0.08)particles.push({x:player.x+(Math.random()-.5)*player.w+player.w/2,y:player.y+player.h*Math.random(),vx:(Math.random()-.5)*0.6,vy:-Math.random()*1.4,col:'#aabbff',life:30});
   if(player.wallSlide&&player.onWall&&!player.onGround&&player.vy>0)player.vy=Math.min(player.vy,1.8);
+  if(player.glide&&!player.onGround&&jHeld&&player.vy>.5)player.vy=Math.min(player.vy,2.2);
   if(player.vy>22)player.vy=22;
   player.x+=player.vx;player.y+=player.vy;
   if(player.x<0){player.x=0;player.vx=0;}
