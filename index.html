@@ -3682,20 +3682,83 @@ function drawBg(){
   drawStageBgFlair(st,t);
 
   if(st<=5){
-  // 鬼ヶ島全ステージ背景
+  // 鬼ヶ島全ステージ背景（ステージごとに異なる世界観）
 
-  if(st<=6){
-    // Stage 1-6：昼間・島の風景
+  if(st===1){
+    // Stage 1：海岸・鬼ヶ島の入口（海が見える）
     const bgGrd=ctx.createLinearGradient(0,0,0,H);
-    bgGrd.addColorStop(0,'#87ceeb');     // 上部：明るい青空
-    bgGrd.addColorStop(0.6,'#e0f6ff');   // 中部：薄い空色
-    bgGrd.addColorStop(1,'#90ee90');     // 下部：緑の地面
+    bgGrd.addColorStop(0,'#87ceeb');bgGrd.addColorStop(0.4,'#e0f6ff');bgGrd.addColorStop(1,'#c9a876');
     ctx.fillStyle=bgGrd;ctx.fillRect(0,0,W,H);
-    // 遠景の山々（レイヤー表現）
-    ctx.globalAlpha=0.3;ctx.fillStyle='#7db8d4';
-    ctx.beginPath();ctx.moveTo(W*.1,H*.4);ctx.lineTo(W*.25,H*.15);ctx.lineTo(W*.4,H*.4);ctx.fill();
-    ctx.beginPath();ctx.moveTo(W*.5,H*.35);ctx.lineTo(W*.65,H*.08);ctx.lineTo(W*.8,H*.35);ctx.fill();
-    ctx.beginPath();ctx.moveTo(W*.75,H*.42);ctx.lineTo(W*.88,H*.2);ctx.lineTo(W,H*.42);ctx.fill();
+    // 海（水平線付き）
+    ctx.fillStyle='#1a5a9a';ctx.fillRect(0,H*.35,W,H*.35);
+    // 波のテクスチャ
+    ctx.globalAlpha=0.15;ctx.fillStyle='#ffffff';
+    for(let i=0;i<W;i+=20)ctx.fillRect(i,H*.36+Math.sin(i*0.05+t*.002)*2,20,3);
+    ctx.globalAlpha=1;
+    // 壊れた鳥居（奥行き表現）
+    ctx.globalAlpha=0.4;ctx.fillStyle='#8B4513';
+    ctx.beginPath();ctx.moveTo(W*.3,H*.2);ctx.lineTo(W*.35,H*.05);ctx.lineTo(W*.4,H*.2);ctx.fill(); // 鳥居の柱
+    ctx.fillRect(W*.28,H*.15,W*.12,3); // 鳥居の横木
+    ctx.globalAlpha=1;
+  }else if(st===2){
+    // Stage 2：山道・崩れた崖（岩山が険しい）
+    const bgGrd=ctx.createLinearGradient(0,0,0,H);
+    bgGrd.addColorStop(0,'#87ceeb');bgGrd.addColorStop(0.5,'#d4a574');bgGrd.addColorStop(1,'#8b7355');
+    ctx.fillStyle=bgGrd;ctx.fillRect(0,0,W,H);
+    // 崖（ガタガタ）
+    ctx.globalAlpha=0.5;ctx.fillStyle='#696969';
+    ctx.beginPath();ctx.moveTo(W*.1,H*.35);
+    for(let i=0;i<=10;i++)ctx.lineTo(W*(0.1+i*0.09),H*(0.35+(i%2)*0.05));
+    ctx.lineTo(W,H*.5);ctx.lineTo(W,H);ctx.lineTo(0,H);ctx.fill();
+    // 落石（警告）
+    ctx.globalAlpha=0.3;ctx.fillStyle='#a9a9a9';
+    for(let i=0;i<3;i++)ctx.beginPath(),ctx.arc(W*(0.2+i*0.3),H*(0.25+Math.sin(t*.002+i)*0.1),5,0,Math.PI*2),ctx.fill();
+    ctx.globalAlpha=1;
+  }else if(st===3){
+    // Stage 3：洞窟・暗い（妖怪の気配）
+    const bgGrd=ctx.createLinearGradient(0,0,0,H);
+    bgGrd.addColorStop(0,'#2a2a3a');bgGrd.addColorStop(1,'#1a1a2a');
+    ctx.fillStyle=bgGrd;ctx.fillRect(0,0,W,H);
+    // 洞窟の天井（鍾乳石）
+    ctx.globalAlpha=0.3;ctx.fillStyle='#3a3a4a';
+    for(let i=0;i<5;i++)ctx.fillRect(W*(i*0.2+0.05),0,W*.08,H*.15+Math.sin(t*.003+i)*H*.05);
+    // 奥行きの暗さ
+    ctx.globalAlpha=0.08;ctx.fillStyle='#000000';
+    ctx.fillRect(0,H*.3,W,H*.7);
+    ctx.globalAlpha=1;
+  }else if(st===4){
+    // Stage 4：火山・溶岩（赤い空）
+    const bgGrd=ctx.createLinearGradient(0,0,0,H);
+    bgGrd.addColorStop(0,'#ff6644');bgGrd.addColorStop(0.4,'#ff8844');bgGrd.addColorStop(1,'#8b3a0e');
+    ctx.fillStyle=bgGrd;ctx.fillRect(0,0,W,H);
+    // 溶岩の炎（背景）
+    const fl=Math.sin(t/300)*.3+.6;
+    ctx.globalAlpha=fl*.15;ctx.fillStyle='#ff4400';
+    ctx.fillRect(0,H*.6,W,H*.4);
+    ctx.globalAlpha=fl*.1;ctx.fillStyle='#ff8800';
+    ctx.fillRect(0,H*.7,W,H*.3);
+    // 火山島のシルエット
+    ctx.globalAlpha=0.4;ctx.fillStyle='#2a0a00';
+    ctx.beginPath();ctx.moveTo(W*.3,H*.5);ctx.lineTo(W*.5,H*.1);ctx.lineTo(W*.7,H*.5);ctx.fill();
+    ctx.globalAlpha=1;
+  }else if(st===5){
+    // Stage 5：鬼の城周辺・砦（ラスト）
+    const bgGrd=ctx.createLinearGradient(0,0,0,H);
+    bgGrd.addColorStop(0,'#6a3a2a');bgGrd.addColorStop(0.5,'#4a4a5a');bgGrd.addColorStop(1,'#2a2a3a');
+    ctx.fillStyle=bgGrd;ctx.fillRect(0,0,W,H);
+    // 砦のシルエット
+    ctx.globalAlpha=0.5;ctx.fillStyle='#1a0a0a';
+    // 砦の壁
+    ctx.fillRect(W*.2,H*.2,W*.6,H*.5);
+    // 砦の塔
+    ctx.fillRect(W*.25,H*.05,W*.1,H*.3);ctx.fillRect(W*.65,H*.05,W*.1,H*.3);
+    // 鬼のシルエット群（恐怖感）
+    ctx.globalAlpha=0.3;
+    for(let i=0;i<5;i++){
+      const sx=W*(0.15+i*0.15);
+      ctx.beginPath();ctx.arc(sx,H*.6,8,0,Math.PI*2);ctx.fill(); // 頭
+      ctx.fillRect(sx-6,H*.65,12,H*.25); // 体
+    }
     ctx.globalAlpha=1;
   }
 
