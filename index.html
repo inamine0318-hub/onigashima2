@@ -1308,10 +1308,11 @@ let frameTime=0;
 //  ゲーム変数
 // ================================================================
 let state='splash', selChar=2, player=null, cam={x:0}, score=0;
-let splashImg=new Image(), splashReady=true, splashTimer=0;
-splashImg.onload=()=>{splashReady=true;};
-splashImg.onerror=()=>{console.warn('[SPLASH] logo.png failed to load');};
-splashImg.src='logo.png';
+let splashImg=new Image(), splashReady=false, splashTimer=0;
+splashImg.onload=()=>{splashReady=true;console.log('[SPLASH] logo loaded');};
+splashImg.onerror=()=>{splashReady=true;console.error('[SPLASH] logo.png failed to load');};
+splashImg.onprogress=(e)=>{console.log('[SPLASH] loading: '+Math.round(e.loaded/e.total*100)+'%');};
+setTimeout(()=>{splashImg.src='logo.png';}, 50);
 let storyStartTime=0, storyHeld=false, storyDone=false;
 let lvupFlash=0, stageBriefTimer=0, bossPhase2Started=false;
 let clearHp=5, clearTime=0, clearResultTimer=0;
