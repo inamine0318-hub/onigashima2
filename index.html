@@ -1932,7 +1932,7 @@ function spawnBoss(){
 //  UPDATE
 // ================================================================
 function update(){
-  if(state==='splash'){splashTimer++;if(splashTimer>200||!splashReady){state='title';splashTimer=0;}return;}
+  if(state==='splash'){splashTimer++;if(splashTimer>300&&splashReady){state='title';splashTimer=0;}return;}
   if(clearResultTimer>0)clearResultTimer--;
   if(state!=='play'||!player||paused)return;
   if(hitStop>0){hitStop--;return;}
