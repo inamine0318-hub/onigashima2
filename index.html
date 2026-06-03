@@ -1572,12 +1572,12 @@ function doAttack(){
       }
       break;
     }
-    case 3:{ // 十兵衛 - 槍突進攻撃
-      const wr=step<2?48:72;
+    case 3:{ // 十兵衛 - 槍突進攻撃（穂先のみダメージ判定）
       const wdmg=step<2?2:lv>=2?4:3;
-      const wx=f>0?px+pw:px-wr, wy=py+10;
-      projectiles.push({x:wx,y:wy,vx:f*6,vy:0,w:wr,h:ph-16,col:'#8B7355',dmg:wdmg,life:6,hit:[],pierce:true,homing:false,whip:false,spear:true});
-      burst(wx+wr/2,wy+ph/2,'#DAA520',step<2?3:6);sfx('slash');
+      // 槍の穂先の位置と大きさ（小さな当たり判定で槍の先端だけ）
+      const tipX=f>0?px+pw+8:px-8, tipY=py+12;
+      projectiles.push({x:tipX,y:tipY,vx:f*6,vy:0,w:10,h:8,col:'#8B7355',dmg:wdmg,life:6,hit:[],pierce:false,homing:false,whip:false,spear:true});
+      burst(tipX,tipY,'#DAA520',step<2?3:6);sfx('slash');
       if(lv>=2&&step===2){
         addShake(2);
       }
