@@ -906,44 +906,52 @@ function drawAnimalHead(ci,_r,AC,atk){
     _r('#1a1a1a', 2, -2, 24, 3); _r('#2a2a2a', 3, -1, 22, 2);
     break;
   }
-  case 4: { // ===== マタキチ (坊主頭・白いねじり鉢巻き・和風・オレンジの道着) =====
+  case 4: { // ===== マタキチ (スキンヘッド・白いねじり鉢巻き・和風漁師・オレンジの道着) =====
     const sk='#DEAA58', skS='#B88030', skB='#DD6448';
 
     // オレンジの道着（最初に描く・背中に見える）
     _r('#cc6600', 3,18,24,16); _r('#dd8822', 4,19,22,14); _r('#ff9933', 4,19,22, 2);
 
-    // 坊主頭（丸い頭・黒い短髪）
-    ctx.fillStyle=OL;ctx.beginPath();ctx.arc(13,-2,10,0,Math.PI*2);ctx.fill();
-    _r('#2C1A0E',4,-2,18,8); // 坊主（黒髪）
-    _r('#1a1a1a',5,-1,16,4);
+    // スキンヘッド（肌色の丸頭・坊主の頭頂部）
+    ctx.fillStyle=sk;ctx.beginPath();ctx.ellipse(13,2,11,9,0,0,Math.PI*2);ctx.fill();
+    ctx.fillStyle='#E8B854';ctx.beginPath();ctx.ellipse(13,2,10,8,0,0,Math.PI*2);ctx.fill();
+    // 頭のハイライト（光沢感）
+    ctx.globalAlpha=0.35;ctx.fillStyle='#F0C068';ctx.beginPath();ctx.ellipse(13,-2,6,4,0,0,Math.PI*2);ctx.fill();ctx.globalAlpha=1;
 
-    // 白いねじり鉢巻き（頭の巻き付け）
-    _r('#ffffff', 2, 3, 22, 2);  // メイン帯
-    _r('#f0f0f0', 3, 4, 20, 1);  // 明るい部分
-    _r('#e8e8e8', 4, 5, 18, 1);  // ねじれ表現
-    // ねじれパターン（ねじり鉢巻きのテクスチャ）
-    _r('#efefef', 6, 4, 2, 2);
-    _r('#efefef', 12, 4, 2, 2);
-    _r('#efefef', 18, 4, 2, 2);
-    _r('#d0d0d0', 24, 5, 2, 1);
+    // 白いねじり鉢巻き（頭部に巻く）
+    _r('#ffffff', 1, 6, 24, 3);   // メイン帯（太く明確）
+    _r('#f8f8f8', 2, 7, 22, 1);   // 上部のハイライト
+    _r('#ebebeb', 3, 8, 20, 1);   // 下部の陰
+
+    // ねじり鉢巻きの結び目（左側）
+    _r('#ffffff', 1, 7, 3, 4);    // 結び目の左側
+    _r('#efefef', 1, 8, 3, 2);    // 結び目の陰
+
+    // ねじり鉢巻きのテクスチャ（らせん模様）
+    _r('#f0f0f0', 6, 6, 2, 2);
+    _r('#e8e8e8', 6, 7, 2, 1);
+    _r('#f0f0f0', 13, 6, 2, 2);
+    _r('#e8e8e8', 13, 7, 2, 1);
+    _r('#f0f0f0', 20, 6, 2, 2);
+    _r('#e8e8e8', 20, 7, 2, 1);
 
     // 人間の顔（楕円・肌色）
-    ctx.fillStyle=OL;ctx.beginPath();ctx.ellipse(13,9,13,12,0,0,Math.PI*2);ctx.fill();
-    ctx.fillStyle=sk;ctx.beginPath();ctx.ellipse(13,9,12,11,0,0,Math.PI*2);ctx.fill();
-    ctx.fillStyle='#F0C068';ctx.beginPath();ctx.ellipse(13,5,12,6,0,0,Math.PI*2);ctx.fill();
+    ctx.fillStyle=OL;ctx.beginPath();ctx.ellipse(13,11,13,12,0,0,Math.PI*2);ctx.fill();
+    ctx.fillStyle=sk;ctx.beginPath();ctx.ellipse(13,11,12,11,0,0,Math.PI*2);ctx.fill();
+    ctx.fillStyle='#F0C068';ctx.beginPath();ctx.ellipse(13,7,12,6,0,0,Math.PI*2);ctx.fill();
     // 耳
-    _r(OL, 0, 4, 4, 7);_r('#CC9048', 1, 5, 2, 5);_r(skS, 1, 6, 1, 3);
+    _r(OL, 0, 6, 4, 7);_r('#CC9048', 1, 7, 2, 5);_r(skS, 1, 8, 1, 3);
     // 顔影・ほっぺ
-    ctx.globalAlpha=0.22;_r(skS, 4,12, 3, 6);ctx.globalAlpha=1;
-    ctx.globalAlpha=0.28;_r(skB, 3, 7, 4, 3);_r(skB,18, 7, 4, 3);ctx.globalAlpha=1;
+    ctx.globalAlpha=0.22;_r(skS, 4,14, 3, 6);ctx.globalAlpha=1;
+    ctx.globalAlpha=0.28;_r(skB, 3, 9, 4, 3);_r(skB,18, 9, 4, 3);ctx.globalAlpha=1;
     // 目（黒点3×3px）
-    _r('#0A0604', 7, 6, 3, 3);_r('#FFFFFF', 7, 6, 1, 1);
-    _r('#0A0604',17, 6, 3, 3);_r('#FFFFFF',17, 6, 1, 1);
+    _r('#0A0604', 7, 8, 3, 3);_r('#FFFFFF', 7, 8, 1, 1);
+    _r('#0A0604',17, 8, 3, 3);_r('#FFFFFF',17, 8, 1, 1);
     // 鼻（2×1px）
-    _r('#8A4820',12,11, 2, 1);
+    _r('#8A4820',12,13, 2, 1);
 
-    // 和風の漁師の雰囲気：口元の厳しさ
-    _r('#3a2a1a', 9,15, 8, 1);
+    // 和風の漁師の雰囲気：口元
+    _r('#3a2a1a', 9,17, 8, 1);
     break;
   }
   case 5: { // ===== 装甲ロボット ゴッドバスター =====
