@@ -4930,58 +4930,157 @@ function drawCutscene(){
 //  エンディング画面
 // ================================================================
 function drawEnding(){
-  dr(0,0,W,H,'#01010a');
-  STARS.forEach(s=>{const sx=(s.x%W+W)%W;if(!(s.b&&Math.floor(frameTime/500)%2))dr(sx,s.y,s.s,s.s,'#fff');});
+  // 背景：段階的に変化
+  const elapsed=(Date.now()-endingStartTime)/1000;
+  const phase=Math.floor(elapsed/4); // 4秒ごとに背景が変わる
+
+  if(phase<3){
+    // Phase 0-2: 夕暮れの鬼ヶ島と海
+    const seaGrad=ctx.createLinearGradient(0,0,0,H);
+    seaGrad.addColorStop(0,'#5a3a2a');
+    seaGrad.addColorStop(0.4,'#3a5a7a');
+    seaGrad.addColorStop(1,'#1a3a5a');
+    dr(0,0,W,H,seaGrad);
+
+    // 波
+    ctx.globalAlpha=0.3;ctx.fillStyle='#ffffff';
+    for(let i=0;i<W;i+=30){
+      const waveY=H*.5+Math.sin(i*0.03+frameTime*.003)*5;
+      ctx.fillRect(i,waveY,20,2);
+    }
+    ctx.globalAlpha=1;
+
+    // 遠くの島（シルエット）
+    ctx.fillStyle='#1a1a1a';
+    ctx.beginPath();ctx.moveTo(W*.2,H*.4);ctx.lineTo(W*.35,H*.15);ctx.lineTo(W*.5,H*.4);ctx.fill();
+  }else if(phase<6){
+    // Phase 3-5: 崩れた鬼の砦
+    const fortGrad=ctx.createLinearGradient(0,0,0,H);
+    fortGrad.addColorStop(0,'#3a2a1a');
+    fortGrad.addColorStop(1,'#1a0a0a');
+    dr(0,0,W,H,fortGrad);
+
+    // 砦のシルエット
+    ctx.fillStyle='#0a0a0a';
+    ctx.fillRect(W*.1,H*.2,W*.8,H*.6);
+    ctx.fillRect(W*.2,H*.05,W*.15,H*.3);
+    ctx.fillRect(W*.65,H*.1,W*.2,H*.35);
+  }else if(phase<9){
+    // Phase 6-8: 月明かりに照らされた封印神殿
+    const moonGrad=ctx.createLinearGradient(0,0,0,H);
+    moonGrad.addColorStop(0,'#2a3a4a');
+    moonGrad.addColorStop(0.3,'#1a2a3a');
+    moonGrad.addColorStop(1,'#0a0a1a');
+    dr(0,0,W,H,moonGrad);
+
+    // 月
+    ctx.globalAlpha=0.8;ctx.fillStyle='#ffffdd';
+    ctx.beginPath();ctx.arc(W*.8,H*.15,40,0,Math.PI*2);ctx.fill();
+    ctx.globalAlpha=1;
+
+    // 月光
+    ctx.globalAlpha=0.15;ctx.fillStyle='#ffffdd';
+    ctx.fillRect(0,0,W,H);
+    ctx.globalAlpha=1;
+  }else{
+    // Phase 9+: 地下深部の暗闇
+    const deepGrad=ctx.createLinearGradient(0,0,0,H);
+    deepGrad.addColorStop(0,'#1a0a1a');
+    deepGrad.addColorStop(1,'#0a0505');
+    dr(0,0,W,H,deepGrad);
+
+    // 古代の壁画のシルエット
+    ctx.globalAlpha=0.1;ctx.fillStyle='#ff3333';
+    ctx.beginPath();ctx.arc(W/2,H*.3,60,0,Math.PI*2);ctx.fill();
+    ctx.fillRect(W*.2,H*.5,W*.6,H*.2);
+    ctx.globalAlpha=0.05;ctx.fillStyle='#ffffff';
+    ctx.fillRect(0,0,W,H);
+    ctx.globalAlpha=1;
+  }
+
   const fs=Math.min(W*.056,22), lh=fs+12;
   const lines=[
-    ['月の裏側　最終記録','#d8eaff',true],
+    ['鬼神ランカイは倒れた。','#dd8844',true],
     ['','',''],
-    ['イザナミを打ち倒した者たちは','#b8ccff',false],
-    ['全てのオーブを取り戻した。','#b8ccff',false],
-    ['','',''],
-    ['──　真実が、明かされる。　──','#8899cc',false],
-    ['','',''],
-    ['月の裏側に存在した守護神たちは','#ccddff',false],
-    ['もともと人類の敵ではなかった。','#ccddff',false],
-    ['','',''],
-    ['スサノオ、タケミカヅチ、カグヅチ、','#aabbee',false],
-    ['ヤマタノオロチ、タジカラオ――','#aabbee',false],
-    ['そしてツクヨミ、月の兎の皇帝。','#ddeeff',false],
-    ['','',''],
-    ['彼らは太古より、','#ccddff',false],
-    ['オーブの暴走を封じるために','#ccddff',false],
-    ['月の裏側を守り続けていた　真の守護神だった。','#eeddff',false],
-    ['','',''],
-    ['それを知らず侵入した調査部隊と','#aabbee',false],
-    ['守護神たちは戦うことを余儀なくされた。','#aabbee',false],
-    ['','',''],
-    ['全ての元凶は　天枝所長――','#ff9966',true],
-    ['','',''],
-    ['彼はオーブのエネルギーで','#ffcc88',false],
-    ['人類の絶対支配を目論み、','#ffcc88',false],
-    ['調査部隊を最初から道具として使っていた。','#ffaa66',false],
-    ['','',''],
-    ['守護神たちの命と、','#ddbbaa',false],
-    ['仲間の血と汗と引き換えに、','#ddbbaa',false],
-    ['七つのオーブはようやく揃った。','#ddccbb',false],
-    ['','',''],
-    ['──　そして決断の時。　──','#99aabb',false],
-    ['','',''],
-    ['「誰にも使わせてはならない」','#e8eaff',true],
-    ['','',''],
-    ['七つのオーブは月から地球へ運ばれ、','#b8ccff',false],
-    ['誰も届かぬ地球最深部の深海へと','#b8ccff',false],
-    ['静かに、永遠に封印された。','#aabbee',false],
-    ['','',''],
-    ['月の裏側に、光が戻った。','#d8eaff',true],
-    ['','',''],
-    ['実験体と呼ばれた彼らに','#ccddff',false],
-    ['もうその名は必要ない。','#ccddff',false],
-    ['','',''],
-    ['彼らは今、自由だ。','#ffffff',true],
+    ['長い年月続いた封印も、','#aabbcc',false],
+    ['ようやく終わりを迎えた。','#aabbcc',false],
     ['','',''],
     ['','',''],
-    ['T H E  E N D','#ffeeaa',true],
+    ['十兵衛たちは財宝の前に立ち尽くした。','#ccddcc',false],
+    ['','',''],
+    ['これだけの財宝があれば、','#aabbcc',false],
+    ['一生遊んで暮らせる。','#aabbcc',false],
+    ['','',''],
+    ['','',''],
+    ['しかし彼らは知っていた。','#ccbb99',true],
+    ['','',''],
+    ['鬼たちが命をかけて守っていた理由を。','#aabbaa',false],
+    ['','',''],
+    ['','',''],
+    ['鬼は財宝を守っていたのではない。','#dd9999',false],
+    ['','',''],
+    ['世界を守っていたのだ。','#dd9999',true],
+    ['','',''],
+    ['','',''],
+    ['財宝は欲望の象徴。','#bb9988',false],
+    ['','',''],
+    ['そして鬼神ランカイを封じるための楔だった。','#bb9988',false],
+    ['','',''],
+    ['','',''],
+    ['十兵衛たちは財宝を持ち帰らなかった。','#aabbaa',true],
+    ['','',''],
+    ['鬼たちが守り続けた想いごと、','#888899',false],
+    ['鬼ヶ島へ残した。','#888899',false],
+    ['','',''],
+    ['','',''],
+    ['数年後。','#aabbcc',true],
+    ['','',''],
+    ['鬼ヶ島を訪れる者は','#888888',false],
+    ['ほとんどいなくなった。','#888888',false],
+    ['','',''],
+    ['財宝伝説も、','#777777',false],
+    ['やがて人々の記憶から消えていった。','#777777',false],
+    ['','',''],
+    ['','',''],
+    ['鬼ヶ島には再び静寂が訪れた。','#999988',true],
+    ['','',''],
+    ['波の音だけが、','#776655',false],
+    ['静かに響いている。','#776655',false],
+    ['','',''],
+    ['','',''],
+    ['地下深く。','#666666',true],
+    ['','',''],
+    ['誰も訪れない封印神殿。','#555555',false],
+    ['','',''],
+    ['暗闇の中で、','#445555',false],
+    ['古びた壁画が静かに佇んでいた。','#445555',false],
+    ['','',''],
+    ['','',''],
+    ['そこには鬼神ランカイと、','#666677',true],
+    ['','',''],
+    ['さらに巨大な何かが描かれていた。','#666677',false],
+    ['','',''],
+    ['','',''],
+    ['鬼神ランカイですら、','#ff5555',true],
+    ['','',''],
+    ['恐れていた存在。','#ff5555',false],
+    ['','',''],
+    ['','',''],
+    ['その正体を知る者は、','#555577',false],
+    ['もう誰もいない。','#555577',false],
+    ['','',''],
+    ['','',''],
+    ['だが暗闇の奥で、','#444466',true],
+    ['','',''],
+    ['何かが微かに脈打った。','#444466',false],
+    ['','',''],
+    ['','',''],
+    ['鬼神ランカイは、','#ff3333',true],
+    ['','',''],
+    ['本当に最後の災厄だったのだろうか。','#ff3333',false],
+    ['','',''],
+    ['','',''],
+    ['E N D','#aa8866',true],
     ['','',''],['','',''],['','',''],
   ];
   const totalH=lines.length*lh;
