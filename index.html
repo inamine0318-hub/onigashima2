@@ -386,19 +386,20 @@ function drawCharacter(sx,sy,ci,facing,walkFrame,moving,atkAnim,isJetting,isAirb
       _r(spearCol, 8,24, 22, 4); // 槍の柄メイン（横向き・腰の高さ）
       _r(spearCol, 9,23, 20, 2); // 槍の柄上部
       _r(spearCol, 9,28, 20, 2); // 槍の柄下部
-      // 槍先（三角形の刃・金属製・スマホで見ても分かるサイズ）
-      // 刃の上部（三角形の先端）
-      _r(spearTip, 32, 18, 4, 4); // 刃の先端（黄金色・尖った部分）
-      _r(spearTipDark, 33, 19, 2, 2); // 先端の影
-      // 刃の中央（広がり）
-      _r(spearTip, 28, 22, 10, 6); // 刃のメイン（広い部分）
-      _r(spearTipDark, 29, 22, 2, 6); // 刃の左側の濃い部分
-      _r(spearTipDark, 36, 22, 2, 6); // 刃の右側の濃い部分
+      // 槍先（大きな三角形の刃・金属製・スマホでも一瞬で分かるサイズ）
+      // 刃の上部（三角形の先端・長く尖った）
+      _r(spearTip, 35, 14, 5, 8); // 刃の先端（黄金色・長く尖った部分）
+      _r(spearTipDark, 36, 15, 3, 6); // 先端の濃い部分
+      // 刃の中央（広い菱形）
+      _r(spearTip, 26, 20, 14, 8); // 刃のメイン（大きく広い部分）
+      _r(spearTipDark, 27, 20, 3, 8); // 刃の左側の濃い部分
+      _r(spearTipDark, 37, 20, 3, 8); // 刃の右側の濃い部分
       // 刃の下部（柄への接続）
-      _r(spearTip, 30, 28, 6, 2); // 刃から柄への接続部
-      // 光沢（刃の質感）
-      _r('#ffff99', 31, 23, 4, 3); // 刃上部の光沢
-      _r('#ffdd66', 33, 25, 2, 2); // 刃下部の光沢
+      _r(spearTip, 30, 28, 8, 3); // 刃から柄への接続部（太く）
+      // 光沢（刃の質感・目立つように明るく）
+      _r('#ffff99', 31, 21, 5, 3); // 刃上部の光沢（大きく）
+      _r('#ffdd66', 34, 24, 4, 2); // 刃下部の光沢
+      _r('#ffff99', 36, 16, 2, 2); // 先端の光沢
     } else {
       // 攻撃：槍を突き出す
       _r(OL,-bkPull,21, 5,14); _r(gi,1-bkPull,22, 3,12); _r(skin,1-bkPull,22, 3, 3);
@@ -408,20 +409,21 @@ function drawCharacter(sx,sy,ci,facing,walkFrame,moving,atkAnim,isJetting,isAirb
       _r(spearCol, 8,24, 24+eA, 4); // 槍の柄（横向き・延伸）
       _r(spearCol, 9,23, 22+eA, 2); // 槍の柄上部
       _r(spearCol, 9,28, 22+eA, 2); // 槍の柄下部
-      const spx=30+ext;
-      // 槍先（三角形の刃・前方へ突き出す）
-      // 刃の上部（三角形の先端）
-      _r(spearTip, spx+2, 20, 4, 4); // 刃の先端（黄金色・尖った部分）
-      _r(spearTipDark, spx+3, 21, 2, 2); // 先端の影
-      // 刃の中央（広がり）
-      _r(spearTip, spx-2, 24, 10, 6); // 刃のメイン（広い部分）
-      _r(spearTipDark, spx-1, 24, 2, 6); // 刃の左側の濃い部分
-      _r(spearTipDark, spx+6, 24, 2, 6); // 刃の右側の濃い部分
+      const spx=32+ext;
+      // 槍先（大きな三角形の刃・前方へ突き出す）
+      // 刃の上部（三角形の先端・長く尖った）
+      _r(spearTip, spx+3, 16, 5, 8); // 刃の先端（黄金色・長く尖った部分）
+      _r(spearTipDark, spx+4, 17, 3, 6); // 先端の濃い部分
+      // 刃の中央（広い菱形）
+      _r(spearTip, spx-6, 22, 14, 8); // 刃のメイン（大きく広い部分）
+      _r(spearTipDark, spx-5, 22, 3, 8); // 刃の左側の濃い部分
+      _r(spearTipDark, spx+5, 22, 3, 8); // 刃の右側の濃い部分
       // 刃の下部（柄への接続）
-      _r(spearTip, spx, 30, 6, 2); // 刃から柄への接続部
-      // 光沢（刃の質感）
-      _r('#ffff99', spx+1, 25, 4, 3); // 刃上部の光沢
-      _r('#ffdd66', spx+3, 27, 2, 2); // 刃下部の光沢
+      _r(spearTip, spx-2, 30, 8, 3); // 刃から柄への接続部（太く）
+      // 光沢（刃の質感・目立つように明るく）
+      _r('#ffff99', spx-3, 23, 5, 3); // 刃上部の光沢（大きく）
+      _r('#ffdd66', spx, 26, 4, 2); // 刃下部の光沢
+      _r('#ffff99', spx+4, 18, 2, 2); // 先端の光沢
       // 手
       _r(skin,20,26, 10, 10); _r(skinS,21,27, 8, 8);
     }
@@ -904,18 +906,26 @@ function drawAnimalHead(ci,_r,AC,atk){
     _r('#1a1a1a', 2, -2, 24, 3); _r('#2a2a2a', 3, -1, 22, 2);
     break;
   }
-  case 4: { // ===== マタキチ (人間顔・モヒカン・髭・オレンジの道着) =====
+  case 4: { // ===== マタキチ (坊主頭・白いねじり鉢巻き・和風・オレンジの道着) =====
     const sk='#DEAA58', skS='#B88030', skB='#DD6448';
 
     // オレンジの道着（最初に描く・背中に見える）
     _r('#cc6600', 3,18,24,16); _r('#dd8822', 4,19,22,14); _r('#ff9933', 4,19,22, 2);
 
-    // モヒカン（頭頂部に立ち上がる髪）
-    _r('#1a1a1a', 5, -10, 3,10); _r('#2a2a2a', 6, -9, 2, 8);
-    _r('#1a1a1a',11, -12, 3,12); _r('#2a2a2a',12,-11, 2,10);
-    _r('#1a1a1a',16, -16, 3,16); _r('#2a2a2a',17,-15, 2,14); // 中央：最も高い
-    _r('#1a1a1a',21, -12, 3,12); _r('#2a2a2a',22,-11, 2,10);
-    _r('#1a1a1a',27, -10, 3,10); _r('#2a2a2a',28, -9, 2, 8);
+    // 坊主頭（丸い頭・黒い短髪）
+    ctx.fillStyle=OL;ctx.beginPath();ctx.arc(13,-2,10,0,Math.PI*2);ctx.fill();
+    _r('#2C1A0E',4,-2,18,8); // 坊主（黒髪）
+    _r('#1a1a1a',5,-1,16,4);
+
+    // 白いねじり鉢巻き（頭の巻き付け）
+    _r('#ffffff', 2, 3, 22, 2);  // メイン帯
+    _r('#f0f0f0', 3, 4, 20, 1);  // 明るい部分
+    _r('#e8e8e8', 4, 5, 18, 1);  // ねじれ表現
+    // ねじれパターン（ねじり鉢巻きのテクスチャ）
+    _r('#efefef', 6, 4, 2, 2);
+    _r('#efefef', 12, 4, 2, 2);
+    _r('#efefef', 18, 4, 2, 2);
+    _r('#d0d0d0', 24, 5, 2, 1);
 
     // 人間の顔（楕円・肌色）
     ctx.fillStyle=OL;ctx.beginPath();ctx.ellipse(13,9,13,12,0,0,Math.PI*2);ctx.fill();
@@ -932,8 +942,8 @@ function drawAnimalHead(ci,_r,AC,atk){
     // 鼻（2×1px）
     _r('#8A4820',12,11, 2, 1);
 
-    // 髭（鼻の下から口にかけて）
-    _r('#3a2a1a', 9,14, 8, 2); _r('#5a4a3a', 10,15, 6, 1);
+    // 和風の漁師の雰囲気：口元の厳しさ
+    _r('#3a2a1a', 9,15, 8, 1);
     break;
   }
   case 5: { // ===== 装甲ロボット ゴッドバスター =====
@@ -1270,15 +1280,15 @@ let HAZARD_LASERS=[],HAZARD_SPIKES=[],ZERO_G_ZONES=[];
 let hitStop=0;
 let currentStage=1;
 const STAGE_CFG=[
-  {name:'鬼ヶ島入口',  sub:'ONI ISLAND ENTRANCE',  bgMain:'#0d0d0d',bossType:'susanoo',    bossHp:30, bossW:60,bossH:78,bossName:'赤鬼門番',
+  {name:'鬼ヶ島入口',  sub:'ONI ISLAND ENTRANCE',  bgMain:'#0d0d0d',bossType:'susanoo',    bossHp:30, bossW:84,bossH:112,bossName:'赤鬼門番',
    tMain:'#1f1f1f',tHL:'#2a2a2a',tHL2:'#1a1a1a',tSide:'#0f0f0f',tAcc:'#4a0a0a',nebula:['#330000','#550000'],gimmick:null},
-  {name:'地下坑道',    sub:'UNDERGROUND CAVERN',  bgMain:'#1a0800',bossType:'takemikazu',      bossHp:40, bossW:60,bossH:80,bossName:'岩喰い',
+  {name:'地下坑道',    sub:'UNDERGROUND CAVERN',  bgMain:'#1a0800',bossType:'takemikazu',      bossHp:40, bossW:84,bossH:115,bossName:'岩喰い',
    tMain:'#0f0f0f',tHL:'#1a1a1a',tHL2:'#0a0a0a',tSide:'#050505',tAcc:'#2a1a0a',nebula:['#1a1010','#2a1a0a'],gimmick:'rockfall'},
-  {name:'鬼の釜地帯',  sub:'DEMON CAULDRON',  bgMain:'#1a0200',bossType:'kagutsuchi',     bossHp:50, bossW:62,bossH:72,bossName:'釜茹で鬼',
+  {name:'鬼の釜地帯',  sub:'DEMON CAULDRON',  bgMain:'#1a0200',bossType:'kagutsuchi',     bossHp:50, bossW:89,bossH:104,bossName:'釜茹で鬼',
    tMain:'#1a0a00',tHL:'#2a1a08',tHL2:'#3a2a10',tSide:'#0a0500',tAcc:'#5a1a08',nebula:['#330800','#550a00'],gimmick:'lava'},
-  {name:'封印神殿',    sub:'SEALING TEMPLE',   bgMain:'#0a0010',bossType:'yamata',       bossHp:60, bossW:70,bossH:62,bossName:'封印守',
+  {name:'封印神殿',    sub:'SEALING TEMPLE',   bgMain:'#0a0010',bossType:'yamata',       bossHp:60, bossW:100,bossH:88,bossName:'封印守',
    tMain:'#0a0a15',tHL:'#15151f',tHL2:'#1a1a2a',tSide:'#050508',tAcc:'#1a0a2a',nebula:['#110011','#220022'],gimmick:'seal'},
-  {name:'深淵',        sub:'ABYSS',           bgMain:'#050205',bossType:'tsukuyomi',  bossHp:80, bossW:68,bossH:86,bossName:'鬼神ランカイ',
+  {name:'深淵',        sub:'ABYSS',           bgMain:'#050205',bossType:'tsukuyomi',  bossHp:80, bossW:97,bossH:124,bossName:'鬼神ランカイ',
    tMain:'#0a0a0a',tHL:'#141414',tHL2:'#1a1a1a',tSide:'#050505',tAcc:'#1a0a20',nebula:['#0a0010','#100020'],gimmick:'void'},
 ];
 const TOTAL_STAGES=STAGE_CFG.length;
@@ -3757,20 +3767,54 @@ function drawBg(){
   // 鬼ヶ島全ステージ背景（ステージごとに異なる世界観）
 
   if(st===1){
-    // Stage 1：海岸・鬼ヶ島の入口（海が見える）
-    const bgGrd=ctx.createLinearGradient(0,0,0,H);
-    bgGrd.addColorStop(0,'#87ceeb');bgGrd.addColorStop(0.4,'#e0f6ff');bgGrd.addColorStop(1,'#c9a876');
-    ctx.fillStyle=bgGrd;ctx.fillRect(0,0,W,H);
-    // 海（水平線付き）
-    ctx.fillStyle='#1a5a9a';ctx.fillRect(0,H*.35,W,H*.35);
-    // 波のテクスチャ
-    ctx.globalAlpha=0.15;ctx.fillStyle='#ffffff';
-    for(let i=0;i<W;i+=20)ctx.fillRect(i,H*.36+Math.sin(i*0.05+t*.002)*2,20,3);
+    // Stage 1：海岸・鬼ヶ島の入口（豊かな海景観）
+    // 空
+    const skyGrd=ctx.createLinearGradient(0,0,0,H*.4);
+    skyGrd.addColorStop(0,'#87ceeb');
+    skyGrd.addColorStop(1,'#e0f6ff');
+    ctx.fillStyle=skyGrd;ctx.fillRect(0,0,W,H*.4);
+
+    // 海岸
+    ctx.fillStyle='#d9b896';ctx.fillRect(0,H*.4,W,H*.2);
+
+    // 水平線
+    ctx.fillStyle='#4a8ac0';ctx.fillRect(0,H*.45,W,3);
+
+    // 海
+    const seaGrd=ctx.createLinearGradient(0,H*.45,0,H);
+    seaGrd.addColorStop(0,'#1a7aa0');
+    seaGrd.addColorStop(1,'#0d3d66');
+    ctx.fillStyle=seaGrd;ctx.fillRect(0,H*.45,W,H*.55);
+
+    // 波パターン（白い波）
+    ctx.globalAlpha=0.4;ctx.fillStyle='#ffffff';
+    for(let i=0;i<W;i+=25){
+      const waveY=H*.48+Math.sin(i*0.04+t*.003)*2;
+      ctx.fillRect(i,waveY,15,2);
+      const waveY2=H*.55+Math.sin(i*0.05+t*.004+2)*3;
+      ctx.fillRect(i,waveY2,20,2);
+    }
     ctx.globalAlpha=1;
-    // 壊れた鳥居（奥行き表現）
-    ctx.globalAlpha=0.4;ctx.fillStyle='#8B4513';
-    ctx.beginPath();ctx.moveTo(W*.3,H*.2);ctx.lineTo(W*.35,H*.05);ctx.lineTo(W*.4,H*.2);ctx.fill(); // 鳥居の柱
-    ctx.fillRect(W*.28,H*.15,W*.12,3); // 鳥居の横木
+
+    // 岩礁（海の手前）
+    ctx.fillStyle='#555555';
+    ctx.beginPath();ctx.arc(W*.15,H*.52,12,0,Math.PI*2);ctx.fill();
+    ctx.beginPath();ctx.arc(W*.25,H*.56,8,0,Math.PI*2);ctx.fill();
+    ctx.beginPath();ctx.arc(W*.75,H*.54,10,0,Math.PI*2);ctx.fill();
+    ctx.beginPath();ctx.arc(W*.85,H*.58,7,0,Math.PI*2);ctx.fill();
+
+    // 遠くの島（水平線の向こう）
+    ctx.globalAlpha=0.35;
+    ctx.fillStyle='#4a6a7a';
+    ctx.beginPath();ctx.moveTo(W*.2,H*.48);ctx.lineTo(W*.3,H*.35);ctx.lineTo(W*.4,H*.48);ctx.fill(); // 左の島
+    ctx.beginPath();ctx.moveTo(W*.6,H*.48);ctx.lineTo(W*.75,H*.32);ctx.lineTo(W*.9,H*.48);ctx.fill(); // 右の島
+    ctx.globalAlpha=1;
+
+    // 壊れた鳥居（海岸の奥）
+    ctx.globalAlpha=0.5;ctx.fillStyle='#8B4513';
+    ctx.fillRect(W*.35,H*.32,4,H*.18); // 左の柱
+    ctx.fillRect(W*.46,H*.32,4,H*.18); // 右の柱
+    ctx.fillRect(W*.33,H*.32,16,4);   // 横木
     ctx.globalAlpha=1;
   }else if(st===2){
     // Stage 2：山道・崩れた崖（岩山が険しい）
