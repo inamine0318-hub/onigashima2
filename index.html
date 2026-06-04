@@ -319,18 +319,11 @@ function drawCharacter(sx,sy,ci,facing,walkFrame,moving,atkAnim,isJetting,isAirb
     ctx.globalAlpha=1;
     rr6(OL, 3+bodyX,35,24, 4,3); rr6('#88ccff',4+bodyX,36,22,2,2);
   } else if(ci===0 || ci===3 || ci===4){ // ===== 烏丸/十兵衛/マタキチ - 人間の道着 =====
-    const giCol=ci===0?'#1a1a1a':(ci===3?'#000814':(ci===4?'#5A3A2A':'#cc6600')); // 道着色（マタキチは濃い茶色・大工風）
-    const giBright=ci===0?'#2a2a2a':(ci===3?'#0a1a3a':(ci===4?'#8B6B47':'#dd8822'));
-    const giDark=ci===0?'#0a0a0a':(ci===3?'#000008':(ci===4?'#3A2A1A':'#883300'));
-    const obi=ci===3?'#000000':(ci===4?'#2A1A0A':'#1a1a1a'); // 帯（マタキチは暗い茶色）
-    // 上着（マタキチは前が開いている感じ）
-    if(ci===4){
-      _r(OL, 3+bodyX,19,24,17); _r(giCol, 4+bodyX,20, 8,15); _r(giCol,16+bodyX,20, 8,15); _r(HL, 4+bodyX,20, 8, 2); _r(HL,16+bodyX,20, 8, 2); _r(SH, 4+bodyX,32,16, 2);
-      // 中央に肌色が見える（前が開いている）
-      _r(skin, 11+bodyX,22, 4, 8);
-    } else {
-      _r(OL, 3+bodyX,19,24,17); _r(giCol, 4+bodyX,20,22,15); _r(HL, 4+bodyX,20,22, 2); _r(SH, 4+bodyX,32,22, 2);
-    }
+    const giCol=ci===0?'#1a1a1a':(ci===3?'#000814':'#cc6600'); // 道着色（十兵衛は濃黒紺・武闘家風）
+    const giBright=ci===0?'#2a2a2a':(ci===3?'#0a1a3a':'#dd8822');
+    const giDark=ci===0?'#0a0a0a':(ci===3?'#000008':'#883300');
+    const obi=ci===3?'#000000':'#1a1a1a'; // 帯（十兵衛は黒）
+    _r(OL, 3+bodyX,19,24,17); _r(giCol, 4+bodyX,20,22,15); _r(HL, 4+bodyX,20,22, 2); _r(SH, 4+bodyX,32,22, 2);
     // 胸部の立体感（中央に暗い縦線・武闘家風）
     _r(giDark, 9+bodyX,19, 8, 14);
     // 肩と腋
