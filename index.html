@@ -1247,10 +1247,9 @@ function buildStageData(){
   ];
   STAGE_HOLES=holes_data[currentStage-1]||[];
 
-  // 穴以外の底部を足場として追加（穴を避けて歩ける地面）
-  // 注意：y座標はH+100で視界外に配置（見た目には表示しない、判定だけ）
+  // 穴以外の底部を足場として追加（見える地面と同じ高さ）
   const holes=holes_data[currentStage-1]||[];
-  const bottomY=H+100;  // 画面外（判定のみ、見た目には表示しない）
+  const bottomY=H-60;  // 見える地面の高さ（drawBottomGround()と同じ）
 
   if(holes.length>0){
     // 穴の前後を足場として追加
