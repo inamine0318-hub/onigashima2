@@ -912,14 +912,14 @@ function drawAnimalHead(ci,_r,AC,atk){
     // オレンジの道着（最初に描く・背中に見える）
     _r('#cc6600', 3,18,24,16); _r('#dd8822', 4,19,22,14); _r('#ff9933', 4,19,22, 2);
 
-    // スキンヘッド（肌色の丸頭・坊主の頭頂部）
-    ctx.fillStyle=sk;ctx.beginPath();ctx.ellipse(13,2,11,9,0,0,Math.PI*2);ctx.fill();
-    ctx.fillStyle='#E8B854';ctx.beginPath();ctx.ellipse(13,2,10,8,0,0,Math.PI*2);ctx.fill();
+    // スキンヘッド（肌色の丸頭・坊主の頭頂部・モヒカン下）
+    ctx.fillStyle=sk;ctx.beginPath();ctx.ellipse(13,6,11,8,0,0,Math.PI*2);ctx.fill();
+    ctx.fillStyle='#E8B854';ctx.beginPath();ctx.ellipse(13,6,10,7,0,0,Math.PI*2);ctx.fill();
 
     // モヒカン（中央に立った髪・黒）
-    _r('#1a1a1a', 11,-4, 4, 8);  // 左側
-    _r('#0a0a0a', 12,-5, 2,10);  // 中央（最も高い）
-    _r('#1a1a1a', 15,-4, 4, 8);  // 右側
+    _r('#1a1a1a', 11,-2, 4, 8);  // 左側
+    _r('#0a0a0a', 12,-3, 2,10);  // 中央（最も高い）
+    _r('#1a1a1a', 15,-2, 4, 8);  // 右側
 
     // 白いハチマキ（目の上）
     _r('#ffffff', 1, 4, 24, 3);   // メイン帯（目の上）
