@@ -427,66 +427,64 @@ function drawCharacter(sx,sy,ci,facing,walkFrame,moving,atkAnim,isJetting,isAirb
       // 手
       _r(skin,20,26, 10, 10); _r(skinS,21,27, 8, 8);
     }
-  } else if(ci===4){ // ===== マタキチ - 大型ハンマー装備・大工風 =====
+  } else if(ci===4){ // ===== マタキチ - 大型ハンマー装備・斧で薪を割るモーション =====
     const skin='#DEAA58', skinS='#B88030', hammerWood='#8B6B47', hammerMetal='#1a1a1a', hammerShine='#444444';
     if(atk===0){
-      // 待機：両手で肩に担ぐようにハンマーを持つ
-      const sw=moving?(wf===0?1:-1):0;
-      // 後腕 (ハンマーを持つ)
-      _r(OL, 2,16, 7,15); _r(SC, 3,17, 5,13); _r(AC, 3,17, 5, 3);
-      // 前腕 (ハンマーを持つ)
-      _r(OL,17,14, 8,12); _r(SC,18,15, 6,10); _r(AC,18,15, 6, 2);
-      // 手（両手でハンマーを持つ）
-      _r(skin, 3,30, 6, 7); _r(skinS, 4,31, 4, 5);
-      _r(skin,18,25, 8, 8); _r(skinS,19,26, 6, 6);
-      // 大型ハンマー（両手で肩に担ぐ）
-      // ハンマーヘッド（巨大・黒色・上部）
-      _r(hammerMetal, 18, 10, 18, 16); // ハンマーヘッド（超大きめ）
-      _r(hammerShine, 20, 11, 14, 3);  // ハンマーヘッドのハイライト上部
-      _r(hammerShine, 22, 14, 10, 2);  // ハンマーヘッドのハイライト中部
-      // ハンマーの柄（太い木製・下へ続く）
-      _r(hammerWood, 25, 26, 6, 18); // 柄メイン
-      _r('#6B5B47', 25, 26, 6, 1);  // 柄の上の影
-      _r('#A08B6B', 27, 27, 2, 16); // 柄のハイライト
-    } else {
-      // 攻撃：両手でハンマーを振り下ろす
-      const downProgress=Math.min(ext/28, 1);  // 振り下ろし進度
-      const downDist=Math.floor(downProgress*45); // 下降距離
-      const swingAngle=Math.floor(downProgress*60); // スイング角度
-
-      // 後腕 (上に引き上げ)
-      _r(OL, 1-swingAngle*0.1,8, 7,16); _r(SC, 2-swingAngle*0.1,9, 5,14); _r(AC, 2-swingAngle*0.1,9, 5, 3);
-      // 前腕 (下に出す)
-      const armExt=Math.floor(ext*.28);
-      _r(OL,15+armExt,16, 8+armExt, 10); _r(SC,16+armExt,17, 6+armExt, 8); _r(AC,16+armExt,17, 6+armExt, 2);
-      _r(OL,21+armExt,10, 8+armExt, 12); _r(SC,22+armExt,11, 6+armExt, 10); _r(AC,22+armExt,11, 6+armExt, 2);
+      // 待機：肩にハンマーを置いて、背中の後ろから頭が見える
+      // 後腕 (ハンマーを支える)
+      _r(OL, 1,18, 7,14); _r(SC, 2,19, 5,12); _r(AC, 2,19, 5, 3);
+      // 前腕 (ハンマーを支える)
+      _r(OL,16,16, 8,12); _r(SC,17,17, 6,10); _r(AC,17,17, 6, 2);
       // 手
-      _r(skin,16+armExt,27, 8, 8); _r(skinS,17+armExt,28, 6, 6);
-      _r(skin,22+armExt,20, 8, 8); _r(skinS,23+armExt,21, 6, 6);
+      _r(skin, 2,30, 6, 7); _r(skinS, 3,31, 4, 5);
+      _r(skin,17,26, 8, 8); _r(skinS,18,27, 6, 6);
+      // ハンマー（肩に置いて、背中の後ろから見える）
+      // ハンマーヘッド（背中の後ろから見える）
+      _r(hammerMetal, 8, 8, 20, 18); // ハンマーヘッド（超大きめ・背中の後ろ）
+      _r(hammerShine, 10, 9, 16, 3);  // ハイライト上部
+      _r(hammerShine, 12, 14, 12, 2); // ハイライト中部
+      // ハンマーの柄（下へ続く）
+      _r(hammerWood, 25, 26, 6, 16); // 柄メイン
+      _r('#6B5B47', 25, 26, 6, 1);  // 柄の影
+      _r('#A08B6B', 27, 27, 2, 14); // 柄のハイライト
+    } else {
+      // 攻撃：背中の後ろから前へ、円弧を描きながら振り下ろす
+      const swingProgress=Math.min(ext/30, 1);  // スイング進度（0-1）
+      // 円弧を描く：背中の後ろ（x=10）→ 前方（x=35）、上（y=5）→ 下（y=40）
+      const hammerX=10+swingProgress*25; // 背中の後ろから前へ
+      const hammerY=5+Math.sin(swingProgress*Math.PI)*15+swingProgress*35; // 円弧を描きながら下へ
 
-      // 振り下ろすハンマー（黒くちゃんと見える）
-      const hammerX=28+armExt;
-      const hammerY=12+downDist;
-      const hammerSize=atk>=3?1.35:1; // フィニッシャーは1.35倍
-      const hheadW=Math.floor(18*hammerSize);
-      const hheadH=Math.floor(16*hammerSize);
+      const hammerSize=atk>=3?1.4:1; // フィニッシャーは1.4倍
+      const hheadW=Math.floor(20*hammerSize);
+      const hheadH=Math.floor(18*hammerSize);
       const hwid=Math.floor(6*hammerSize);
 
-      // ハンマーヘッド（巨大・黒色・上部で見える）
-      _r(hammerMetal, hammerX-hheadW/2+5, hammerY-hheadH, hheadW, hheadH); // ハンマーヘッド
-      _r(hammerShine, hammerX-hheadW/2+7, hammerY-hheadH+2, Math.floor(14*hammerSize), 4); // 上部ハイライト
-      _r(hammerShine, hammerX-hheadW/2+9, hammerY-hheadH+8, Math.floor(10*hammerSize), 2); // 中部ハイライト
+      // 後腕 (ハンマーを引き上げる)
+      _r(OL, 0-swingProgress*5,8, 7,16); _r(SC, 1-swingProgress*5,9, 5,14); _r(AC, 1-swingProgress*5,9, 5, 3);
+      // 前腕 (ハンマーを前に出す)
+      const armExt=Math.floor(swingProgress*20);
+      _r(OL,15+armExt,14, 8+armExt, 12); _r(SC,16+armExt,15, 6+armExt, 10); _r(AC,16+armExt,15, 6+armExt, 2);
+      _r(OL,22+armExt,8, 8+armExt, 14); _r(SC,23+armExt,9, 6+armExt, 12); _r(AC,23+armExt,9, 6+armExt, 2);
+      // 手
+      _r(skin,16+armExt,27, 8, 8); _r(skinS,17+armExt,28, 6, 6);
+      _r(skin,23+armExt,19, 8, 8); _r(skinS,24+armExt,20, 6, 6);
 
-      // ハンマーの柄（太い木製・ハンマーから腕まで）
-      _r(hammerWood, hammerX, hammerY-hheadH-2, hwid, hheadH+8); // 柄メイン
+      // ハンマー（円弧を描きながら振り下ろす・黒くちゃんと見える）
+      // ハンマーヘッド（黒色・巨大）
+      _r(hammerMetal, hammerX-hheadW/2, hammerY-hheadH, hheadW, hheadH); // ハンマーヘッド
+      _r(hammerShine, hammerX-hheadW/2+2, hammerY-hheadH+2, Math.floor(16*hammerSize), 4); // 上部ハイライト
+      _r(hammerShine, hammerX-hheadW/2+4, hammerY-hheadH+9, Math.floor(12*hammerSize), 2); // 中部ハイライト
+
+      // ハンマーの柄（木製・ハンマーから腕まで）
+      _r(hammerWood, hammerX, hammerY-hheadH-2, hwid, hheadH+10); // 柄メイン
       _r('#6B5B47', hammerX, hammerY-hheadH-2, hwid, 1);  // 柄の影
-      _r('#A08B6B', hammerX+2, hammerY-hheadH, 2, hheadH+6); // 柄のハイライト
+      _r('#A08B6B', hammerX+2, hammerY-hheadH, 2, hheadH+8); // 柄のハイライト
 
-      // フィニッシャー時の衝撃表現（ハンマーの周りに）
+      // フィニッシャー時の衝撃表現
       if(atk>=3){
-        _r('#FFD700', hammerX-8, hammerY-5, 5, 3); // 金色の光（左）
-        _r('#FFD700', hammerX+5, hammerY-5, 4, 3); // 金色の光（右）
-        _r('#FFFF99', hammerX-3, hammerY+2, 8, 2); // 白色の輝き（下）
+        _r('#FFD700', hammerX-10, hammerY-hheadH-5, 5, 3); // 金色の光（上左）
+        _r('#FFD700', hammerX+8, hammerY-hheadH, 4, 3); // 金色の光（上右）
+        _r('#FFFF99', hammerX-4, hammerY+5, 10, 2); // 白色の輝き（下）
       }
     }
   } else { // ===== 鷹/熊/狼/竜/ツクヨミ =====
