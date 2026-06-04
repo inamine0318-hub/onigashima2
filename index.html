@@ -5887,68 +5887,38 @@ function drawHazards(){
 }
 
 function drawBottomGround(){
+  // TERRAIN と同じ色・テクスチャでステージ下部を埋める
+  const scfg=STAGE_CFG[currentStage-1];
+  const tM=scfg.tMain,tH=scfg.tHL,tH2=scfg.tHL2,tS=scfg.tSide,tA=scfg.tAcc;
   const py=H-1;
-  const st=currentStage;
   const t=frameTime;
+  const tile=32;  // TERRAIN と同じタイル幅
 
-  if(st===1){
-    // Stage 1: 海底・岩場
-    ctx.fillStyle='#0d3d66';ctx.fillRect(0,py-60,W,60); // 海底
-    // 岩場
-    for(let rx=-(Math.floor(cam.x)%80);rx<W+80;rx+=80){
-      ctx.fillStyle='#555555';ctx.beginPath();ctx.moveTo(rx,py-20);ctx.lineTo(rx+20,py-40);ctx.lineTo(rx+40,py-25);ctx.lineTo(rx+80,py-20);ctx.fill();
-      ctx.fillStyle='#666666';ctx.beginPath();ctx.moveTo(rx+10,py-20);ctx.lineTo(rx+30,py-30);ctx.lineTo(rx+50,py-20);ctx.fill();
-    }
-  } else if(st===2){
-    // Stage 2: 地底坑道・岩壁
-    ctx.fillStyle='#3a2a1a';ctx.fillRect(0,py-50,W,50);
-    // 岩の質感
-    for(let i=0;i<W;i+=40){
-      ctx.fillStyle='#2a1a0a';ctx.fillRect(i-Math.floor(cam.x)%40,py-50,20,50);
-    }
-    // 採掘跡
-    for(let j=0;j<3;j++){
-      ctx.globalAlpha=0.3;ctx.fillStyle='#1a0a0a';
-      ctx.fillRect(Math.floor((j*120-cam.x*0.3)%W),py-30+j*15,30,10);
-      ctx.globalAlpha=1;
-    }
-  } else if(st===3){
-    // Stage 3: 溶岩地面
-    const lavaGlow=Math.sin(t/300)*.3+.7;
-    ctx.fillStyle='#661100';ctx.fillRect(0,py-50,W,50);
-    ctx.globalAlpha=lavaGlow*.3;ctx.fillStyle='#ff4400';ctx.fillRect(0,py-50,W,50);ctx.globalAlpha=1;
-    // 溶岩の波状
-    for(let lx=-(Math.floor(cam.x)%60);lx<W+60;lx+=60){
-      const waveY=Math.sin(t/200+lx*0.02)*5;
-      ctx.globalAlpha=0.5;ctx.fillStyle='#ff6600';
-      ctx.beginPath();ctx.moveTo(lx,py-20+waveY);ctx.lineTo(lx+30,py-35+waveY);ctx.lineTo(lx+60,py-20+waveY);ctx.fill();
-      ctx.globalAlpha=1;
-    }
-  } else if(st===4){
-    // Stage 4: 封印神殿の床
-    ctx.fillStyle='#4a3a6a';ctx.fillRect(0,py-45,W,45);
-    // 石板パターン
-    for(let bx=-(Math.floor(cam.x)%60);bx<W+60;bx+=60){
-      ctx.fillStyle='#5a4a7a';ctx.fillRect(bx,py-45,30,45);
-      ctx.fillStyle='#3a2a5a';ctx.fillRect(bx+30,py-45,30,45);
-      // 金属的な縁
-      ctx.globalAlpha=0.4;ctx.fillStyle='#8866cc';ctx.fillRect(bx,py-2,60,2);ctx.globalAlpha=1;
-    }
-  } else if(st===5){
-    // Stage 5: 呪われた地下・肉壁
-    ctx.fillStyle='#330011';ctx.fillRect(0,py-50,W,50);
-    const pulse=Math.sin(t/400)*.2+.8;
-    ctx.globalAlpha=pulse*.2;ctx.fillStyle='#cc0044';ctx.fillRect(0,py-50,W,50);ctx.globalAlpha=1;
-    // ざらざらした質感
-    ctx.globalAlpha=0.4;
-    for(let px=0;px<W;px+=4){
-      ctx.fillStyle=Math.random()>.5?'#220011':'#330022';
-      ctx.fillRect(px,py-Math.random()*30,2,Math.random()*20);
-    }
-    ctx.globalAlpha=1;
-  } else {
-    // デフォルト
-    ctx.fillStyle='#1a1a2a';ctx.fillRect(0,py-40,W,40);
+  // メイン背景色で埋める
+  dr(0,py-60,W,60,tM);
+
+  // タイル石目（TERRAIN と同じパターン）
+  for(let bx=0;bx<W;bx+=tile)dr(bx,py-60,1,60,'#0a0a12');
+
+  // ハイライト（上端）
+  dr(0,py-60,W,2,tH);dr(0,py-60,W,1,tH2);
+
+  // ステージ別装飾（TERRAIN と同じパターン）
+  if(currentStage===1){ // 遺跡: 苔・紋様
+    for(let gx=8;gx<W-8;gx+=48)dr(gx,py-58,6,2,'#1a2a1a');
+  }
+  if(currentStage===2){ // 雷峰: 稲妻紋様
+    for(let gx=16;gx<W-16;gx+=56){
+      dr(gx,py-58,2,4,'#2a3860');dr(gx+3,py-56,2,4,'#2a3860');}
+  }
+  if(currentStage===3){ // 炎窟: 溶岩の縁が光る
+    const gl=Math.sin(t/300)*.4+.6;
+    ctx.globalAlpha=gl*.18;dr(0,py-60,W,2,'#ff4400');ctx.globalAlpha=1;
+  }
+  if(currentStage===4){ // 深海神殿: 海藻・緑光
+    for(let gx=10;gx<W-10;gx+=36){
+      const wv=Math.sin(t/600+gx*.1)*2;
+      dr(gx+wv,py-68,3,10,'#0a3a20');dr(gx+wv+1,py-67,1,8,'#1a6a30');}
   }
 }
 
