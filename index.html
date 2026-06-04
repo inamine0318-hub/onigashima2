@@ -476,9 +476,6 @@ function drawCharacter(sx,sy,ci,facing,walkFrame,moving,atkAnim,isJetting,isAirb
       _r(OL, 3-swingProgress*6,8, 7,17); _r(SC, 4-swingProgress*6,9, 5,15); _r(AC, 4-swingProgress*6,9, 5, 3);
       _r(OL,17+swingProgress*6,14, 8+swingProgress*6, 12); _r(SC,18+swingProgress*6,15, 6+swingProgress*6, 10); _r(AC,18+swingProgress*6,15, 6+swingProgress*6, 2);
       _r(OL,24+swingProgress*10,10, 8+swingProgress*6, 14); _r(SC,25+swingProgress*10,11, 6+swingProgress*6, 12); _r(AC,25+swingProgress*10,11, 6+swingProgress*6, 2);
-      // 手
-      _r(skin,18+swingProgress*6,27, 8, 8); _r(skinS,19+swingProgress*6,28, 6, 6);
-      _r(skin,25+swingProgress*10,20, 8, 8); _r(skinS,26+swingProgress*10,21, 6, 6);
 
       // ハンマーの柄（回転軸から先端まで）
       ctx.save();
@@ -489,9 +486,13 @@ function drawCharacter(sx,sy,ci,facing,walkFrame,moving,atkAnim,isJetting,isAirb
       _r('#A08B6B', 2, -hwid/2+1, hammerLength-4, 1); // 柄のハイライト
       ctx.restore();
 
-      // ハンマーヘッド（回転終了位置・横長）
+      // ハンマーヘッド（回転終了位置・縦長）
       _r(hammerMetal, hammerHeadX-hheadW/2, hammerHeadY-hheadH/2, hheadW, hheadH);
       _r(hammerShine, hammerHeadX-hheadW/2+2, hammerHeadY-hheadH/2+1, hheadW-4, 2); // ハイライト
+
+      // 手（ハンマーの後に描画・手が見える）
+      _r(skin,18+swingProgress*6,27, 9, 9); _r(skinS,19+swingProgress*6,28, 7, 7);
+      _r(skin,25+swingProgress*10,20, 9, 9); _r(skinS,26+swingProgress*10,21, 7, 7);
 
       // フィニッシャー時の衝撃表現
       if(atk>=3){
