@@ -429,26 +429,31 @@ function drawCharacter(sx,sy,ci,facing,walkFrame,moving,atkAnim,isJetting,isAirb
     }
   } else if(ci===4){ // ===== マタキチ - 大型ハンマー装備・斧で薪を割るモーション =====
     const skin='#DEAA58', skinS='#B88030', hammerWood='#8B6B47', hammerMetal='#1a1a1a', hammerShine='#444444';
+    const baseHammerSize=1.6; // ハンマーの基本サイズ（1.6倍）
+
     if(atk===0){
-      // 待機：45度でハンマーを構える（見える位置）
+      // 待機：45度でハンマーを構える（大きく見える位置）
       // 後腕 (ハンマーを支える)
-      _r(OL, 3,14, 7,17); _r(SC, 4,15, 5,15); _r(AC, 4,15, 5, 3);
+      _r(OL, 2,12, 8,18); _r(SC, 3,13, 6,16); _r(AC, 3,13, 6, 3);
       // 前腕 (ハンマーを支える)
-      _r(OL,17,12, 8,15); _r(SC,18,13, 6,13); _r(AC,18,13, 6, 2);
+      _r(OL,16,10, 9,16); _r(SC,17,11, 7,14); _r(AC,17,11, 7, 2);
       // 手
-      _r(skin, 4,29, 6, 8); _r(skinS, 5,30, 4, 6);
-      _r(skin,18,25, 8, 9); _r(skinS,19,26, 6, 7);
-      // ハンマー（45度で構える）
+      _r(skin, 3,28, 7, 9); _r(skinS, 4,29, 5, 7);
+      _r(skin,17,24, 9,10); _r(skinS,18,25, 7, 8);
+      // ハンマー（45度で大きく構える）
+      const hsize0=baseHammerSize;
+      const hheadW0=Math.floor(26*hsize0);
+      const hheadH0=Math.floor(24*hsize0);
       // ハンマーの柄（45度角）
-      _r(hammerWood, 20, 10, 6, 26); // 柄メイン
-      _r('#6B5B47', 20, 10, 6, 1);  // 柄の影
-      _r('#A08B6B', 22, 11, 2, 24); // 柄のハイライト
-      // ハンマーヘッド（45度上方）
-      _r(hammerMetal, 12, 2, 22, 20); // ハンマーヘッド（大きく見える位置）
-      _r(hammerShine, 14, 3, 18, 3);  // ハイライト上部
-      _r(hammerShine, 16, 9, 14, 2);  // ハイライト中部
+      _r(hammerWood, 18, 8, 7, 30); // 柄メイン
+      _r('#6B5B47', 18, 8, 7, 1);  // 柄の影
+      _r('#A08B6B', 20, 9, 2, 28); // 柄のハイライト
+      // ハンマーヘッド（45度上方・大きい）
+      _r(hammerMetal, 8, -2, hheadW0, hheadH0);
+      _r(hammerShine, 10, -1, hheadW0-6, 4);  // ハイライト上部
+      _r(hammerShine, 12, 6, hheadW0-10, 3);  // ハイライト中部
     } else {
-      // 攻撃：上から下へ振り下ろす（軌跡を見せる）
+      // 攻撃：上から下へ振り下ろす（3つのハンマーで軌跡を強調）
       const swingProgress=Math.min(ext/35, 1);  // スイング進度（0-1）
 
       // バックスイング（上へ）→フォワード（下へ）
@@ -456,50 +461,58 @@ function drawCharacter(sx,sy,ci,facing,walkFrame,moving,atkAnim,isJetting,isAirb
       const forward=Math.max(swingProgress*2-1, 0); // 後半
 
       // ハンマーの位置（上から下へ）
-      const hammerY_top=-20*backSwing; // 上へ引き上げ
-      const hammerY_bottom=50*forward; // 下へ振り下ろし
+      const hammerY_top=-25*backSwing; // 上へ引き上げ
+      const hammerY_bottom=60*forward; // 下へ振り下ろし
       const hammerY=hammerY_top+hammerY_bottom;
 
       // ハンマーの水平位置（45度から垂直へ）
       const hammerX=20+forward*10;
 
-      const hammerSize=atk>=3?1.45:1; // フィニッシャーは1.45倍
-      const hheadW=Math.floor(22*hammerSize);
-      const hheadH=Math.floor(20*hammerSize);
-      const hwid=Math.floor(6*hammerSize);
+      const hammerSize=baseHammerSize*(atk>=3?1.5:1); // フィニッシャーは1.5倍
+      const hheadW=Math.floor(26*hammerSize);
+      const hheadH=Math.floor(24*hammerSize);
+      const hwid=Math.floor(7*hammerSize);
 
       // 腕の動き
-      _r(OL, 2-backSwing*6,8, 7,18); _r(SC, 3-backSwing*6,9, 5,16); _r(AC, 3-backSwing*6,9, 5, 3);
-      _r(OL,17+forward*8,14, 8+forward*8, 13); _r(SC,18+forward*8,15, 6+forward*8, 11); _r(AC,18+forward*8,15, 6+forward*8, 2);
-      _r(OL,24+forward*12,8, 8+forward*8, 15); _r(SC,25+forward*12,9, 6+forward*8, 13); _r(AC,25+forward*12,9, 6+forward*8, 2);
+      _r(OL, 1-backSwing*8,6, 8,19); _r(SC, 2-backSwing*8,7, 6,17); _r(AC, 2-backSwing*8,7, 6, 3);
+      _r(OL,16+forward*8,12, 9+forward*8, 14); _r(SC,17+forward*8,13, 7+forward*8, 12); _r(AC,17+forward*8,13, 7+forward*8, 2);
+      _r(OL,23+forward*12,6, 9+forward*8, 16); _r(SC,24+forward*12,7, 7+forward*8, 14); _r(AC,24+forward*12,7, 7+forward*8, 2);
       // 手
-      _r(skin,18+forward*8,28, 8, 8); _r(skinS,19+forward*8,29, 6, 6);
-      _r(skin,25+forward*12,20, 8, 8); _r(skinS,26+forward*12,21, 6, 6);
+      _r(skin,17+forward*8,27, 9, 9); _r(skinS,18+forward*8,28, 7, 7);
+      _r(skin,24+forward*12,19, 9, 9); _r(skinS,25+forward*12,20, 7, 7);
 
-      // ハンマー軌跡（過去の位置を薄く描画）
-      if(swingProgress>0.1){
-        const trailAlpha=Math.max(0.3-swingProgress*0.3, 0);
-        ctx.globalAlpha=trailAlpha;
-        const trailY=hammerY*0.5; // 中間地点の軌跡
-        _r(hammerMetal, hammerX-hheadW/2, trailY-hheadH, hheadW, hheadH);
+      // ハンマーの軌跡：3つの位置に描画
+      // 開始位置（薄い）
+      if(swingProgress>0){
+        ctx.globalAlpha=0.15;
+        const startY=hammerY_top-30;
+        _r(hammerMetal, hammerX-hheadW/2, startY-hheadH, hheadW, hheadH);
         ctx.globalAlpha=1;
       }
 
-      // ハンマーヘッド（黒色・巨大・実際に動く）
-      _r(hammerMetal, hammerX-hheadW/2, hammerY+5-hheadH, hheadW, hheadH);
-      _r(hammerShine, hammerX-hheadW/2+2, hammerY+6-hheadH, Math.floor(18*hammerSize), 4); // 上部ハイライト
-      _r(hammerShine, hammerX-hheadW/2+4, hammerY+13-hheadH, Math.floor(14*hammerSize), 2); // 中部ハイライト
+      // 中間位置（中程度）
+      if(swingProgress>0.3){
+        ctx.globalAlpha=0.4;
+        const midY=hammerY*0.5;
+        _r(hammerMetal, hammerX-hheadW/2, midY-hheadH, hheadW, hheadH);
+        ctx.globalAlpha=1;
+      }
+
+      // 現在位置（明るく）
+      _r(hammerMetal, hammerX-hheadW/2, hammerY+8-hheadH, hheadW, hheadH);
+      _r(hammerShine, hammerX-hheadW/2+3, hammerY+10-hheadH, Math.floor(20*hammerSize), 5); // 上部ハイライト
+      _r(hammerShine, hammerX-hheadW/2+5, hammerY+16-hheadH, Math.floor(16*hammerSize), 3); // 中部ハイライト
 
       // ハンマーの柄（ハンマーから腕へ）
-      _r(hammerWood, hammerX, hammerY-hheadH, hwid, hheadH+14);
+      _r(hammerWood, hammerX, hammerY-hheadH, hwid, hheadH+16);
       _r('#6B5B47', hammerX, hammerY-hheadH, hwid, 1);
-      _r('#A08B6B', hammerX+2, hammerY-hheadH+2, 2, hheadH+10);
+      _r('#A08B6B', hammerX+2, hammerY-hheadH+2, 2, hheadH+12);
 
       // フィニッシャー時の衝撃表現
       if(atk>=3){
-        _r('#FFD700', hammerX-12, hammerY-hheadH-3, 6, 3); // 金色の光（上左）
-        _r('#FFD700', hammerX+10, hammerY-hheadH, 5, 3); // 金色の光（上右）
-        _r('#FFFF99', hammerX-5, hammerY+10, 12, 2); // 白色の輝き（下）
+        _r('#FFD700', hammerX-14, hammerY-hheadH-4, 7, 4); // 金色の光（上左）
+        _r('#FFD700', hammerX+12, hammerY-hheadH, 6, 4); // 金色の光（上右）
+        _r('#FFFF99', hammerX-6, hammerY+12, 14, 3); // 白色の輝き（下）
       }
     }
   } else { // ===== 鷹/熊/狼/竜/ツクヨミ =====
