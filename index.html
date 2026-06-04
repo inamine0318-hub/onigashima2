@@ -1246,6 +1246,29 @@ function buildStageData(){
     [{x1:400,x2:600},{x1:1500,x2:1700},{x1:2800,x2:3000},{x1:4200,x2:4400}],
   ];
   STAGE_HOLES=holes_data[currentStage-1]||[];
+
+  // 穴以外の底部を足場として追加（穴を避けて歩ける地面）
+  const holes=holes_data[currentStage-1]||[];
+  const bottomY=H-20;  // 底部の高さ
+
+  if(holes.length>0){
+    // 穴の前後を足場として追加
+    let lastX=0;
+    for(const hole of holes){
+      if(hole.x1>lastX){
+        // 前の穴の終わりから現在の穴の始まりまで
+        G(lastX,bottomY,hole.x1-lastX);
+      }
+      lastX=hole.x2;
+    }
+    // 最後の穴の後からゴールまで
+    if(lastX<GOAL_X){
+      G(lastX,bottomY,GOAL_X-lastX);
+    }
+  } else {
+    // 穴がない場合、全体を足場に
+    G(0,bottomY,GOAL_X);
+  }
 }
 
 // 星
