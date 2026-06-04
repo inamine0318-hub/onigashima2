@@ -452,24 +452,24 @@ function drawCharacter(sx,sy,ci,facing,walkFrame,moving,atkAnim,isJetting,isAirb
       // 攻撃：ハンマーを回転させながら上から下へ振り下ろす
       const swingProgress=Math.min(ext/35, 1);  // スイング進度（0-1）
 
-      // 回転角度：45度から-90度へ（垂直に近い形で振り下ろし）
-      const angle=45-swingProgress*135; // 45度 → -90度
+      // 回転角度：90度から0度へ（上から下へ叩きつける感じ）
+      const angle=90-swingProgress*150; // 90度 → -60度
       const angleRad=angle*Math.PI/180;
 
       // ハンマーの中心座標（上から下へ移動）
       const hammerCenterX=28;
-      const hammerCenterY=10+swingProgress*35; // 上（10）→ 下（45）へ移動
+      const hammerCenterY=8+swingProgress*38; // 上（8）→ 下（46）へ移動
 
       // ハンマーの長さ（回転軸から先端まで）
-      const hammerLength=38;
+      const hammerLength=40;
 
       // ハンマーの先端位置（回転）
       const hammerHeadX=hammerCenterX+Math.cos(angleRad)*hammerLength;
       const hammerHeadY=hammerCenterY+Math.sin(angleRad)*hammerLength;
 
       const hammerSize=atk>=3?1.3:1; // フィニッシャーは1.3倍
-      const hheadW=Math.floor(24*hammerSize); // 横長に（18→24）
-      const hheadH=Math.floor(14*hammerSize); // 少し低め（16→14）
+      const hheadW=Math.floor(14*hammerSize); // 縦長に（幅狭め）
+      const hheadH=Math.floor(24*hammerSize); // 縦長に（高さ広め）
       const hwid=Math.floor(5*hammerSize);
 
       // 腕の動き
