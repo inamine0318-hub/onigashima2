@@ -2947,8 +2947,135 @@ function drawEnemies(){
         // HPバー
         dr(ex,ey-12,e.w,3,'#330008');dr(ex,ey-12,Math.ceil(e.w*(e.hp/e.maxHp)),3,'#ff0000');
       }
-    }
+    } else if(e.type==='charger'){
+      // 突進型 - 攻撃的エイリアン
+      const lean=e.charging?e.chargeDir:e.dir;
+      const chgGlow=e.charging&&Math.floor(t/80)%2;
+      // 後脚
+      dr(ex+3,ey+20,12,12,'#2a0606');dr(ex+17,ey+22,12,10,'#2a0606');
+      // 胴体
+      dr(ex+2,ey+6,28,18,'#440008');dr(ex+2,ey+6,28,4,chgGlow?'#ff5500':'#661111');
+      dr(ex+4,ey+6,24,2,'#993322');
+      // 頭 (前傾み)
+      const hx=lean>0?ex+14:ex+2;
+      dr(hx,ey,16,10,'#550011');dr(hx,ey,16,3,chgGlow?'#ff7700':'#881111');
+      // 目 (鋭い三角)
+      if(lean>0){
+        dr(ex+18,ey+1,10,7,'#0a0002');dr(ex+22,ey+2,6,5,chgGlow?'#ff5500':'#cc1100');dr(ex+25,ey+3,3,3,'#ffaa00');
+      } else {
+        dr(ex+4,ey+1,10,7,'#0a0002');dr(ex+4,ey+2,6,5,chgGlow?'#ff5500':'#cc1100');dr(ex+4,ey+3,3,3,'#ffaa00');
+      }
+      // 爪
+      const cx=lean>0?ex+28:ex-6;
+      dr(cx,ey+10,8,6,'#330008');dr(cx+(lean>0?2:-2),ey+12,6,5,'#552222');
+      // チャージ火花
+      if(e.charging&&Math.random()<.4)burst(e.x+e.w/2,e.y+e.h*.7,'#ff6600',1);
+      // HPバー
+      dr(ex,ey-10,e.w,4,'#330008');dr(ex,ey-10,Math.ceil(e.w*(e.hp/e.maxHp)),4,'#ff1144');
 
+    } else if(e.type==='flyer'){
+      // 飛行型 - 浮遊霊体
+      const flap=Math.sin(t/120)*5;
+      // 翼 (半透明)
+      ctx.globalAlpha=0.6;
+      dr(ex-10,ey+4+flap,12,18,'#160828');dr(ex-6,ey+6+flap,8,14,'#220a3a');
+      dr(ex+e.w-2,ey+4-flap,12,18,'#160828');dr(ex+e.w,ey+6-flap,8,14,'#220a3a');
+      ctx.globalAlpha=1;
+      // 本体
+      dr(ex+1,ey,26,20,'#1a0828');dr(ex+1,ey,26,4,'#2e0a44');dr(ex+3,ey,22,2,'#5500aa');
+      // 目 (紫に光る)
+      dr(ex+5,ey+6,8,6,'#0a0016');dr(ex+15,ey+6,8,6,'#0a0016');
+      if(Math.floor(t/180)%3>0){
+        dr(ex+6,ey+7,6,4,'#9900ff');dr(ex+7,ey+8,4,2,'#cc66ff');
+        dr(ex+16,ey+7,6,4,'#9900ff');dr(ex+17,ey+8,4,2,'#cc66ff');
+      }
+      // 触手(下)
+      for(let k=0;k<3;k++){const tx=ex+5+k*8,tl=10+Math.sin(t/200+k)*5;dr(tx,ey+18,4,tl,'#1a0828');dr(tx+1,ey+20,2,tl-4,'#2a0a44');}
+      // HPバー
+      dr(ex,ey-9,e.w,3,'#1a0028');dr(ex,ey-9,Math.ceil(e.w*(e.hp/e.maxHp)),3,'#aa00ff');
+    } else if(e.type==='jumper'){
+      // 月面ホッパー (小型・ずんぐり)
+      const air=!e.onGround;
+      // 触角
+      dr(ex+4,ey,3,7,'#3a2200');dr(ex+15,ey,3,7,'#3a2200');
+      // 体
+      dr(ex,ey+6,e.w,14,'#5a3a10');dr(ex,ey+6,e.w,4,'#7a5a20');
+      // 脚 (ジャンプ中は伸びる)
+      const legY=air?16:14;const legH=air?14:10;
+      dr(ex+2,ey+legY,8,legH,'#3a2200');dr(ex+12,ey+legY,8,legH,'#3a2200');
+      // 複眼
+      dr(ex+3,ey+8,6,5,'#0a0200');dr(ex+13,ey+8,6,5,'#0a0200');
+      if(Math.floor(t/300)%3>0){dr(ex+4,ey+9,4,3,'#ff6600');dr(ex+14,ey+9,4,3,'#ff6600');}
+      // HPバー
+      dr(ex,ey-9,e.w,3,'#330008');dr(ex,ey-9,Math.ceil(e.w*(e.hp/e.maxHp)),3,'#ff8800');
+    } else if(e.type==='sniper'){
+      // 狙撃型 (スコープ付きのっぽ型)
+      const sc=e.shotCd/e.shotMax;
+      const pulse=sc>0.8&&Math.floor(t/80)%2;
+      // 脚
+      dr(ex+4,ey+24,9,10,'#1a0a00');dr(ex+13,ey+24,9,10,'#1a0a00');
+      // 胴体
+      dr(ex+2,ey+8,22,18,'#1e0e00');dr(ex+2,ey+8,22,4,'#3a2a10');
+      // 頭
+      dr(ex+6,ey+1,14,8,'#1e0e00');dr(ex+6,ey+1,14,3,'#3a2a10');
+      // スコープ/銃身
+      const gx2=e.dir>0?ex+22:ex-10;
+      dr(gx2,ey+12,12,4,'#111111');dr(e.dir>0?gx2+8:gx2,ey+11,4,6,'#cc1100');
+      // 目
+      dr(ex+8,ey+3,8,5,'#0a0200');
+      if(pulse)dr(ex+9,ey+4,6,3,'#ff0000');else dr(ex+10,ey+4,3,2,'#660000');
+      // チャージゲージ
+      dr(ex+2,ey,22,3,'#110008');dr(ex+2,ey,Math.floor(22*sc),3,'#ff3300');
+      // HPバー
+      dr(ex,ey-9,e.w,3,'#330008');dr(ex,ey-9,Math.ceil(e.w*(e.hp/e.maxHp)),3,'#ff1144');
+    } else if(e.type==='bomber'){
+      // 自爆型 (丸っこい胴体・導火線)
+      const fuse=e.fuseActive;
+      const flsh=fuse&&Math.floor(t/(fuse?Math.max(40,120-e.fuseTimer):120))%2;
+      // 脚
+      dr(ex+4,ey+18,8,10,'#330011');dr(ex+14,ey+18,8,10,'#330011');
+      // 丸い胴体
+      dr(ex+2,ey+4,22,16,'#550011');dr(ex,ey+8,26,8,'#550011');
+      dr(ex+2,ey+4,22,5,flsh?'#ff8800':'#881111');
+      // 爆弾マーク
+      dr(ex+10,ey+10,6,6,'#220008');dr(ex+11,ey+11,4,4,flsh?'#ff4400':'#882200');
+      // 導火線
+      dr(ex+11,ey,4,5,fuse?'#ffcc00':'#885522');
+      if(fuse&&flsh)dr(ex+10,ey-3,6,4,'#ffee44');
+      // 目
+      dr(ex+5,ey+7,6,5,'#1a0004');dr(ex+15,ey+7,6,5,'#1a0004');
+      if(flsh){dr(ex+6,ey+8,4,3,'#ff2200');dr(ex+16,ey+8,4,3,'#ff2200');}
+      // HPバー
+      dr(ex,ey-9,e.w,3,'#330008');dr(ex,ey-9,Math.ceil(e.w*(e.hp/e.maxHp)),3,'#ff1144');
+    } else if(e.type==='brute'){
+      const atkPhase=e.punchCd>70;
+      const eg=Math.floor(t/180)%2;
+      // 脚
+      dr(ex+4,ey+24,12,10,'#1a0028');dr(ex+22,ey+24,12,10,'#1a0028');
+      dr(ex+3,ey+30,14,4,'#0e0018');dr(ex+21,ey+30,14,4,'#0e0018');
+      // 胴体
+      dr(ex+2,ey+8,34,16,'#220033');dr(ex,ey+10,38,10,'#2e0044');
+      dr(ex+2,ey+8,34,4,'#3e0060');dr(ex+6,ey+12,26,5,'#180024');
+      // 肩アーマー
+      dr(ex-4,ey+8,8,8,'#2a003a');dr(ex+34,ey+8,8,8,'#2a003a');
+      // 頭
+      dr(ex+8,ey+2,22,8,'#1e0030');dr(ex+10,ey,18,4,'#2a0040');
+      dr(ex+8,ey+2,22,2,'#3a0058');
+      // 目 (赤く光る)
+      dr(ex+9,ey+3,8,4,'#0e0011');dr(ex+21,ey+3,8,4,'#0e0011');
+      dr(ex+10,ey+3,6,3,eg?'#ff0033':'#cc0022');dr(ex+22,ey+3,6,3,eg?'#ff0033':'#cc0022');
+      dr(ex+11,ey+3,3,1,'#ff88aa');dr(ex+23,ey+3,3,1,'#ff88aa');
+      // 腕 (パンチ時に前腕延伸)
+      const ext=atkPhase?10:0;
+      if(e.dir>0){
+        dr(ex-6,ey+10,8,14,'#220033');
+        dr(ex+36,ey+10,8+ext,14,'#220033');dr(ex+42+ext,ey+17,10,8,'#330033');
+      } else {
+        dr(ex+30,ey+10,8,14,'#220033');
+        dr(ex-10-ext,ey+10,8+ext,14,'#220033');dr(ex-18-ext,ey+17,10,8,'#330033');
+      }
+      // HPバー
+      dr(ex,ey-10,e.w,4,'#220008');dr(ex,ey-10,Math.ceil(e.w*(e.hp/e.maxHp)),4,'#ff0066');
     } else if(e.type==='turret'){
       // 敵砲台 - 鬼ヶ島の遺跡砲台
       const pulse=Math.floor(t/120)%3;
@@ -3111,7 +3238,7 @@ function drawEnemies(){
         dr(ex,ey-10,e.w,3,'#1a0028');dr(ex,ey-10,Math.ceil(e.w*(e.hp/e.maxHp)),3,'#ff0000');
       }
     }
-    } else if(e.type==='jumper'){
+    else if(e.type==='jumper'){
       if(currentStage===1){
         // コウモリ - 黒い羽（jumperでも同じコウモリ）
         const flap=Math.sin(t/100)*4;
@@ -3745,7 +3872,6 @@ function drawBossKagutsuchi(bx,by,t){
   ctx.globalAlpha=1;
 
   // 炎エフェクト（下部から立ち上る）
-  const flamePulse=Math.sin(t/200)*.4+.6;
   ctx.globalAlpha=flamePulse*.2;
   _f('#ffaa00',6,60,boss.w-12,10);
   ctx.globalAlpha=1;
@@ -5358,7 +5484,6 @@ function drawEnding(){
   ];
   const totalH=lines.length*lh;
   const speed=20;
-  const elapsed=(Date.now()-endingStartTime)/1000;
   const scrollY=elapsed*speed;
   if(scrollY>totalH+H*.05&&!endingDone){endingDone=true;setTsukuyomiUnlocked(true);}
   ctx.save();
