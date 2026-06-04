@@ -427,45 +427,56 @@ function drawCharacter(sx,sy,ci,facing,walkFrame,moving,atkAnim,isJetting,isAirb
       // 手
       _r(skin,20,26, 10, 10); _r(skinS,21,27, 8, 8);
     }
-  } else if(ci===4){ // ===== マタキチ - 肌色グローブ + オレンジ道着 =====
-    const skin='#DEAA58', skinS='#B88030';
+  } else if(ci===4){ // ===== マタキチ - ハンマー装備・大工風 =====
+    const skin='#DEAA58', skinS='#B88030', hammerCol='#654321', hammerMetal='#8B7355';
     if(atk===0){
-      // ボクシングガード: グローブを顔前に構える
+      // 待機：背中にハンマーを持つ
       const sw=moving?(wf===0?1:-1):0;
-      // 後腕 (左肩から上に立てて顎ガード)
-      _r(OL,-1,17, 6,16); _r(SC, 0,18, 4,14); _r(AC, 0,18, 4, 3);
-      // 後腕の袖（肌色）
-      _r(OL,-1,16, 6, 2); _r(skin, 0,17, 4, 1);
-      // グローブ (肌色・顎ガード位置) ← 体(y=19)より上なので必ず見える
-      _r(skinS,-5, 2,14,13); _r(skin,-4, 3,12,11); _r('#F0C068',-3, 3, 9, 4);
-      _r('#FFE8B8',-3, 3, 4, 1); _r(skinS,-3,12, 9, 1);
-      // 前腕 (右肩→前方ジャブ構え)
-      _r(OL,16+sw,20, 7,14); _r(SC,17+sw,21, 5,12); _r(AC,17+sw,21, 5, 3);
-      _r(OL,22+sw,14, 9, 8); _r(SC,23+sw,15, 7, 6); _r(AC,23+sw,15, 7, 2);
-      // 前腕の袖（肌色）
-      _r(OL,16+sw,19, 7, 2); _r(skin,17+sw,20, 5, 1);
-      // グローブ (肌色・大・ジャブ位置)
-      _r(skinS,28+sw, 9,16,12); _r(skin,29+sw,10,14,10); _r('#F0C068',30+sw,10,11, 4);
-      _r('#FFE8B8',30+sw,10, 5, 1); _r(skinS,30+sw,17,10, 1);
+      // 後腕 (背中・ハンマー柄を持つ)
+      _r(OL, 1,20, 5,12); _r(SC, 2,21, 3,10); _r(AC, 2,21, 3, 2);
+      // 前腕 (右肩・自然に下ろす)
+      _r(OL,16+sw,22, 7,12); _r(SC,17+sw,23, 5,10); _r(AC,17+sw,23, 5, 2);
+      _r(OL,22+sw,18, 8, 8); _r(SC,23+sw,19, 6, 6); _r(AC,23+sw,19, 6, 2);
+      // 手
+      _r(skin, 0,30, 7, 7); _r(skinS, 1,31, 5, 5);
+      _r(skin,21,28, 8, 8); _r(skinS,22,29, 6, 6);
+      // ハンマー（背中に持つ）
+      // ハンマーヘッド（背中の後ろ）
+      _r(hammerMetal, -8,12,12,14); // ハンマーヘッド（大きめ）
+      _r('#5A3A2A', -8,12,12, 2); // ハンマーヘッドの影
+      _r('#A08060', -6,13, 8, 3); // ハイライト
+      // ハンマーの柄（背中を通して下へ）
+      _r(hammerCol, 2,26, 4,16); // 柄
+      _r('#3A2A1A', 2,26, 4, 1); // 柄の影
     } else {
-      // 強パンチ: 後腕引きながらグローブを射出
-      _r(OL,-bkPull-2,20, 7,14); _r(SC,1-bkPull-2,21, 5,12); _r(AC,1-bkPull-2,21, 5, 3);
-      // 引いてるグローブ
-      _r(skinS,-bkPull-2,32,12, 8); _r(skin,-bkPull-1,33,10, 6); _r('#F0C068',-bkPull,33, 7, 2);
-      // 前腕
-      const eA=Math.floor(ext*.22),eB=Math.floor(ext*.38);
-      _r(OL,22,22,10+eA, 6); _r(SC,23,23, 8+eA, 4); _r(AC,23,23, 8+eA, 2);
-      _r(OL,29+eB,18,10+eA, 8); _r(SC,30+eB,19, 8+eA, 6); _r(AC,30+eB,19, 8+eA, 2);
-      // グローブ (肌色・フィニッシャーは特大)
-      const fw=atk>=3?20:15, fy=atk>=3?-3:0;
-      _r(skinS,36+ext,16+fy,fw+2,13); // 外枠
-      _r(skin,37+ext,17+fy,fw,  11); // グローブ本体
-      _r('#F0C068',38+ext,17+fy,fw-2,  4); // ハイライト
-      _r('#FFE8B8',38+ext,17+fy,  6,   1); // トップハイライト
-      _r(skinS,38+ext,24+fy,fw-4,  1); // 縫い目
+      // 攻撃：ハンマーを振り下ろす
+      const hammerSwing=Math.min(ext/30, 1);  // 0-1の振り下ろし進度
+      const swing=Math.floor(hammerSwing*30); // 0-30のスイング角度
+
+      // 後腕 (背中から前へ)
+      _r(OL, 3-swing*0.3,18, 5,14); _r(SC, 4-swing*0.3,19, 3,12); _r(AC, 4-swing*0.3,19, 3, 3);
+      // 前腕 (ハンマーを振り下ろす)
+      const armExt=Math.floor(ext*.25);
+      _r(OL,20,22, 8+armExt, 6); _r(SC,21,23, 6+armExt, 4); _r(AC,21,23, 6+armExt, 2);
+      _r(OL,26+armExt,18, 8+armExt, 8); _r(SC,27+armExt,19, 6+armExt, 6); _r(AC,27+armExt,19, 6+armExt, 2);
+      // 手
+      _r(skin,20,28, 8, 8); _r(skinS,21,29, 6, 6);
+
+      // ハンマー（振り下ろし動作）
+      const hammerX=28+ext;
+      const hammerY=8+swing;
+      // ハンマーヘッド（前方に突き出す）
+      _r(hammerMetal, hammerX,hammerY,14,16); // ハンマーヘッド（大きめ）
+      _r('#5A3A2A', hammerX,hammerY,14, 2); // ハンマーヘッドの影
+      _r('#A08060', hammerX+2,hammerY+2, 10, 3); // ハイライト
+      // ハンマーの柄（腕から繋がる）
+      _r(hammerCol, hammerX+5,hammerY-8, 4,10); // 柄
+      _r('#3A2A1A', hammerX+5,hammerY-8, 4, 1); // 柄の影
+
+      // 衝撃表現（フィニッシャー時）
       if(atk>=3){
-        _r('#ffffff',58,13, 3, 4); _r('#ffffff',61,15, 3, 6); _r('#ffffff',64,12, 2, 9);
-        _r(AC,57,11, 4, 2); _r(HL,60,10, 3, 2);
+        _r('#FFD700',hammerX+4, hammerY-4, 3, 2); // 金色の光
+        _r('#FFD700',hammerX+8, hammerY+4, 2, 2);
       }
     }
   } else { // ===== 鷹/熊/狼/竜/ツクヨミ =====
