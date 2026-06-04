@@ -913,27 +913,12 @@ function drawAnimalHead(ci,_r,AC,atk){
     _r('#cc6600', 3,18,24,16); _r('#dd8822', 4,19,22,14); _r('#ff9933', 4,19,22, 2);
 
     // スキンヘッド（肌色の丸頭・坊主の頭頂部）
-    ctx.fillStyle=sk;ctx.beginPath();ctx.ellipse(13,2,11,9,0,0,Math.PI*2);ctx.fill();
-    ctx.fillStyle='#E8B854';ctx.beginPath();ctx.ellipse(13,2,10,8,0,0,Math.PI*2);ctx.fill();
-    // 頭のハイライト（光沢感）
-    ctx.globalAlpha=0.35;ctx.fillStyle='#F0C068';ctx.beginPath();ctx.ellipse(13,-2,6,4,0,0,Math.PI*2);ctx.fill();ctx.globalAlpha=1;
+    ctx.fillStyle=sk;ctx.beginPath();ctx.ellipse(13,3,11,8,0,0,Math.PI*2);ctx.fill();
+    ctx.fillStyle='#E8B854';ctx.beginPath();ctx.ellipse(13,3,10,7,0,0,Math.PI*2);ctx.fill();
 
-    // 白いねじり鉢巻き（頭部に巻く）
-    _r('#ffffff', 1, 6, 24, 3);   // メイン帯（太く明確）
-    _r('#f8f8f8', 2, 7, 22, 1);   // 上部のハイライト
-    _r('#ebebeb', 3, 8, 20, 1);   // 下部の陰
-
-    // ねじり鉢巻きの結び目（左側）
-    _r('#ffffff', 1, 7, 3, 4);    // 結び目の左側
-    _r('#efefef', 1, 8, 3, 2);    // 結び目の陰
-
-    // ねじり鉢巻きのテクスチャ（らせん模様）
-    _r('#f0f0f0', 6, 6, 2, 2);
-    _r('#e8e8e8', 6, 7, 2, 1);
-    _r('#f0f0f0', 13, 6, 2, 2);
-    _r('#e8e8e8', 13, 7, 2, 1);
-    _r('#f0f0f0', 20, 6, 2, 2);
-    _r('#e8e8e8', 20, 7, 2, 1);
+    // 白いハチマキ（目の上・太くはっきり）
+    _r('#ffffff', 1, 4, 24, 3);   // メイン帯（目の上）
+    _r('#f8f8f8', 2, 5, 22, 1);   // 上部のハイライト
 
     // 人間の顔（楕円・肌色）
     ctx.fillStyle=OL;ctx.beginPath();ctx.ellipse(13,11,13,12,0,0,Math.PI*2);ctx.fill();
@@ -1698,18 +1683,13 @@ function doAttack(){
       }
       break;
     }
-    case 4:{ // REX サイ - 強パンチ＋空中タックル
-      if(!player.onGround){ // 空中: 水平タックル (2回まで)
-        if(!player.charging){
-          if(player.airTackleCount>=3){ break; } // 4回目以降は不可→落下
-          player.airTackleCount++;
-          player.charging=true;player.chargeTimer=20;player.chargeDir=f;
-          player.chargeSpd=17;player.chargeAir=true;
-          player.invincible=Math.max(player.invincible,22);
-          player.vy=Math.min(player.vy,1.2); // 急落下を抑える
-          for(let k=0;k<12;k++){const a=(Math.random()-.5)*1.1+(f>0?Math.PI:0),sp=Math.random()*5+3;particles.push({x:px+pw*.5,y:py+ph*.4,vx:Math.cos(a)*sp,vy:Math.sin(a)*sp-0.8,col:k%2?'#99bbcc':'#ffffff',life:20});}
-          addShake(4);sfx('bomb');
-        }
+    case 4:{ // REX サイ - 強パンチ＋空中岩投げ
+      if(!player.onGround){ // 空中: 岩を投げる
+        const rdmg=step<2?2:lv>=1?5:4;
+        const rspd=step<2?8:12;
+        projectiles.push({x:px+pw/2,y:py+ph/2,vx:f*rspd,vy:-2-step,w:16,h:16,col:'#999999',dmg:rdmg,life:100,hit:[],pierce:false,homing:false,rock:true});
+        for(let k=0;k<8;k++){const a=Math.random()*Math.PI*2,sp=Math.random()*2+1;particles.push({x:px+pw/2,y:py+ph/2,vx:Math.cos(a)*sp,vy:Math.sin(a)*sp-1,col:'#aabbcc',life:16});}
+        burst(px+pw/2,py+ph/2,'#888888',6);sfx('throw');
         break;
       }
       player.invincible=Math.max(player.invincible,step===2?18:10); // パンチ中に無敵
