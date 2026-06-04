@@ -449,27 +449,27 @@ function drawCharacter(sx,sy,ci,facing,walkFrame,moving,atkAnim,isJetting,isAirb
       _r(hammerShine, 16, 5, 14, 3);  // ハイライト上部
       _r(hammerShine, 18, 10, 10, 2); // ハイライト中部
     } else {
-      // 攻撃：ハンマーを回転させながら振り下ろす
+      // 攻撃：ハンマーを回転させながら上から下へ振り下ろす
       const swingProgress=Math.min(ext/35, 1);  // スイング進度（0-1）
 
       // 回転角度：45度から-90度へ（垂直に近い形で振り下ろし）
       const angle=45-swingProgress*135; // 45度 → -90度
       const angleRad=angle*Math.PI/180;
 
-      // ハンマーの中心座標
+      // ハンマーの中心座標（上から下へ移動）
       const hammerCenterX=28;
-      const hammerCenterY=20;
+      const hammerCenterY=10+swingProgress*35; // 上（10）→ 下（45）へ移動
 
       // ハンマーの長さ（回転軸から先端まで）
-      const hammerLength=35;
+      const hammerLength=38;
 
       // ハンマーの先端位置（回転）
       const hammerHeadX=hammerCenterX+Math.cos(angleRad)*hammerLength;
       const hammerHeadY=hammerCenterY+Math.sin(angleRad)*hammerLength;
 
-      const hammerSize=atk>=3?1.25:1; // フィニッシャーは1.25倍
-      const hheadW=Math.floor(18*hammerSize);
-      const hheadH=Math.floor(16*hammerSize);
+      const hammerSize=atk>=3?1.3:1; // フィニッシャーは1.3倍
+      const hheadW=Math.floor(24*hammerSize); // 横長に（18→24）
+      const hheadH=Math.floor(14*hammerSize); // 少し低め（16→14）
       const hwid=Math.floor(5*hammerSize);
 
       // 腕の動き
@@ -489,14 +489,14 @@ function drawCharacter(sx,sy,ci,facing,walkFrame,moving,atkAnim,isJetting,isAirb
       _r('#A08B6B', 2, -hwid/2+1, hammerLength-4, 1); // 柄のハイライト
       ctx.restore();
 
-      // ハンマーヘッド（回転終了位置）
+      // ハンマーヘッド（回転終了位置・横長）
       _r(hammerMetal, hammerHeadX-hheadW/2, hammerHeadY-hheadH/2, hheadW, hheadH);
       _r(hammerShine, hammerHeadX-hheadW/2+2, hammerHeadY-hheadH/2+1, hheadW-4, 2); // ハイライト
 
       // フィニッシャー時の衝撃表現
       if(atk>=3){
-        _r('#FFD700', hammerHeadX-7, hammerHeadY-8, 5, 3); // 金色の光
-        _r('#FFFF99', hammerHeadX-4, hammerHeadY+4, 10, 2); // 白色の輝き
+        _r('#FFD700', hammerHeadX-9, hammerHeadY-8, 6, 3); // 金色の光
+        _r('#FFFF99', hammerHeadX-6, hammerHeadY+4, 12, 2); // 白色の輝き
       }
     }
   } else { // ===== 鷹/熊/狼/竜/ツクヨミ =====
