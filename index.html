@@ -3157,7 +3157,6 @@ function drawEnemies(){
         dr(ex+8,ey+11,4,4,'#ff0000');dr(ex+16,ey+11,4,4,'#ff0000');
         dr(ex,ey-9,e.w,3,'#330008');dr(ex,ey-9,Math.ceil(e.w*(e.hp/e.maxHp)),3,'#ff0000');
       }
-    }
     } else if(e.type==='sniper'){
       if(currentStage===3){
         // 洞窟コウモリ系狙撃鬼 - 目が大きく光る
@@ -3229,7 +3228,6 @@ function drawEnemies(){
         dr(ex+10,ey+6,4,4,pulse?'#ff00ff':'#9944ff');
         dr(ex,ey-10,e.w,3,'#330008');dr(ex,ey-10,Math.ceil(e.w*(e.hp/e.maxHp)),3,'#9966ff');
       }
-    }
     } else if(e.type==='bomber'){
       if(currentStage===3){
         // 爆裂鬼 - 丸い体・炎で爆発
@@ -3276,7 +3274,6 @@ function drawEnemies(){
         if(flsh)dr(ex+10,ey+13,8,4,'#ff0000');
         dr(ex,ey-11,e.w,3,'#330008');dr(ex,ey-11,Math.ceil(e.w*(e.hp/e.maxHp)),3,'#ff3300');
       }
-    }
     } else if(e.type==='brute'){
       if(currentStage===5){
         // ランカイの親衛隊 - 4本腕・兜被った巨大鬼
@@ -3316,7 +3313,6 @@ function drawEnemies(){
         dr(ex+12,ey+4,4,4,eg?'#ff0033':'#cc0022');dr(ex+24,ey+4,4,4,eg?'#ff0033':'#cc0022');
         dr(ex,ey-12,e.w,4,'#220008');dr(ex,ey-12,Math.ceil(e.w*(e.hp/e.maxHp)),4,'#ff0066');
       }
-    }
     }
     // 毒インジケーター
     if(e.poisoned>0){
