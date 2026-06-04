@@ -1697,16 +1697,17 @@ function doAttack(){
         burst(px+pw/2,py+ph/2,'#665544',5);sfx('throw');
         break;
       }
-      player.invincible=Math.max(player.invincible,step===2?18:10); // パンチ中に無敵
-      const pdmg=step<2?3:lv>=2?6:4; // ×1.5
+      // 地上：強パンチ
+      player.invincible=Math.max(player.invincible,step===2?18:10);
+      const pdmg=step<2?3:lv>=2?6:4;
       const pw2=step<2?30:44;
       projectiles.push({x:f>0?px+pw:px-pw2,y:py+8,vx:f*1,vy:0,w:pw2,h:ph-16,col:'#667788',dmg:pdmg,life:8,hit:[],pierce:step>=2,homing:false,punch:true});
       burst(f>0?px+pw+4:px-4,py+ph/2,'#aabbcc',pdmg>=3?9:5);
       sfx('hit');
-      if(step===2&&lv>=1){ // フィニッシャー: 衝撃波 (×1.5)
+      if(step===2&&lv>=1){
         effects.push({type:'explode',x:px+pw/2,y:py+ph,r:lv>=2?115:88,maxTimer:18,timer:18,dmg:lv>=2?4:3,applied:false});
       }
-      if(step===2&&lv>=2&&!player.charging){ // lv2: 突進発動
+      if(step===2&&lv>=2&&!player.charging){
         player.charging=true;player.chargeTimer=22;player.chargeDir=f;
         player.chargeSpd=14;player.chargeAir=false;
         player.invincible=Math.max(player.invincible,24);
