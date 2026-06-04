@@ -2918,6 +2918,11 @@ function drawEnemies(){
     const ex=Math.floor(e.x-cam.x);if(ex>W+60||ex+e.w<-60)return;
     const ey=Math.floor(e.y);
 
+    // charger・brute を大きく表示して強そうに見せる
+    const scale=e.type==='brute'?1.35:(e.type==='charger'?1.2:1);
+    const cx=ex+e.w/2, cy=ey+e.h/2;
+    if(scale!==1){ctx.save();ctx.translate(cx,cy);ctx.scale(scale,scale);ctx.translate(-cx,-cy);}
+
     if(e.type==='patrol'){
       if(currentStage===1){
         // 子鬼 - 小柄な赤鬼
@@ -3499,6 +3504,7 @@ function drawEnemies(){
     }
     // ヒットフラッシュ（白く光る）
     if(e.flashTimer>0){ctx.globalAlpha=e.flashTimer/8*0.85;dr(ex,ey,e.w,e.h,'#ffffff');ctx.globalAlpha=1;}
+    if(scale!==1)ctx.restore();
   });
 
   // 敵弾描画
