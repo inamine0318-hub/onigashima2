@@ -5887,38 +5887,63 @@ function drawHazards(){
 }
 
 function drawBottomGround(){
-  // TERRAIN と同じ色・テクスチャでステージ下部を埋める
+  // TERRAIN と穴を区別した地面描画
   const scfg=STAGE_CFG[currentStage-1];
   const tM=scfg.tMain,tH=scfg.tHL,tH2=scfg.tHL2,tS=scfg.tSide,tA=scfg.tAcc;
   const py=H-1;
   const t=frameTime;
-  const tile=32;  // TERRAIN と同じタイル幅
+  const tile=32;
 
-  // メイン背景色で埋める
-  dr(0,py-60,W,60,tM);
+  // 地形セグメントごとに描画（カメラに対応）
+  const startX=Math.floor(cam.x/60)*60;
+  const endX=startX+W+120;
 
-  // タイル石目（TERRAIN と同じパターン）
-  for(let bx=0;bx<W;bx+=tile)dr(bx,py-60,1,60,'#0a0a12');
+  for(let x=startX;x<endX;x+=60){
+    const sx=Math.floor(x-cam.x);
+    if(sx>W+60||sx+60<-60)continue;
 
-  // ハイライト（上端）
-  dr(0,py-60,W,2,tH);dr(0,py-60,W,1,tH2);
+    // この座標範囲が穴か確認
+    const isHole=STAGE_HOLES.some(h=>x<h.x2&&x+60>h.x1);
 
-  // ステージ別装飾（TERRAIN と同じパターン）
-  if(currentStage===1){ // 遺跡: 苔・紋様
-    for(let gx=8;gx<W-8;gx+=48)dr(gx,py-58,6,2,'#1a2a1a');
+    if(isHole){
+      // 穴：海として描画
+      const seaCol=currentStage===1?'#0d3d66':'#1a2a4a'; // Stage1は海色、他は深い色
+      dr(sx,py-60,60,60,seaCol);
+      // 水の波パターン
+      for(let i=0;i<3;i++){
+        const waveY=Math.sin(t/200+x*0.01+i*2)*2;
+        ctx.globalAlpha=0.3;
+        dr(sx+i*20,py-40+waveY,18,2,'#1a5a7a');
+        ctx.globalAlpha=1;
+      }
+    } else {
+      // 陸地：TERRAIN と同じ色
+      dr(sx,py-60,60,60,tM);
+      // タイル石目
+      for(let bx=sx;bx<sx+60;bx+=tile)dr(bx,py-60,1,60,'#0a0a12');
+      // ハイライト
+      dr(sx,py-60,60,2,tH);dr(sx,py-60,60,1,tH2);
+    }
   }
-  if(currentStage===2){ // 雷峰: 稲妻紋様
+
+  // ステージ別装飾（穴以外）
+  if(currentStage===1){
+    for(let gx=8;gx<W-8;gx+=48){
+      const gxWorld=gx+Math.floor(cam.x);
+      const isHole=STAGE_HOLES.some(h=>gxWorld<h.x2&&gxWorld+6>h.x1);
+      if(!isHole)dr(gx,py-58,6,2,'#1a2a1a');
+    }
+  }
+  if(currentStage===2){
     for(let gx=16;gx<W-16;gx+=56){
-      dr(gx,py-58,2,4,'#2a3860');dr(gx+3,py-56,2,4,'#2a3860');}
+      const gxWorld=gx+Math.floor(cam.x);
+      const isHole=STAGE_HOLES.some(h=>gxWorld<h.x2&&gxWorld+5>h.x1);
+      if(!isHole){dr(gx,py-58,2,4,'#2a3860');dr(gx+3,py-56,2,4,'#2a3860');}
+    }
   }
-  if(currentStage===3){ // 炎窟: 溶岩の縁が光る
+  if(currentStage===3){
     const gl=Math.sin(t/300)*.4+.6;
     ctx.globalAlpha=gl*.18;dr(0,py-60,W,2,'#ff4400');ctx.globalAlpha=1;
-  }
-  if(currentStage===4){ // 深海神殿: 海藻・緑光
-    for(let gx=10;gx<W-10;gx+=36){
-      const wv=Math.sin(t/600+gx*.1)*2;
-      dr(gx+wv,py-68,3,10,'#0a3a20');dr(gx+wv+1,py-67,1,8,'#1a6a30');}
   }
 }
 
