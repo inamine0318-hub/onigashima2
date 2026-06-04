@@ -6312,26 +6312,10 @@ function drawGameOver(){
 }
 
 // ================================================================
-//  スプラッシュ画面
-// ================================================================
-function drawSplash(){
-  ctx.fillStyle='#000';ctx.fillRect(0,0,W,H);
-  const fi=Math.min(1,splashTimer/40);
-  const fo=splashTimer>150?Math.max(0,1-(splashTimer-150)/50):1;
-  ctx.globalAlpha=fi*fo;
-  if(splashReady){
-    const asp=splashImg.naturalWidth/splashImg.naturalHeight;
-    let dw=W*.6,dh=dw/asp;
-    if(dh>H*.8){dh=H*.8;dw=dh*asp;}
-    ctx.drawImage(splashImg,Math.round((W-dw)/2),Math.round((H-dh)/2),Math.round(dw),Math.round(dh));
-  }
-  ctx.globalAlpha=1;
-}
-
-// ================================================================
 //  メインループ
 // ================================================================
 function draw(){
+  ctx.clearRect(0,0,canvas.width,canvas.height);
   ctx.save();
   if(isPortrait){
     // 縦持ちでも横向きゲームを表示: ctx内部で90度回転+スケール
@@ -6361,3 +6345,4 @@ function loop(){frameTime=Date.now();try{update();draw();}catch(e){console.error
 loop();
 </script>
 </body>
+</html>
