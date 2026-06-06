@@ -427,6 +427,8 @@ function drawCharacter(sx,sy,ci,facing,walkFrame,moving,atkAnim,isJetting,isAirb
       const rad=angle*Math.PI/180;
       ctx.save();
       ctx.translate(26,28);ctx.rotate(rad);
+      // 手とハンマーを一緒に回転（振りかざす）
+      box(-3,0,0.75,1.5,col);box(5.5,0,0.75,1.5,col);
       box(0,-0.25,5,0.5,'#8B6B47');box(5,-0.5,1.5,1,'#1a1a1a');
       ctx.restore();
     }
