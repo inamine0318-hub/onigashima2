@@ -241,7 +241,7 @@ const SC_ACCNT =['#ff8800','#cc3300','#5566ee','#ffcc00','#99bbcc','#ffaa00','#8
 function drawCharacter(sx,sy,ci,facing,walkFrame,moving,atkAnim,isJetting,isAirborne){
   ctx.save();
 
-  // ===== マタキチ - 熊（がっしり体型・首なし・大きな頭） =====
+  // ===== マタキチ - 熊（高品質グラフィックス版） =====
   if(ci===4){
     const VS=1.28;
     ctx.translate(Math.floor(sx+15),Math.floor(sy+CHARS[ci].h));
@@ -249,51 +249,70 @@ function drawCharacter(sx,sy,ci,facing,walkFrame,moving,atkAnim,isJetting,isAirb
     ctx.translate(-15,-49);
     if(facing<0){ctx.translate(30,0);ctx.scale(-1,1);}
 
-    const bearCol='#704214', bearDark='#5a3a2a', bearBlack='#000000', outline='#080810';
+    const bearCol='#704214', bearMid='#8B5A2B', bearLight='#9B6A3B', bearDark='#4A2A0A', bearBlack='#000000', outline='#080810';
     const atk=atkAnim||0;
     const movePhase=moving?Math.sin(walkFrame*Math.PI/12):0;
 
-    // 足（太くてがっしり・左右対称・歩行アニメ）
+    // 足（グラデーション・立体感）
     const footY=moving?44+movePhase*2:44;
-    ctx.fillStyle=outline;ctx.fillRect(1,37,15,footY-37);ctx.fillStyle=bearCol;ctx.fillRect(2,38,13,footY-38);
-    ctx.fillStyle=outline;ctx.fillRect(1,footY,15,4);ctx.fillStyle=bearCol;ctx.fillRect(2,footY,13,3);
+    const footGrad=ctx.createLinearGradient(1,37,1,footY+4);
+    footGrad.addColorStop(0,bearMid);footGrad.addColorStop(1,bearDark);
+    ctx.fillStyle=outline;ctx.fillRect(1,37,15,footY-37);ctx.fillStyle=footGrad;ctx.fillRect(2,38,13,footY-38);
+    ctx.fillStyle=outline;ctx.fillRect(1,footY,15,4);ctx.fillStyle=footGrad;ctx.fillRect(2,footY,13,3);
+    ctx.fillStyle=outline;ctx.fillRect(16,37,15,footY-37);ctx.fillStyle=footGrad;ctx.fillRect(17,38,13,footY-38);
+    ctx.fillStyle=outline;ctx.fillRect(16,footY,15,4);ctx.fillStyle=footGrad;ctx.fillRect(17,footY,13,3);
 
-    ctx.fillStyle=outline;ctx.fillRect(16,37,15,footY-37);ctx.fillStyle=bearCol;ctx.fillRect(17,38,13,footY-38);
-    ctx.fillStyle=outline;ctx.fillRect(16,footY,15,4);ctx.fillStyle=bearCol;ctx.fillRect(17,footY,13,3);
+    // 胴体（グラデーション・立体感）
+    const bodyGrad=ctx.createLinearGradient(2,19,2,35);
+    bodyGrad.addColorStop(0,bearLight);bodyGrad.addColorStop(0.5,bearCol);bodyGrad.addColorStop(1,bearDark);
+    ctx.fillStyle=outline;ctx.fillRect(1,18,30,18);ctx.fillStyle=bodyGrad;ctx.fillRect(2,19,28,16);
+    ctx.globalAlpha=0.3;ctx.fillStyle=bearBlack;ctx.fillRect(2,25,28,2);ctx.globalAlpha=1;
 
-    // 胴体（横幅広く・どっしり・首なし）
-    ctx.fillStyle=outline;ctx.fillRect(1,18,30,18);ctx.fillStyle=bearCol;ctx.fillRect(2,19,28,16);
-
-    // 肩の丸み（大きく・頭へ自然につなぐ）
+    // 肩（グラデーション・大きく）
+    const shoulderGrad=ctx.createRadialGradient(2,18,1,2,18,8);
+    shoulderGrad.addColorStop(0,bearLight);shoulderGrad.addColorStop(1,bearDark);
     ctx.fillStyle=outline;ctx.beginPath();ctx.arc(2,18,9,0,Math.PI*2);ctx.fill();
-    ctx.fillStyle=bearCol;ctx.beginPath();ctx.arc(2,18,7,0,Math.PI*2);ctx.fill();
+    ctx.fillStyle=shoulderGrad;ctx.beginPath();ctx.arc(2,18,8,0,Math.PI*2);ctx.fill();
+    const shoulderGrad2=ctx.createRadialGradient(30,19,1,30,19,9);
+    shoulderGrad2.addColorStop(0,bearLight);shoulderGrad2.addColorStop(1,bearDark);
     ctx.fillStyle=outline;ctx.beginPath();ctx.arc(30,19,10,0,Math.PI*2);ctx.fill();
-    ctx.fillStyle=bearCol;ctx.beginPath();ctx.arc(30,19,8,0,Math.PI*2);ctx.fill();
+    ctx.fillStyle=shoulderGrad2;ctx.beginPath();ctx.arc(30,19,9,0,Math.PI*2);ctx.fill();
 
-    // 腕（太く短め・歩行時に振る）
+    // 腕（グラデーション・立体感）
     const armSwing=moving?movePhase*3:0;
-    ctx.fillStyle=outline;ctx.fillRect(-2-armSwing,15,12,20);ctx.fillStyle=bearCol;ctx.fillRect(-1-armSwing,16,10,18);
-    ctx.fillStyle=outline;ctx.fillRect(20+armSwing,16,12,20);ctx.fillStyle=bearCol;ctx.fillRect(21+armSwing,17,10,18);
+    const armGrad=ctx.createLinearGradient(-1-armSwing,16,8-armSwing,34);
+    armGrad.addColorStop(0,bearLight);armGrad.addColorStop(0.5,bearCol);armGrad.addColorStop(1,bearDark);
+    ctx.fillStyle=outline;ctx.fillRect(-2-armSwing,15,12,20);ctx.fillStyle=armGrad;ctx.fillRect(-1-armSwing,16,10,18);
+    ctx.fillStyle=outline;ctx.fillRect(20+armSwing,16,12,20);ctx.fillStyle=armGrad;ctx.fillRect(21+armSwing,17,10,18);
 
-    // 頭（大きく・首なし・胴体に直接つながる）
+    // 頭（グラデーション・立体感）
+    const headGrad=ctx.createRadialGradient(13,0,2,15,2,12);
+    headGrad.addColorStop(0,bearLight);headGrad.addColorStop(0.6,bearCol);headGrad.addColorStop(1,bearDark);
     ctx.fillStyle=outline;ctx.beginPath();ctx.arc(15,2,12,0,Math.PI*2);ctx.fill();
-    ctx.fillStyle=bearCol;ctx.beginPath();ctx.arc(15,2,11,0,Math.PI*2);ctx.fill();
+    ctx.fillStyle=headGrad;ctx.beginPath();ctx.arc(15,2,11,0,Math.PI*2);ctx.fill();
 
-    // 耳（頭の上に自然に・適度なサイズ）
+    // 耳（グラデーション）
+    const earGrad=ctx.createRadialGradient(3,-4,1,4,-4,5);
+    earGrad.addColorStop(0,bearLight);earGrad.addColorStop(1,bearDark);
     ctx.fillStyle=outline;ctx.beginPath();ctx.arc(4,-4,6,0,Math.PI*2);ctx.fill();
-    ctx.fillStyle=bearCol;ctx.beginPath();ctx.arc(4,-4,5,0,Math.PI*2);ctx.fill();
+    ctx.fillStyle=earGrad;ctx.beginPath();ctx.arc(4,-4,5,0,Math.PI*2);ctx.fill();
+    const earGrad2=ctx.createRadialGradient(25,-3,1,26,-3,6);
+    earGrad2.addColorStop(0,bearLight);earGrad2.addColorStop(1,bearDark);
     ctx.fillStyle=outline;ctx.beginPath();ctx.arc(26,-3,6.5,0,Math.PI*2);ctx.fill();
-    ctx.fillStyle=bearCol;ctx.beginPath();ctx.arc(26,-3,5.5,0,Math.PI*2);ctx.fill();
+    ctx.fillStyle=earGrad2;ctx.beginPath();ctx.arc(26,-3,5.5,0,Math.PI*2);ctx.fill();
 
-    // 鼻（鼻先を前に出す・熊らしく）
+    // 鼻（立体感）
     ctx.fillStyle=bearBlack;ctx.beginPath();ctx.arc(17,4,3.5,0,Math.PI*2);ctx.fill();
+    ctx.fillStyle='#4a4a4a';ctx.beginPath();ctx.arc(17,3.5,2.5,0,Math.PI*2);ctx.fill();
     ctx.fillStyle=bearDark;ctx.fillRect(15,7,4,2);
 
-    // 目（大きく見せる）
+    // 目（立体感・ハイライト）
     ctx.fillStyle=bearBlack;ctx.beginPath();ctx.arc(10,0,2.5,0,Math.PI*2);ctx.fill();
     ctx.fillStyle='#ffffff';ctx.beginPath();ctx.arc(9,-1,0.8,0,Math.PI*2);ctx.fill();
+    ctx.globalAlpha=0.5;ctx.fillStyle='#ffffff';ctx.beginPath();ctx.arc(10.5,1,0.4,0,Math.PI*2);ctx.fill();ctx.globalAlpha=1;
     ctx.fillStyle=bearBlack;ctx.beginPath();ctx.arc(20,1,2.5,0,Math.PI*2);ctx.fill();
     ctx.fillStyle='#ffffff';ctx.beginPath();ctx.arc(21,0,0.8,0,Math.PI*2);ctx.fill();
+    ctx.globalAlpha=0.5;ctx.fillStyle='#ffffff';ctx.beginPath();ctx.arc(20.5,2,0.4,0,Math.PI*2);ctx.fill();ctx.globalAlpha=1;
 
     // ハンマー攻撃
     const ext=atk===1?7:atk===2?13:atk>=3?19:0;
