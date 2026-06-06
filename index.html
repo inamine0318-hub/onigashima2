@@ -573,10 +573,10 @@ function drawCharacter(sx,sy,ci,facing,walkFrame,moving,atkAnim,isJetting,isAirb
       _r(skin, 0,28, 8, 8); _r(skinS, 1,29, 6, 6);
       _r(skin,21,27, 10,10); _r(skinS,22,28, 8, 8);
       // 矛（腰の高さで両手保持・地面と平行・前方へ突き出す・三つ又フォーク）
-      // 矛の柄（横向き・細く・両手で持つ位置・長く延伸）
-      _r(spearCol, 8,24, 28, 2); // 矛の柄メイン（横向き・腰の高さ・細く幅2）
-      _r(spearCol, 9,23, 26, 1); // 矛の柄上部
-      _r(spearCol, 9,28, 26, 1); // 矛の柄下部
+      // 矛の柄（横向き・太く・両手で持つ位置・長く延伸）
+      _r(spearCol, 8,24, 28, 4); // 矛の柄メイン（横向き・腰の高さ・幅4）
+      _r(spearCol, 9,23, 26, 2); // 矛の柄上部
+      _r(spearCol, 9,28, 26, 2); // 矛の柄下部
       // 矛先（三つ又フォーク・金色・横向き・細く）
       // 中央の先端（横向き・細い中央の刃）
       _r(spearTip, 38, 20, 12, 2); // 矛の中央先端（金色・細く横向き）
@@ -598,9 +598,9 @@ function drawCharacter(sx,sy,ci,facing,walkFrame,moving,atkAnim,isJetting,isAirb
       const eA=Math.floor(ext*.22);
       _r(OL,22,16, 8+eA, 8); _r(gi,23,17, 6+eA, 6); _r(skin,23,17, 6+eA, 2);
       // 矛を前に突き出す（横向きのまま・フェンシング突き・リーチ拡大・三つ又フォーク）
-      _r(spearCol, 8,24, 28+eA, 2); // 矛の柄（横向き・延伸・細く幅2）
-      _r(spearCol, 9,23, 26+eA, 1); // 矛の柄上部
-      _r(spearCol, 9,28, 26+eA, 1); // 矛の柄下部
+      _r(spearCol, 8,24, 28+eA, 4); // 矛の柄（横向き・延伸・幅4）
+      _r(spearCol, 9,23, 26+eA, 2); // 矛の柄上部
+      _r(spearCol, 9,28, 26+eA, 2); // 矛の柄下部
       const spx=40+ext;
       // 矛先（三つ又フォーク・金色・横向き・細く）
       // 中央の先端（横向き・細い中央の刃）
