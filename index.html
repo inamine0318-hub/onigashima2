@@ -318,7 +318,29 @@ function drawCharacter(sx,sy,ci,facing,walkFrame,moving,atkAnim,isJetting,isAirb
     ctx.globalAlpha=glt*.4;rr6('#e8f4ff',11+bodyX,22, 8,2,2);
     ctx.globalAlpha=1;
     rr6(OL, 3+bodyX,35,24, 4,3); rr6('#88ccff',4+bodyX,36,22,2,2);
-  } else if(ci===0 || ci===3 || ci===4){ // ===== 烏丸/十兵衛/マタキチ - 人間の道着 =====
+  } else if(ci===4){ // ===== マタキチ - 熊 =====
+    const bearCol='#704214', bearDark='#5a3a2a';
+    // 胴体（熊：太い体）
+    _r(OL, 2,19,26,17); _r(bearCol, 3,20,24,15);
+    // 腕（熊：太い）
+    _r(OL,-1,15, 8,18); _r(bearCol, 0,16, 6,16);
+    _r(OL,23,13, 9,18); _r(bearCol,24,14, 7,16);
+    // 頭（熊：円で表現）
+    ctx.fillStyle=OL;ctx.beginPath();ctx.arc(15,5,11,0,Math.PI*2);ctx.fill();
+    ctx.fillStyle=bearCol;ctx.beginPath();ctx.arc(15,5,10,0,Math.PI*2);ctx.fill();
+    // 耳
+    ctx.fillStyle=OL;ctx.beginPath();ctx.arc(5,0,5,0,Math.PI*2);ctx.fill();
+    ctx.fillStyle=bearCol;ctx.beginPath();ctx.arc(5,0,4,0,Math.PI*2);ctx.fill();
+    ctx.fillStyle=OL;ctx.beginPath();ctx.arc(25,0,5,0,Math.PI*2);ctx.fill();
+    ctx.fillStyle=bearCol;ctx.beginPath();ctx.arc(25,0,4,0,Math.PI*2);ctx.fill();
+    // 鼻
+    ctx.fillStyle='#000000';ctx.beginPath();ctx.arc(15,7,2.5,0,Math.PI*2);ctx.fill();
+    // 目
+    ctx.fillStyle='#000000';ctx.beginPath();ctx.arc(10,1,2.5,0,Math.PI*2);ctx.fill();
+    ctx.fillStyle='#ffffff';ctx.beginPath();ctx.arc(9,0,0.8,0,Math.PI*2);ctx.fill();
+    ctx.fillStyle='#000000';ctx.beginPath();ctx.arc(20,1,2.5,0,Math.PI*2);ctx.fill();
+    ctx.fillStyle='#ffffff';ctx.beginPath();ctx.arc(21,0,0.8,0,Math.PI*2);ctx.fill();
+  } else if(ci===0 || ci===3){ // ===== 烏丸/十兵衛 - 人間の道着 =====
     const giCol=ci===0?'#1a1a1a':(ci===3?'#000814':(ci===4?'#5A3A2A':'#cc6600')); // 道着色（マタキチは濃い茶色）
     const giBright=ci===0?'#2a2a2a':(ci===3?'#0a1a3a':(ci===4?'#8B6B47':'#dd8822'));
     const giDark=ci===0?'#0a0a0a':(ci===3?'#000008':(ci===4?'#3A2A1A':'#883300'));
