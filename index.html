@@ -402,9 +402,6 @@ function drawCharacter(sx,sy,ci,facing,walkFrame,moving,atkAnim,isJetting,isAirb
     box(-0.5,4.5,3,3,col);box(0,5.5,1.5,2,mid);box(5.5,4.5,3,3,col);box(5.5,5.5,1.5,2,mid);
     // 腕（太くしてハンマー持てる体格）
     box(-0.5,7,1.5,5,col);box(7,8,1.5,5,col);
-    // 足（細くして隙間を作る）
-    box(1.5,12+bob,1.2,4,col);box(1.5,16+bob,0.8,1,white);
-    box(5,12+bob,1.2,4,col);box(5,16+bob,0.8,1,white);
     // 頭（10～15%大きく）
     box(0.5,-1,7,8,col);box(1.5,0.5,5,6,mid);
     // 耳（大きく、丸みを持たせる）
@@ -418,38 +415,36 @@ function drawCharacter(sx,sy,ci,facing,walkFrame,moving,atkAnim,isJetting,isAirb
     // 口（位置調整）
     ctx.fillStyle='#000000';ctx.beginPath();ctx.moveTo(13,16);ctx.lineTo(15.5,17.5);ctx.lineTo(18.5,17.5);ctx.lineTo(21,16);ctx.fill();
 
-    // ハンマー
+    // ハンマーと攻撃モーション
     if(atk===0){
+      // 待機：足を表示、ハンマーを構える
+      box(1.5,12+bob,1.2,4,col);box(1.5,16+bob,0.8,1,white);
+      box(5,12+bob,1.2,4,col);box(5,16+bob,0.8,1,white);
       box(2,7,4,2,'#8B6B47');box(6.5,6,1.5,3,'#1a1a1a');
     } else {
+      // 攻撃時：全身で振る
       const prog=Math.min(atk/3,1);
       const angle=90-prog*150;
       const rad=angle*Math.PI/180;
 
-      // 攻撃時：足を広げてスタンスを取る
-      const footSpread=prog*1.5;
-      box(0.5,12+bob,1.2,4,col);box(0.5,16+bob,0.8,1,white);
-      box(5.5,12+bob,1.2,4,col);box(5.5,16+bob,0.8,1,white);
+      // 足を広げてスタンス
+      box(0.8-prog*0.8,12+bob,1.2,4,col);box(0.8-prog*0.8,16+bob,0.8,1,white);
+      box(5.2+prog*0.8,12+bob,1.2,4,col);box(5.2+prog*0.8,16+bob,0.8,1,white);
 
-      // 攻撃時：体を傾ける（前かがみ）
+      // 体を前かがみに
       ctx.save();
-      ctx.translate(15,25);
-      ctx.rotate(prog*0.4);
-      ctx.translate(-15,-25);
-
-      // 体
-      box(0.5,6+prog*1,7,5,col);box(1.5,7+prog*1,5,3,mid);
-      // 肩
+      ctx.translate(15,24);
+      ctx.rotate(prog*0.5);
+      box(0.5,6,7,5,col);box(1.5,7,5,3,mid);
       box(-0.5,4.5,3,3,col);box(0,5.5,1.5,2,mid);box(5.5,4.5,3,3,col);box(5.5,5.5,1.5,2,mid);
+      ctx.restore();
 
-      // 腕を上げて振りかざす
+      // 腕と手を上げて振りかざす
       ctx.save();
-      ctx.translate(26,28-prog*3);
+      ctx.translate(26,22-prog*6);
       ctx.rotate(rad);
       box(-3,0,0.75,1.5,col);box(5.5,0,0.75,1.5,col);
       box(0,-0.25,5,0.5,'#8B6B47');box(5,-0.5,1.5,1,'#1a1a1a');
-      ctx.restore();
-
       ctx.restore();
     }
 
