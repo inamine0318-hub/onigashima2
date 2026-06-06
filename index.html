@@ -396,27 +396,27 @@ function drawCharacter(sx,sy,ci,facing,walkFrame,moving,atkAnim,isJetting,isAirb
     const movePhase=moving?Math.sin(walkFrame*Math.PI/12):0;
     const bob=moving?movePhase*2:0;
 
-    // 体
-    box(1,5,8,7,col);box(2,6,6,5,mid);
-    // 肩
-    box(0,4,2,3,col);box(1,5,1,2,mid);box(6,5,2,3,col);box(6,5,1,2,mid);
-    // 腕
-    box(0,7,1,5,col);box(7,8,1,5,col);
-    // 足
-    box(1,12+bob,2,4,col);box(1.5,16+bob,1,1,white);
-    box(5,12+bob,2,4,col);box(5.5,16+bob,1,1,white);
-    // 頭
-    box(1,0,6,6,col);box(2,1,4,4,mid);
-    // 耳
-    box(0.5,-2,1.5,3,col);box(1,-1,1,2,mid);
-    box(6,-2,1.5,3,col);box(6.5,-1,1,2,mid);
-    // 目（黒目）
-    box(2,2,0.75,0.75,'#000000');box(2.15,2.15,0.35,0.35,'#000000');
-    box(5,2,0.75,0.75,'#000000');box(5.15,2.15,0.35,0.35,'#000000');
-    // 鼻
-    box(3.5,3,1,1,'#000000');
-    // 口
-    ctx.fillStyle='#000000';ctx.beginPath();ctx.moveTo(13,13);ctx.lineTo(15,14);ctx.lineTo(17,14);ctx.lineTo(19,13);ctx.fill();
+    // 体（短くして頭の存在感UP）
+    box(0.5,6,7,5,col);box(1.5,7,5,3,mid);
+    // 肩（広げて逆三角形）
+    box(-0.5,4.5,3,3,col);box(0,5.5,1.5,2,mid);box(5.5,4.5,3,3,col);box(5.5,5.5,1.5,2,mid);
+    // 腕（太くしてハンマー持てる体格）
+    box(-0.5,7,1.5,5,col);box(7,8,1.5,5,col);
+    // 足（細くして隙間を作る）
+    box(1.5,12+bob,1.2,4,col);box(1.5,16+bob,0.8,1,white);
+    box(5,12+bob,1.2,4,col);box(5,16+bob,0.8,1,white);
+    // 頭（10～15%大きく）
+    box(0.5,-1,7,8,col);box(1.5,0.5,5,6,mid);
+    // 耳（大きく、丸みを持たせる）
+    box(-0.5,-2.5,2,4,col);box(0,-1.5,1.5,3,mid);
+    box(6.5,-2.5,2,4,col);box(6.5,-1.5,1.5,3,mid);
+    // 目（黒目・頭が大きくなったので位置調整）
+    box(2,2,0.8,0.8,'#000000');box(2.2,2.2,0.4,0.4,'#000000');
+    box(5.2,2,0.8,0.8,'#000000');box(5.4,2.2,0.4,0.4,'#000000');
+    // 鼻（位置調整）
+    box(3.75,4,1.2,1.2,'#000000');
+    // 口（位置調整）
+    ctx.fillStyle='#000000';ctx.beginPath();ctx.moveTo(13,16);ctx.lineTo(15.5,17.5);ctx.lineTo(18.5,17.5);ctx.lineTo(21,16);ctx.fill();
 
     // ハンマー
     if(atk===0){
