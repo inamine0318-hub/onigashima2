@@ -1336,11 +1336,11 @@ function drawAnimalHead(ci,_r,AC,atk){
 //  キャラ定義
 // ================================================================
 const CHARS=[
-  {name:'タカ型',   nick:'烏丸', dna:'鷹DNA',  col:'#c07828',w:30,h:42,spd:5.2,jmp:-8.8,maxHp:5,atkCd:18,atkLabel:'急降下斬',  glide:true, djump:true, wallSlide:false,ability:'滑空・二段J・空中ATKで急降下爆撃'},
+  {name:'タカ型',   nick:'弓手のカラス丸', dna:'鷹DNA',  col:'#c07828',w:30,h:42,spd:5.2,jmp:-8.8,maxHp:5,atkCd:18,atkLabel:'急降下斬',  glide:true, djump:true, wallSlide:false,ability:'滑空・二段J・空中ATKで急降下爆撃'},
   null,
   null,
-  {name:'サル型',   nick:'十兵衛',     dna:'猿DNA',  col:'#aa7722',w:28,h:44,spd:6.8,jmp:-10.0,maxHp:5,atkCd:14,atkLabel:'電磁ムチ',  glide:false,djump:true, wallSlide:true, ability:'最速・電磁ムチ引寄せ・壁張付き・二段J・踏みつけトランポリン'},
-  {name:'サイ型',   nick:'マタキチ', dna:'犀DNA',  col:'#556677',w:36,h:46,spd:5.5,jmp:-9.0, maxHp:7, atkCd:20,atkLabel:'猛突進',    glide:false,djump:true, wallSlide:false,ability:'HP最大・攻撃1.5倍・ボス被ダメ軽減・突進無敵'},
+  {name:'サル型',   nick:'槍の十兵衛',     dna:'猿DNA',  col:'#aa7722',w:28,h:44,spd:6.8,jmp:-10.0,maxHp:5,atkCd:14,atkLabel:'電磁ムチ',  glide:false,djump:true, wallSlide:true, ability:'最速・電磁ムチ引寄せ・壁張付き・二段J・踏みつけトランポリン'},
+  {name:'クマ型',   nick:'クマのマタキチ', dna:'熊DNA',  col:'#704214',w:36,h:46,spd:5.5,jmp:-9.0, maxHp:7, atkCd:20,atkLabel:'猛突進',    glide:false,djump:true, wallSlide:false,ability:'HP最大・攻撃1.5倍・ボス被ダメ軽減・突進無敵'},
   null,
   null,
   null,
@@ -4729,12 +4729,12 @@ function drawStageClear(){
   ctx.fillStyle='#5566aa';ctx.font=`bold ${Math.min(W*.025,14)}px monospace`;
   ctx.fillText(`STAGE ${currentStage} / ${TOTAL_STAGES}  ${scfg.name}`,W/2,H*.08+15);
   // タイトル
-  ctx.fillStyle='#040418';ctx.font=`bold ${Math.min(W*.052,42)}px monospace`;ctx.fillText('STAGE  CLEAR',W/2+2,H*.22+2);
-  ctx.fillStyle=isLast?'#ff88ff':'#ffee44';ctx.fillText('STAGE  CLEAR',W/2,H*.22);
+  ctx.fillStyle='#040418';ctx.font=`bold ${Math.min(W*.052,42)}px monospace`;ctx.fillText('ステージクリア',W/2+2,H*.22+2);
+  ctx.fillStyle=isLast?'#ff88ff':'#ffee44';ctx.fillText('ステージクリア',W/2,H*.22);
   // 次ステージ予告 or ALL CLEAR
   if(isLast){
     ctx.fillStyle='#ff44ff';ctx.font=`bold ${Math.min(W*.032,20)}px monospace`;
-    ctx.fillText('★ ALL STAGES COMPLETE! ★',W/2,H*.22+34);
+    ctx.fillText('★ 全ステージクリア! ★',W/2,H*.22+34);
   } else {
     const next=STAGE_CFG[currentStage];
     ctx.fillStyle='#7788cc';ctx.font=`${Math.min(W*.028,16)}px monospace`;
@@ -4768,7 +4768,7 @@ function drawStageClear(){
   const scores=getScores();
   if(scores.length){
     ctx.fillStyle='#334455';ctx.font=`bold ${Math.min(W*.030,15)}px monospace`;ctx.textAlign='center';
-    ctx.fillText('── BEST SCORES ──',W/2,H*.65);
+    ctx.fillText('── ベストスコア ──',W/2,H*.65);
     scores.forEach((s,i)=>{
       ctx.fillStyle=i===0?'#ffcc00':'#7788aa';
       ctx.font=`${Math.min(W*.020,13)}px monospace`;ctx.textAlign='center';
@@ -4778,7 +4778,7 @@ function drawStageClear(){
   if(Math.floor(frameTime/500)%2){
     ctx.fillStyle=isLast?'#ff88ff':'#aabbff';
     ctx.font=`bold ${Math.min(W*.030,18)}px monospace`;ctx.textAlign='center';
-    ctx.fillText(isLast?'>> PRESS START TO TITLE <<':'>> PRESS START - NEXT STAGE >>',W/2,H*.96);
+    ctx.fillText(isLast?'>> スタート TO TITLE <<':'>> スタート - NEXT STAGE >>',W/2,H*.96);
   }
 }
 
@@ -6327,7 +6327,7 @@ function drawTitle(){
     ctx.fillStyle='#334';ctx.font=`${Math.min(W*.025,13)}px monospace`;
     ctx.fillText('(セーブデータが消えます)',W/2,tb.newg.y+42);
   }else{
-    if(Math.floor(frameTime/500)%2){ctx.fillStyle='#ffee44';ctx.font=`bold ${Math.min(W*.033,20)}px monospace`;ctx.fillText('>> PRESS START <<',W/2,H*.8);}
+    if(Math.floor(frameTime/500)%2){ctx.fillStyle='#ffee44';ctx.font=`bold ${Math.min(W*.033,20)}px monospace`;ctx.fillText('>> スタート <<',W/2,H*.8);}
   }
 }
 
@@ -6382,9 +6382,9 @@ function drawCharSelect(){
   // タイトル
   ctx.textAlign='center';
   ctx.fillStyle='#223355';ctx.font=`bold ${Math.min(W*.04,16)}px monospace`;
-  ctx.fillText('SELECT  CHARACTER',W/2+1,H*.07+1);
+  ctx.fillText('キャラクターを選択',W/2+1,H*.07+1);
   ctx.fillStyle='#aabbff';ctx.font=`bold ${Math.min(W*.04,16)}px monospace`;
-  ctx.fillText('SELECT  CHARACTER',W/2,H*.07);
+  ctx.fillText('キャラクターを選択',W/2,H*.07);
 
   // ── キャラカード (3体: index 0, 3, 4) ──
   const z=csLayout();
@@ -7198,7 +7198,7 @@ function drawGameOver(){
   const scores=getScores();
   if(scores.length){
     ctx.fillStyle='#334455';ctx.font=`bold ${Math.min(W*.030,15)}px monospace`;
-    ctx.fillText('── BEST SCORES ──',W/2,H*.54);
+    ctx.fillText('── ベストスコア ──',W/2,H*.54);
     scores.slice(0,3).forEach((s,i)=>{
       ctx.fillStyle=i===0?'#ffcc00':'#7788aa';
       ctx.font=`${Math.min(W*.020,13)}px monospace`;
