@@ -3182,35 +3182,38 @@ function drawEnemies(){
 
     if(e.type==='patrol'){
       if(currentStage===1){
-        // 子鬼 - 小柄な赤鬼（高品質）
-        const bob=Math.sin(t/300+e.startX*.005)*1;
-        // 体（グラデーション・立体感）
-        const bodyGrd=ctx.createRadialGradient(ex+14,ey+15+bob,2,ex+14,ey+15+bob,12);
-        bodyGrd.addColorStop(0,'#ff3333');bodyGrd.addColorStop(0.7,'#cc0000');bodyGrd.addColorStop(1,'#880000');
+        // 子鬼 - 小柄な赤鬼（高品質・ブラッシュアップ版）
+        const bob=Math.sin(t/280+e.startX*.005)*1.2;
+        // 体（グラデーション・立体感強化）
+        const bodyGrd=ctx.createRadialGradient(ex+14,ey+15+bob,1,ex+14,ey+15+bob,14);
+        bodyGrd.addColorStop(0,'#ff4444');bodyGrd.addColorStop(0.5,'#dd0000');bodyGrd.addColorStop(1,'#771111');
         ctx.fillStyle=bodyGrd;ctx.fillRect(ex+4,ey+8+bob,20,14);
-        // 頭（グラデーション）
-        const headGrd=ctx.createRadialGradient(ex+14,ey+5+bob,3,ex+14,ey+5+bob,10);
-        headGrd.addColorStop(0,'#ff5555');headGrd.addColorStop(0.6,'#dd2222');headGrd.addColorStop(1,'#990000');
+        ctx.globalAlpha=0.2;ctx.fillStyle='#000000';ctx.fillRect(ex+5,ey+15+bob,18,3);ctx.globalAlpha=1;
+        // 頭（グラデーション強化）
+        const headGrd=ctx.createRadialGradient(ex+14,ey+5+bob,2,ex+14,ey+5+bob,11);
+        headGrd.addColorStop(0,'#ff6666');headGrd.addColorStop(0.5,'#dd1111');headGrd.addColorStop(1,'#aa0000');
         ctx.fillStyle=headGrd;ctx.fillRect(ex+5,ey-2+bob,18,12);
-        // 角（立体感）
+        // 角（立体感強化）
         const hornGrd=ctx.createLinearGradient(ex+13,ey-8+bob,ex+17,ey-8+bob);
-        hornGrd.addColorStop(0,'#3a3a3a');hornGrd.addColorStop(1,'#0a0a0a');
+        hornGrd.addColorStop(0,'#2a2a2a');hornGrd.addColorStop(1,'#000000');
         ctx.fillStyle=hornGrd;ctx.fillRect(ex+13,ey-8+bob,4,8);
-        ctx.globalAlpha=0.4;ctx.fillStyle='#000000';ctx.fillRect(ex+15,ey-6+bob,1,4);ctx.globalAlpha=1;
+        ctx.globalAlpha=0.5;ctx.fillStyle='#000000';ctx.fillRect(ex+15,ey-6+bob,1,4);ctx.globalAlpha=1;
+        ctx.globalAlpha=0.3;ctx.fillStyle='#ffffff';ctx.fillRect(ex+14,ey-7+bob,1,3);ctx.globalAlpha=1;
         // 目（白・ハイライト付き）
         ctx.fillStyle='#ffffff';ctx.fillRect(ex+7,ey+1+bob,5,5);ctx.fillRect(ex+18,ey+1+bob,5,5);
-        ctx.globalAlpha=0.5;ctx.fillStyle='#ffffcc';ctx.fillRect(ex+8,ey+1+bob,2,2);ctx.fillRect(ex+19,ey+1+bob,2,2);ctx.globalAlpha=1;
+        ctx.globalAlpha=0.6;ctx.fillStyle='#ffff88';ctx.fillRect(ex+8,ey+1+bob,2,2);ctx.fillRect(ex+19,ey+1+bob,2,2);ctx.globalAlpha=1;
         // 目玉（黒）
         ctx.fillStyle='#000000';ctx.fillRect(ex+8,ey+2+bob,3,3);ctx.fillRect(ex+19,ey+2+bob,3,3);
-        // 棍棒（グラデーション・立体感）
+        // 棍棒（グラデーション・立体感強化）
         const clubGrd=ctx.createLinearGradient(ex+24,ey+4+bob,ex+29,ey+4+bob);
-        clubGrd.addColorStop(0,'#884400');clubGrd.addColorStop(1,'#441a00');
+        clubGrd.addColorStop(0,'#aa6633');clubGrd.addColorStop(0.7,'#884400');clubGrd.addColorStop(1,'#331100');
         ctx.fillStyle=clubGrd;ctx.fillRect(ex+24,ey+4+bob,5,16);
-        ctx.globalAlpha=0.3;ctx.fillStyle='#000000';ctx.fillRect(ex+26,ey+6+bob,2,12);ctx.globalAlpha=1;
-        // HPバー（グラデーション背景）
+        ctx.globalAlpha=0.4;ctx.fillStyle='#000000';ctx.fillRect(ex+26,ey+6+bob,2,12);ctx.globalAlpha=1;
+        ctx.globalAlpha=0.25;ctx.fillStyle='#ffffff';ctx.fillRect(ex+25,ey+7+bob,2,8);ctx.globalAlpha=1;
+        // HPバー（グラデーション背景強化）
         ctx.fillStyle='#330008';ctx.fillRect(ex,ey-12,e.w,3);
         const hpGrd=ctx.createLinearGradient(ex,ey-12,ex+Math.ceil(e.w*(e.hp/e.maxHp)),ey-12);
-        hpGrd.addColorStop(0,'#ff6677');hpGrd.addColorStop(1,'#cc0000');
+        hpGrd.addColorStop(0,'#ff8899');hpGrd.addColorStop(1,'#aa0000');
         ctx.fillStyle=hpGrd;ctx.fillRect(ex,ey-12,Math.ceil(e.w*(e.hp/e.maxHp)),3);
       } else if(currentStage===2){
         // 地底鬼 - 岩に覆われた鬼（高品質）
