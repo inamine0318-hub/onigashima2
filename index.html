@@ -560,7 +560,7 @@ function drawCharacter(sx,sy,ci,facing,walkFrame,moving,atkAnim,isJetting,isAirb
     ctx.fillStyle=gi;ctx.beginPath();ctx.arc(27+bodyX,22,6,Math.PI*1.4,Math.PI*.6);ctx.fill();
 
     // 腕と槍
-    const spearCol='#8B7355', spearTip='#DAA520', spearTipDark='#CD853F';
+    const spearCol='#8B7355', spearTip='#ffffff', spearTipDark='#cccccc';
     if(atk===0){
       // 待機：両手で腰に槍を構える
       // 後の腕（槍の下を握る）
@@ -572,49 +572,49 @@ function drawCharacter(sx,sy,ci,facing,walkFrame,moving,atkAnim,isJetting,isAirb
       // 手
       _r(skin, 0,28, 8, 8); _r(skinS, 1,29, 6, 6);
       _r(skin,21,27, 10,10); _r(skinS,22,28, 8, 8);
-      // 槍（腰の高さで両手保持・地面と平行・前方へ突き出す）
-      // 槍の柄（横向き・太く・両手で持つ位置）
-      _r(spearCol, 8,24, 22, 4); // 槍の柄メイン（横向き・腰の高さ）
-      _r(spearCol, 9,23, 20, 2); // 槍の柄上部
-      _r(spearCol, 9,28, 20, 2); // 槍の柄下部
-      // 槍先（大きな三角形の刃・金属製・スマホでも一瞬で分かるサイズ）
-      // 刃の上部（三角形の先端・長く尖った）
-      _r(spearTip, 35, 14, 5, 8); // 刃の先端（黄金色・長く尖った部分）
-      _r(spearTipDark, 36, 15, 3, 6); // 先端の濃い部分
-      // 刃の中央（広い菱形）
-      _r(spearTip, 26, 20, 14, 8); // 刃のメイン（大きく広い部分）
-      _r(spearTipDark, 27, 20, 3, 8); // 刃の左側の濃い部分
-      _r(spearTipDark, 37, 20, 3, 8); // 刃の右側の濃い部分
+      // 槍（腰の高さで両手保持・地面と平行・前方へ突き出す・リーチ拡大）
+      // 槍の柄（横向き・太く・両手で持つ位置・長く延伸）
+      _r(spearCol, 8,24, 28, 4); // 槍の柄メイン（横向き・腰の高さ・26に延長）
+      _r(spearCol, 9,23, 26, 2); // 槍の柄上部
+      _r(spearCol, 9,28, 26, 2); // 槍の柄下部
+      // 矛先（大きな広い刃・白）
+      // 刃の上部（三角形の先端・幅広い矛）
+      _r(spearTip, 39, 11, 6, 10); // 矛の先端（白・幅広い）
+      _r(spearTipDark, 40, 12, 4, 8); // 先端の濃い部分
+      // 刃の中央（広い菱形・大きく）
+      _r(spearTip, 28, 19, 18, 10); // 矛のメイン（大きく幅広い）
+      _r(spearTipDark, 29, 20, 3, 8); // 刃の左側の濃い部分
+      _r(spearTipDark, 43, 20, 3, 8); // 刃の右側の濃い部分
       // 刃の下部（柄への接続）
-      _r(spearTip, 30, 28, 8, 3); // 刃から柄への接続部（太く）
+      _r(spearTip, 34, 28, 8, 3); // 刃から柄への接続部（太く）
       // 光沢（刃の質感・目立つように明るく）
-      _r('#ffff99', 31, 21, 5, 3); // 刃上部の光沢（大きく）
-      _r('#ffdd66', 34, 24, 4, 2); // 刃下部の光沢
-      _r('#ffff99', 36, 16, 2, 2); // 先端の光沢
+      _r('#ffffff', 35, 21, 5, 3); // 刃上部の光沢（大きく）
+      _r('#eeeeee', 38, 24, 4, 2); // 刃下部の光沢
+      _r('#ffffff', 40, 14, 2, 2); // 先端の光沢
     } else {
       // 攻撃：槍を突き出す
       _r(OL,-bkPull,21, 5,14); _r(gi,1-bkPull,22, 3,12); _r(skin,1-bkPull,22, 3, 3);
       const eA=Math.floor(ext*.22);
       _r(OL,22,16, 8+eA, 8); _r(gi,23,17, 6+eA, 6); _r(skin,23,17, 6+eA, 2);
-      // 槍を前に突き出す（横向きのまま・フェンシング突き）
-      _r(spearCol, 8,24, 24+eA, 4); // 槍の柄（横向き・延伸）
-      _r(spearCol, 9,23, 22+eA, 2); // 槍の柄上部
-      _r(spearCol, 9,28, 22+eA, 2); // 槍の柄下部
-      const spx=32+ext;
-      // 槍先（大きな三角形の刃・前方へ突き出す）
-      // 刃の上部（三角形の先端・長く尖った）
-      _r(spearTip, spx+3, 16, 5, 8); // 刃の先端（黄金色・長く尖った部分）
-      _r(spearTipDark, spx+4, 17, 3, 6); // 先端の濃い部分
-      // 刃の中央（広い菱形）
-      _r(spearTip, spx-6, 22, 14, 8); // 刃のメイン（大きく広い部分）
-      _r(spearTipDark, spx-5, 22, 3, 8); // 刃の左側の濃い部分
-      _r(spearTipDark, spx+5, 22, 3, 8); // 刃の右側の濃い部分
+      // 槍を前に突き出す（横向きのまま・フェンシング突き・リーチ拡大）
+      _r(spearCol, 8,24, 28+eA, 4); // 槍の柄（横向き・延伸・28に延長）
+      _r(spearCol, 9,23, 26+eA, 2); // 槍の柄上部
+      _r(spearCol, 9,28, 26+eA, 2); // 槍の柄下部
+      const spx=36+ext;
+      // 矛先（大きな広い刃・前方へ突き出す・白）
+      // 刃の上部（三角形の先端・幅広い矛）
+      _r(spearTip, spx+2, 12, 6, 10); // 矛の先端（白・幅広い）
+      _r(spearTipDark, spx+3, 13, 4, 8); // 先端の濃い部分
+      // 刃の中央（広い菱形・大きく）
+      _r(spearTip, spx-8, 22, 18, 10); // 矛のメイン（大きく幅広い）
+      _r(spearTipDark, spx-7, 22, 3, 8); // 刃の左側の濃い部分
+      _r(spearTipDark, spx+7, 22, 3, 8); // 刃の右側の濃い部分
       // 刃の下部（柄への接続）
       _r(spearTip, spx-2, 30, 8, 3); // 刃から柄への接続部（太く）
       // 光沢（刃の質感・目立つように明るく）
-      _r('#ffff99', spx-3, 23, 5, 3); // 刃上部の光沢（大きく）
-      _r('#ffdd66', spx, 26, 4, 2); // 刃下部の光沢
-      _r('#ffff99', spx+4, 18, 2, 2); // 先端の光沢
+      _r('#ffffff', spx-3, 23, 5, 3); // 刃上部の光沢（大きく）
+      _r('#eeeeee', spx, 26, 4, 2); // 刃下部の光沢
+      _r('#ffffff', spx+4, 16, 2, 2); // 先端の光沢
       // 手
       _r(skin,20,26, 10, 10); _r(skinS,21,27, 8, 8);
     }
@@ -1949,6 +1949,14 @@ function doAttack(){
       if(lv>=2&&step===2){
         addShake(2);
       }
+      break;
+    }
+    case 4:{ // マタキチ - 猛突進（攻撃時無敵15フレーム）
+      player.invincible=15;
+      const pdmg=step<2?2:lv>=2?4:3;
+      projectiles.push({x:f>0?px+pw:px,y:py+8,vx:f*8,vy:0,w:30,h:ph-16,col:'#704214',dmg:pdmg,life:5,hit:[],pierce:false,homing:false,punch:true});
+      burst(f>0?px+pw+4:px-4,py+ph/2,'#8B6B47',pdmg>=3?8:4);
+      sfx('hit');
       break;
     }
     case 5:{ // BUSTER メカ竜 - レーザー砲＋ホーミングミサイル＋空中突進(無制限)
