@@ -343,16 +343,22 @@ function drawCharacter(sx,sy,ci,facing,walkFrame,moving,atkAnim,isJetting,isAirb
     ctx.globalAlpha=0.3;ctx.fillStyle='#000000';ctx.fillRect(27,-8,3,3);ctx.globalAlpha=1;
     ctx.globalAlpha=0.15;ctx.fillStyle='#ffffff';ctx.fillRect(25,-11,8,2);ctx.globalAlpha=1;
 
-    // 鼻（シンプルな黒・目と同じサイズ）
-    ctx.fillStyle=bearBlack;ctx.fillRect(14,4,6,6);
-    ctx.globalAlpha=0.3;ctx.fillStyle='#000000';ctx.fillRect(15,9,1.5,1);ctx.fillRect(18,9,1.5,1);ctx.globalAlpha=1;
+    // 鼻（丸い・黒）
+    ctx.fillStyle=bearBlack;
+    ctx.beginPath();ctx.arc(17,7,3,0,Math.PI*2);ctx.fill();
+    // 鼻孔
+    ctx.globalAlpha=0.3;ctx.fillStyle='#000000';
+    ctx.beginPath();ctx.arc(15.5,8.5,0.5,0,Math.PI*2);ctx.fill();
+    ctx.beginPath();ctx.arc(18.5,8.5,0.5,0,Math.PI*2);ctx.fill();
+    ctx.globalAlpha=1;
 
     // 目（黒点・少し大きく）
     ctx.fillStyle=bearBlack;ctx.fillRect(7,2,3,3);
     ctx.fillStyle=bearBlack;ctx.fillRect(22,2,3,3);
 
-    // 口周り（白っぽい毛）
-    ctx.fillStyle='#e8d4c8';ctx.fillRect(10,15,12,5);
+    // 口周り（白っぽい毛・丸い）
+    ctx.fillStyle='#e8d4c8';
+    ctx.beginPath();ctx.ellipse(16,17,6,3,0,0,Math.PI*2);ctx.fill();
     // 口（∩の形・クマっぽく・大きく）
     ctx.fillStyle=bearBlack;
     ctx.beginPath();ctx.moveTo(13,16);ctx.quadraticCurveTo(16,19,19,16);ctx.fill();
