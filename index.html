@@ -260,7 +260,7 @@ function drawCharacter(sx,sy,ci,facing,walkFrame,moving,atkAnim,isJetting,isAirb
     ctx.translate(-15,-49);
     if(facing<0){ctx.translate(30,0);ctx.scale(-1,1);}
 
-    const bearCol='#8B5A2B', bearMid='#A0703F', bearLight='#C08855', bearDark='#5A3A1A', bearBlack='#000000', outline='#0a0a0a';
+    const bearCol='#704214', bearMid='#8B5A2B', bearLight='#A06A3B', bearDark='#4A2A0A', bearBlack='#000000', outline='#0a0a0a';
     const atk=atkAnim||0;
     const movePhase=moving?Math.sin(walkFrame*Math.PI/12):0;
 
@@ -272,12 +272,12 @@ function drawCharacter(sx,sy,ci,facing,walkFrame,moving,atkAnim,isJetting,isAirb
     ctx.globalAlpha=0.2;ctx.fillStyle='#000000';ctx.fillRect(4,40,9,footY-40);ctx.globalAlpha=1;
     ctx.fillStyle=outline;ctx.fillRect(1,footY,15,4);ctx.fillStyle=footGrad;ctx.fillRect(2,footY,13,3);
     // 左足の爪（4本）
-    for(let k=0;k<4;k++){ctx.fillStyle='#0a0500';ctx.fillRect(2+k*3,footY+2,2,3);}
+    for(let k=0;k<4;k++){ctx.fillStyle='#ffffff';ctx.fillRect(2+k*3,footY+2,2,3);}
     ctx.fillStyle=outline;ctx.fillRect(16,37,15,footY-37);ctx.fillStyle=footGrad;ctx.fillRect(17,38,13,footY-38);
     ctx.globalAlpha=0.2;ctx.fillStyle='#000000';ctx.fillRect(19,40,9,footY-40);ctx.globalAlpha=1;
     ctx.fillStyle=outline;ctx.fillRect(16,footY,15,4);ctx.fillStyle=footGrad;ctx.fillRect(17,footY,13,3);
     // 右足の爪（4本）
-    for(let k=0;k<4;k++){ctx.fillStyle='#0a0500';ctx.fillRect(17+k*3,footY+2,2,3);}
+    for(let k=0;k<4;k++){ctx.fillStyle='#ffffff';ctx.fillRect(17+k*3,footY+2,2,3);}
 
     // 胴体（グラデーション・立体感強化・筋肉表現）
     const bodyGrad=ctx.createLinearGradient(2,19,2,35);
@@ -301,11 +301,11 @@ function drawCharacter(sx,sy,ci,facing,walkFrame,moving,atkAnim,isJetting,isAirb
     ctx.fillStyle=outline;ctx.fillRect(-2-armSwing,15,12,20);ctx.fillStyle=armGrad;ctx.fillRect(-1-armSwing,16,10,18);
     ctx.globalAlpha=0.2;ctx.fillStyle='#000000';ctx.fillRect(2-armSwing,20,5,10);ctx.globalAlpha=1;
     // 左手の爪（4本）
-    for(let k=0;k<4;k++){ctx.fillStyle='#0a0500';ctx.fillRect(-1-armSwing+k*3,32,2,3);}
+    for(let k=0;k<4;k++){ctx.fillStyle='#ffffff';ctx.fillRect(-1-armSwing+k*3,32,2,3);}
     ctx.fillStyle=outline;ctx.fillRect(20+armSwing,16,12,20);ctx.fillStyle=armGrad;ctx.fillRect(21+armSwing,17,10,18);
     ctx.globalAlpha=0.2;ctx.fillStyle='#000000';ctx.fillRect(24+armSwing,21,5,10);ctx.globalAlpha=1;
     // 右手の爪（4本）
-    for(let k=0;k<4;k++){ctx.fillStyle='#0a0500';ctx.fillRect(21+armSwing+k*3,33,2,3);}
+    for(let k=0;k<4;k++){ctx.fillStyle='#ffffff';ctx.fillRect(21+armSwing+k*3,33,2,3);}
 
     // 頭（角ばった四角形・ゴツい表現・大きくして隙間を埋める）
     const headGrad=ctx.createLinearGradient(3,0,29,14);
@@ -314,36 +314,38 @@ function drawCharacter(sx,sy,ci,facing,walkFrame,moving,atkAnim,isJetting,isAirb
     ctx.fillStyle=headGrad;ctx.fillRect(3,-3,26,18);
     ctx.globalAlpha=0.15;ctx.fillStyle='#ffffff';ctx.fillRect(3,-3,26,2);ctx.globalAlpha=1;
 
-    // 耳（角ばった四角形・立体感・大きく・左右均等）
-    ctx.fillStyle=outline;ctx.fillRect(-4,-12,8,10);ctx.fillStyle=bearMid;ctx.fillRect(-3,-11,6,8);
-    ctx.globalAlpha=0.3;ctx.fillStyle='#000000';ctx.fillRect(-2,-8,3,3);ctx.globalAlpha=1;
-    ctx.globalAlpha=0.15;ctx.fillStyle='#ffffff';ctx.fillRect(-3,-11,6,2);ctx.globalAlpha=1;
-    ctx.fillStyle=outline;ctx.fillRect(28,-12,8,10);ctx.fillStyle=bearMid;ctx.fillRect(29,-11,6,8);
-    ctx.globalAlpha=0.3;ctx.fillStyle='#000000';ctx.fillRect(30,-8,3,3);ctx.globalAlpha=1;
-    ctx.globalAlpha=0.15;ctx.fillStyle='#ffffff';ctx.fillRect(29,-11,6,2);ctx.globalAlpha=1;
+    // 耳（角ばった四角形・立体感・中央に寄せた）
+    ctx.fillStyle=outline;ctx.fillRect(-1,-12,8,10);ctx.fillStyle=bearMid;ctx.fillRect(0,-11,6,8);
+    ctx.globalAlpha=0.3;ctx.fillStyle='#000000';ctx.fillRect(1,-8,3,3);ctx.globalAlpha=1;
+    ctx.globalAlpha=0.15;ctx.fillStyle='#ffffff';ctx.fillRect(0,-11,6,2);ctx.globalAlpha=1;
+    ctx.fillStyle=outline;ctx.fillRect(23,-12,8,10);ctx.fillStyle=bearMid;ctx.fillRect(24,-11,6,8);
+    ctx.globalAlpha=0.3;ctx.fillStyle='#000000';ctx.fillRect(25,-8,3,3);ctx.globalAlpha=1;
+    ctx.globalAlpha=0.15;ctx.fillStyle='#ffffff';ctx.fillRect(24,-11,6,2);ctx.globalAlpha=1;
 
-    // 鼻（角ばった四角形・ゴツい表現・大きく）
-    ctx.fillStyle=bearBlack;ctx.fillRect(13,4,8,8);
-    ctx.fillStyle='#5a4a3a';ctx.fillRect(14,5,6,6);
-    ctx.fillStyle='#2a1a0a';ctx.fillRect(13,12,8,2);
-    ctx.globalAlpha=0.4;ctx.fillStyle='#000000';ctx.fillRect(14.5,12.5,2,1.5);ctx.fillRect(17.5,12.5,2,1.5);ctx.globalAlpha=1;
+    // 鼻（シンプルな黒・目と同じサイズ）
+    ctx.fillStyle=bearBlack;ctx.fillRect(14,4,6,6);
+    ctx.globalAlpha=0.3;ctx.fillStyle='#000000';ctx.fillRect(15,9,1.5,1);ctx.fillRect(18,9,1.5,1);ctx.globalAlpha=1;
 
-    // 目（角ばった四角形・鋭い表現・強そうな目つき・大きく）
-    ctx.fillStyle=bearBlack;ctx.fillRect(5,2,7,8);
-    ctx.fillStyle='#ffffff';ctx.fillRect(6,3,5,3);
-    ctx.globalAlpha=0.6;ctx.fillStyle='#ffff99';ctx.fillRect(8,4,3,2);ctx.globalAlpha=1;
-    ctx.fillStyle=bearBlack;ctx.fillRect(18,3,7,8);
-    ctx.fillStyle='#ffffff';ctx.fillRect(19,4,5,3);
-    ctx.globalAlpha=0.6;ctx.fillStyle='#ffff99';ctx.fillRect(21,5,3,2);ctx.globalAlpha=1;
+    // 目（小さく・シンプル）
+    ctx.fillStyle=bearBlack;ctx.fillRect(7,2,5,6);
+    ctx.fillStyle='#ffffff';ctx.fillRect(8,3,3,3);
+    ctx.globalAlpha=0.6;ctx.fillStyle='#ffff99';ctx.fillRect(9,4,2,1);ctx.globalAlpha=1;
+    ctx.fillStyle=bearBlack;ctx.fillRect(18,2,5,6);
+    ctx.fillStyle='#ffffff';ctx.fillRect(19,3,3,3);
+    ctx.globalAlpha=0.6;ctx.fillStyle='#ffff99';ctx.fillRect(20,4,2,1);ctx.globalAlpha=1;
+
+    // 口元（クマの口・への字）
+    ctx.fillStyle=bearBlack;
+    ctx.beginPath();ctx.moveTo(13,11);ctx.lineTo(15,13);ctx.lineTo(17,13);ctx.lineTo(19,11);ctx.fill();
 
     // ハンマー攻撃
     const ext=atk===1?7:atk===2?13:atk>=3?19:0;
     const hammerWood='#8B6B47', hammerMetal='#1a1a1a', hammerShine='#444444';
 
     if(atk===0){
-      // 待機：ハンマー構える
-      ctx.fillStyle='#080810';ctx.fillRect(20,10,8,30);ctx.fillStyle=hammerWood;ctx.fillRect(21,11,6,28);
-      ctx.fillStyle=hammerMetal;ctx.fillRect(13,0,20,18);ctx.fillStyle=hammerShine;ctx.fillRect(15,2,16,3);
+      // 待機：ハンマーを真横に持つ（手の爪の下）
+      ctx.fillStyle='#080810';ctx.fillRect(3,32,28,8);ctx.fillStyle=hammerWood;ctx.fillRect(4,33,26,6);
+      ctx.fillStyle=hammerMetal;ctx.fillRect(28,26,12,20);ctx.fillStyle=hammerShine;ctx.fillRect(29,27,2,18);
     } else {
       // 攻撃：ハンマー回転
       const swingProgress=Math.min(ext/35,1);
@@ -373,6 +375,60 @@ function drawCharacter(sx,sy,ci,facing,walkFrame,moving,atkAnim,isJetting,isAirb
         ctx.fillStyle='#FFD700';ctx.fillRect(hammerHeadX-9,hammerHeadY-8,6,3);
         ctx.fillStyle='#FFFF99';ctx.fillRect(hammerHeadX-6,hammerHeadY+4,12,2);
       }
+    }
+
+    ctx.restore();
+    return;
+  }
+
+  // ===== マタキチ - 熊（ドット絵スタイル） =====
+  if(ci===4){
+    const VS=1.28;
+    ctx.translate(Math.floor(sx+15),Math.floor(sy+CHARS[ci].h));
+    ctx.scale(VS,VS);
+    ctx.translate(-15,-49);
+    if(facing<0){ctx.translate(30,0);ctx.scale(-1,1);}
+
+    const p=4;
+    const col='#704214', mid='#8B5A2B', outline='#0a0a0a', white='#ffffff';
+    const box=(x,y,w,h,c)=>{ctx.fillStyle=c;ctx.fillRect(x*p,y*p,w*p,h*p);};
+    const atk=atkAnim||0;
+    const movePhase=moving?Math.sin(walkFrame*Math.PI/12):0;
+    const bob=moving?movePhase*2:0;
+
+    // 体
+    box(1,5,8,7,col);box(2,6,6,5,mid);
+    // 肩
+    box(0,4,2,3,col);box(1,5,1,2,mid);box(6,5,2,3,col);box(6,5,1,2,mid);
+    // 腕
+    box(0,7,1,5,col);box(7,8,1,5,col);
+    // 足
+    box(1,12+bob,2,4,col);box(1.5,16+bob,1,1,white);
+    box(5,12+bob,2,4,col);box(5.5,16+bob,1,1,white);
+    // 頭
+    box(1,0,6,6,col);box(2,1,4,4,mid);
+    // 耳
+    box(0.5,-2,1.5,3,col);box(1,-1,1,2,mid);
+    box(6,-2,1.5,3,col);box(6.5,-1,1,2,mid);
+    // 目（十兵衛と同じサイズ）
+    box(2,2,0.75,0.75,col);box(2.15,2.15,0.35,0.35,white);
+    box(5,2,0.75,0.75,col);box(5.15,2.15,0.35,0.35,white);
+    // 鼻
+    box(3.5,3,1,1,'#000000');
+    // 口
+    ctx.fillStyle='#000000';ctx.beginPath();ctx.moveTo(13,13);ctx.lineTo(15,14);ctx.lineTo(17,14);ctx.lineTo(19,13);ctx.fill();
+
+    // ハンマー
+    if(atk===0){
+      box(2,7,4,2,'#8B6B47');box(6.5,6,1.5,3,'#1a1a1a');
+    } else {
+      const prog=Math.min(atk/3,1);
+      const angle=90-prog*150;
+      const rad=angle*Math.PI/180;
+      ctx.save();
+      ctx.translate(26,28);ctx.rotate(rad);
+      box(0,-0.25,5,0.5,'#8B6B47');box(5,-0.5,1.5,1,'#1a1a1a');
+      ctx.restore();
     }
 
     ctx.restore();
