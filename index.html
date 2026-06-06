@@ -264,17 +264,25 @@ function drawCharacter(sx,sy,ci,facing,walkFrame,moving,atkAnim,isJetting,isAirb
     const atk=atkAnim||0;
     const movePhase=moving?Math.sin(walkFrame*Math.PI/12):0;
 
-    // 足（クマの太い脚・毛並み）
-    const footY=moving?45+movePhase*2:45;
-    const footGrad=ctx.createLinearGradient(2,38,2,footY+3);
-    footGrad.addColorStop(0,bearMid);footGrad.addColorStop(1,bearDark);
-    ctx.fillStyle=outline;ctx.fillRect(2,37,14,footY-37);ctx.fillStyle=footGrad;ctx.fillRect(3,38,12,footY-38);
-    ctx.fillStyle=outline;ctx.fillRect(2,footY,14,4);ctx.fillStyle=footGrad;ctx.fillRect(3,footY,12,3);
-    ctx.globalAlpha=0.2;ctx.fillStyle=bearBlack;for(let i=0;i<4;i++)ctx.fillRect(3+i*3,38+(i%2)*2,1,6);ctx.globalAlpha=1;
+    // 左足（奥・斜め向き）
+    const leftFootY=moving?44+movePhase*2:44;
+    const leftFootGrad=ctx.createLinearGradient(2,37,2,leftFootY+4);
+    leftFootGrad.addColorStop(0,bearLight);leftFootGrad.addColorStop(0.6,bearCol);leftFootGrad.addColorStop(1,bearDark);
+    ctx.fillStyle=outline;ctx.fillRect(1,36,13,leftFootY-36);ctx.fillStyle=leftFootGrad;ctx.fillRect(2,37,11,leftFootY-37);
+    // 左足のつま先
+    ctx.fillStyle=outline;ctx.beginPath();ctx.ellipse(8,leftFootY+2,6,3,0,0,Math.PI*2);ctx.fill();
+    ctx.fillStyle=leftFootGrad;ctx.beginPath();ctx.ellipse(8,leftFootY+2,5,2.5,0,0,Math.PI*2);ctx.fill();
+    ctx.globalAlpha=0.2;ctx.fillStyle=bearBlack;for(let i=0;i<4;i++)ctx.fillRect(2+i*2.5,37,1,5);ctx.globalAlpha=1;
 
-    ctx.fillStyle=outline;ctx.fillRect(16,37,14,footY-37);ctx.fillStyle=footGrad;ctx.fillRect(17,38,12,footY-38);
-    ctx.fillStyle=outline;ctx.fillRect(16,footY,14,4);ctx.fillStyle=footGrad;ctx.fillRect(17,footY,12,3);
-    ctx.globalAlpha=0.2;ctx.fillStyle=bearBlack;for(let i=0;i<4;i++)ctx.fillRect(17+i*3,38+(i%2)*2,1,6);ctx.globalAlpha=1;
+    // 右足（手前・斜め向き）
+    const rightFootY=moving?44-movePhase*2:44;
+    const rightFootGrad=ctx.createLinearGradient(18,37,18,rightFootY+4);
+    rightFootGrad.addColorStop(0,bearLight);rightFootGrad.addColorStop(0.6,bearCol);rightFootGrad.addColorStop(1,bearDark);
+    ctx.fillStyle=outline;ctx.fillRect(18,36,13,rightFootY-36);ctx.fillStyle=rightFootGrad;ctx.fillRect(19,37,11,rightFootY-37);
+    // 右足のつま先
+    ctx.fillStyle=outline;ctx.beginPath();ctx.ellipse(25,rightFootY+2,6,3,0,0,Math.PI*2);ctx.fill();
+    ctx.fillStyle=rightFootGrad;ctx.beginPath();ctx.ellipse(25,rightFootY+2,5,2.5,0,0,Math.PI*2);ctx.fill();
+    ctx.globalAlpha=0.2;ctx.fillStyle=bearBlack;for(let i=0;i<4;i++)ctx.fillRect(19+i*2.5,37,1,5);ctx.globalAlpha=1;
 
     // 胴体（毛並みのあるクマ体）
     const bodyGrad=ctx.createLinearGradient(3,19,3,35);
@@ -310,45 +318,45 @@ function drawCharacter(sx,sy,ci,facing,walkFrame,moving,atkAnim,isJetting,isAirb
     ctx.fillStyle=outline;ctx.fillRect(20+armSwing,16,12,20);ctx.fillStyle=armGrad;ctx.fillRect(21+armSwing,17,10,18);
     ctx.globalAlpha=0.15;ctx.fillStyle=bearBlack;for(let i=0;i<6;i++)ctx.fillRect(21+armSwing+i*2,17,1,16);ctx.globalAlpha=1;
 
-    // 首（胴体と頭をつなぐ・毛並み）
-    const neckGrad=ctx.createLinearGradient(12,10,12,18);
+    // 首（胴体と頭をつなぐ・毛並み・斜め向き）
+    const neckGrad=ctx.createLinearGradient(11,10,11,18);
     neckGrad.addColorStop(0,bearLight);neckGrad.addColorStop(1,bearCol);
-    ctx.fillStyle=outline;ctx.fillRect(10,10,10,8);ctx.fillStyle=neckGrad;ctx.fillRect(11,11,8,6);
-    ctx.globalAlpha=0.2;ctx.fillStyle=bearBlack;for(let i=0;i<3;i++)ctx.fillRect(11+i*2,11,1,5);ctx.globalAlpha=1;
+    ctx.fillStyle=outline;ctx.fillRect(9,10,12,8);ctx.fillStyle=neckGrad;ctx.fillRect(10,11,10,6);
+    ctx.globalAlpha=0.2;ctx.fillStyle=bearBlack;for(let i=0;i<4;i++)ctx.fillRect(10+i*2,11,1,5);ctx.globalAlpha=1;
 
-    // 頭（クマの顔・毛並み）
-    const headGrad=ctx.createRadialGradient(13,-1,2,15,2,12);
+    // 頭（クマの顔・斜め向き・口先が見える）
+    const headGrad=ctx.createRadialGradient(12,0,2,16,2,12);
     headGrad.addColorStop(0,bearLight);headGrad.addColorStop(0.5,bearCol);headGrad.addColorStop(1,bearDark);
-    ctx.fillStyle=outline;ctx.beginPath();ctx.arc(15,2,12,0,Math.PI*2);ctx.fill();
-    ctx.fillStyle=headGrad;ctx.beginPath();ctx.arc(15,2,11,0,Math.PI*2);ctx.fill();
-    ctx.globalAlpha=0.2;ctx.fillStyle=bearBlack;ctx.beginPath();ctx.arc(15,2,9,0,Math.PI*2);ctx.fill();ctx.globalAlpha=1;
+    ctx.fillStyle=outline;ctx.beginPath();ctx.arc(16,2,12,0,Math.PI*2);ctx.fill();
+    ctx.fillStyle=headGrad;ctx.beginPath();ctx.arc(16,2,11,0,Math.PI*2);ctx.fill();
+    ctx.globalAlpha=0.2;ctx.fillStyle=bearBlack;ctx.beginPath();ctx.arc(16,2,9,0,Math.PI*2);ctx.fill();ctx.globalAlpha=1;
 
-    // 耳（毛並み表現）
-    const earGrad=ctx.createRadialGradient(3,-4,1,4,-4,5);
-    earGrad.addColorStop(0,bearLight);earGrad.addColorStop(1,bearDark);
-    ctx.fillStyle=outline;ctx.beginPath();ctx.arc(4,-4,6,0,Math.PI*2);ctx.fill();
-    ctx.fillStyle=earGrad;ctx.beginPath();ctx.arc(4,-4,5,0,Math.PI*2);ctx.fill();
-    ctx.globalAlpha=0.3;ctx.fillStyle=bearBlack;ctx.beginPath();ctx.arc(4,-4,3,0,Math.PI*2);ctx.fill();ctx.globalAlpha=1;
+    // 左耳（奥・小さめ）
+    const leftEarGrad=ctx.createRadialGradient(4,-5,1,4,-5,4);
+    leftEarGrad.addColorStop(0,bearLight);leftEarGrad.addColorStop(1,bearDark);
+    ctx.fillStyle=outline;ctx.beginPath();ctx.arc(4,-5,5,0,Math.PI*2);ctx.fill();
+    ctx.fillStyle=leftEarGrad;ctx.beginPath();ctx.arc(4,-5,4,0,Math.PI*2);ctx.fill();
+    ctx.globalAlpha=0.3;ctx.fillStyle=bearBlack;ctx.beginPath();ctx.arc(4,-5,2.5,0,Math.PI*2);ctx.fill();ctx.globalAlpha=1;
 
-    const earGrad2=ctx.createRadialGradient(25,-3,1,26,-3,6);
-    earGrad2.addColorStop(0,bearLight);earGrad2.addColorStop(1,bearDark);
-    ctx.fillStyle=outline;ctx.beginPath();ctx.arc(26,-3,6,0,Math.PI*2);ctx.fill();
-    ctx.fillStyle=earGrad2;ctx.beginPath();ctx.arc(26,-3,5,0,Math.PI*2);ctx.fill();
-    ctx.globalAlpha=0.3;ctx.fillStyle=bearBlack;ctx.beginPath();ctx.arc(26,-3,3.5,0,Math.PI*2);ctx.fill();ctx.globalAlpha=1;
+    // 右耳（手前・大きめ）
+    const rightEarGrad=ctx.createRadialGradient(27,-2,1,27,-2,5);
+    rightEarGrad.addColorStop(0,bearLight);rightEarGrad.addColorStop(1,bearDark);
+    ctx.fillStyle=outline;ctx.beginPath();ctx.arc(27,-2,6,0,Math.PI*2);ctx.fill();
+    ctx.fillStyle=rightEarGrad;ctx.beginPath();ctx.arc(27,-2,5,0,Math.PI*2);ctx.fill();
+    ctx.globalAlpha=0.3;ctx.fillStyle=bearBlack;ctx.beginPath();ctx.arc(27,-2,3,0,Math.PI*2);ctx.fill();ctx.globalAlpha=1;
 
-    // 鼻（クマらしく）
-    ctx.fillStyle=bearBlack;ctx.beginPath();ctx.arc(16,4,3,0,Math.PI*2);ctx.fill();
-    ctx.fillStyle='#3a3a3a';ctx.beginPath();ctx.arc(16,3.5,2,0,Math.PI*2);ctx.fill();
-    ctx.fillStyle=bearDark;ctx.fillRect(14,6.5,4,2);
+    // 口先（見える位置・斜め向き）
+    ctx.fillStyle=bearDark;ctx.beginPath();ctx.ellipse(20,6,5,3,0.15,0,Math.PI*2);ctx.fill();
+    ctx.fillStyle=bearBlack;ctx.beginPath();ctx.arc(21,7,2.5,0,Math.PI*2);ctx.fill();
+    ctx.fillStyle='#3a3a3a';ctx.beginPath();ctx.arc(21,6.5,1.5,0,Math.PI*2);ctx.fill();
 
-    // 目（クマの目・ハイライト）
-    ctx.fillStyle=bearBlack;ctx.beginPath();ctx.arc(10,1,2.5,0,Math.PI*2);ctx.fill();
-    ctx.fillStyle='#ffffff';ctx.beginPath();ctx.arc(9,-0.5,0.8,0,Math.PI*2);ctx.fill();
-    ctx.globalAlpha=0.5;ctx.fillStyle='#ffffff';ctx.beginPath();ctx.arc(10.5,1.5,0.3,0,Math.PI*2);ctx.fill();ctx.globalAlpha=1;
+    // 目（斜め向き・左は小さく見える、右は大きく見える）
+    ctx.fillStyle=bearBlack;ctx.beginPath();ctx.arc(9,1,2,0,Math.PI*2);ctx.fill();
+    ctx.fillStyle='#ffffff';ctx.beginPath();ctx.arc(8,0,0.6,0,Math.PI*2);ctx.fill();
 
-    ctx.fillStyle=bearBlack;ctx.beginPath();ctx.arc(20,1,2.5,0,Math.PI*2);ctx.fill();
-    ctx.fillStyle='#ffffff';ctx.beginPath();ctx.arc(21,-0.5,0.8,0,Math.PI*2);ctx.fill();
-    ctx.globalAlpha=0.5;ctx.fillStyle='#ffffff';ctx.beginPath();ctx.arc(19.5,1.5,0.3,0,Math.PI*2);ctx.fill();ctx.globalAlpha=1;
+    ctx.fillStyle=bearBlack;ctx.beginPath();ctx.arc(21,2,2.5,0,Math.PI*2);ctx.fill();
+    ctx.fillStyle='#ffffff';ctx.beginPath();ctx.arc(20,-0.5,0.8,0,Math.PI*2);ctx.fill();
+    ctx.globalAlpha=0.5;ctx.fillStyle='#ffffff';ctx.beginPath();ctx.arc(21.5,2.5,0.3,0,Math.PI*2);ctx.fill();ctx.globalAlpha=1;
 
     // ハンマー攻撃
     const ext=atk===1?7:atk===2?13:atk>=3?19:0;
