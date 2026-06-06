@@ -306,13 +306,13 @@ function drawCharacter(sx,sy,ci,facing,walkFrame,moving,atkAnim,isJetting,isAirb
     ctx.fillStyle=headGrad;ctx.fillRect(3,-3,26,18);
     ctx.globalAlpha=0.15;ctx.fillStyle='#ffffff';ctx.fillRect(3,-3,26,2);ctx.globalAlpha=1;
 
-    // 耳（角ばった四角形・立体感・大きく）
+    // 耳（角ばった四角形・立体感・大きく・左右均等）
     ctx.fillStyle=outline;ctx.fillRect(-4,-12,8,10);ctx.fillStyle=bearMid;ctx.fillRect(-3,-11,6,8);
     ctx.globalAlpha=0.3;ctx.fillStyle='#000000';ctx.fillRect(-2,-8,3,3);ctx.globalAlpha=1;
     ctx.globalAlpha=0.15;ctx.fillStyle='#ffffff';ctx.fillRect(-3,-11,6,2);ctx.globalAlpha=1;
-    ctx.fillStyle=outline;ctx.fillRect(26,-11,8,10);ctx.fillStyle=bearMid;ctx.fillRect(27,-10,6,8);
-    ctx.globalAlpha=0.3;ctx.fillStyle='#000000';ctx.fillRect(28,-7,3,3);ctx.globalAlpha=1;
-    ctx.globalAlpha=0.15;ctx.fillStyle='#ffffff';ctx.fillRect(27,-10,6,2);ctx.globalAlpha=1;
+    ctx.fillStyle=outline;ctx.fillRect(28,-12,8,10);ctx.fillStyle=bearMid;ctx.fillRect(29,-11,6,8);
+    ctx.globalAlpha=0.3;ctx.fillStyle='#000000';ctx.fillRect(30,-8,3,3);ctx.globalAlpha=1;
+    ctx.globalAlpha=0.15;ctx.fillStyle='#ffffff';ctx.fillRect(29,-11,6,2);ctx.globalAlpha=1;
 
     // 鼻（角ばった四角形・ゴツい表現・大きく）
     ctx.fillStyle=bearBlack;ctx.fillRect(13,4,8,8);
