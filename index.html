@@ -337,13 +337,17 @@ function drawCharacter(sx,sy,ci,facing,walkFrame,moving,atkAnim,isJetting,isAirb
     ctx.fillStyle=bearBlack;ctx.fillRect(14,4,6,6);
     ctx.globalAlpha=0.3;ctx.fillStyle='#000000';ctx.fillRect(15,9,1.5,1);ctx.fillRect(18,9,1.5,1);ctx.globalAlpha=1;
 
-    // 目（黒点）
-    ctx.fillStyle=bearBlack;ctx.fillRect(8,3,2,2);
-    ctx.fillStyle=bearBlack;ctx.fillRect(22,3,2,2);
+    // 目（黒点・少し大きく）
+    ctx.fillStyle=bearBlack;ctx.fillRect(7,2,3,3);
+    ctx.fillStyle=bearBlack;ctx.fillRect(22,2,3,3);
 
-    // 口元（クマの口・への字）
+    // 口周り（白っぽい毛）
+    ctx.fillStyle='#e8d4c8';ctx.fillRect(11,11,12,4);
+    // 口（∩の形・クマっぽく）
     ctx.fillStyle=bearBlack;
-    ctx.beginPath();ctx.moveTo(13,11);ctx.lineTo(15,13);ctx.lineTo(17,13);ctx.lineTo(19,11);ctx.fill();
+    ctx.beginPath();ctx.moveTo(13,12);ctx.quadraticCurveTo(16,14,19,12);ctx.fill();
+    // 舌（ピンク色）
+    ctx.fillStyle='#ff99aa';ctx.fillRect(15,13,2,2);
 
     // ハンマー攻撃
     const ext=atk===1?7:atk===2?13:atk>=3?19:0;
