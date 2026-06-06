@@ -398,6 +398,7 @@ function drawCharacter(sx,sy,ci,facing,walkFrame,moving,atkAnim,isJetting,isAirb
 
     if(atk===0){
       // ===== 待機時 =====
+      console.log('マタキチ待機中');
       // 足
       box(1.5,12+bob,1.2,4,col);box(1.5,16+bob,0.8,1,white);
       box(5,12+bob,1.2,4,col);box(5,16+bob,0.8,1,white);
@@ -414,6 +415,7 @@ function drawCharacter(sx,sy,ci,facing,walkFrame,moving,atkAnim,isJetting,isAirb
       const prog=Math.min(atk/3,1);
       const angle=90-prog*150;
       const rad=angle*Math.PI/180;
+      console.log('atk攻撃中:',{atk,prog,angle});
 
       // 足を広げてスタンス
       box(0.8-prog*1.5,12+bob,1.2,4,col);box(0.8-prog*1.5,16+bob,0.8,1,white);
