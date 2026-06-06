@@ -307,41 +307,43 @@ function drawCharacter(sx,sy,ci,facing,walkFrame,moving,atkAnim,isJetting,isAirb
     // 右手の爪（4本）
     for(let k=0;k<4;k++){ctx.fillStyle='#0a0500';ctx.fillRect(21+armSwing+k*3,33,2,3);}
 
-    // 頭（横向きプロファイル・右向き・ゴツい表現）
-    const headGrad=ctx.createLinearGradient(8,-2,24,12);
+    // 頭（角ばった四角形・ゴツい表現・大きくして隙間を埋める）
+    const headGrad=ctx.createLinearGradient(3,0,29,14);
     headGrad.addColorStop(0,'#C08855');headGrad.addColorStop(0.5,bearCol);headGrad.addColorStop(1,bearDark);
-    ctx.fillStyle=outline;ctx.fillRect(8,-2,18,16);
-    ctx.fillStyle=headGrad;ctx.fillRect(9,-1,16,14);
-    ctx.globalAlpha=0.15;ctx.fillStyle='#ffffff';ctx.fillRect(9,-1,16,2);ctx.globalAlpha=1;
-    // 頭の前面（鼻側）・突き出した形
-    ctx.fillStyle=outline;ctx.fillRect(25,2,6,10);
-    ctx.fillStyle=headGrad;ctx.fillRect(26,3,5,8);
+    ctx.fillStyle=outline;ctx.fillRect(2,-4,28,20);
+    ctx.fillStyle=headGrad;ctx.fillRect(3,-3,26,18);
+    ctx.globalAlpha=0.15;ctx.fillStyle='#ffffff';ctx.fillRect(3,-3,26,2);ctx.globalAlpha=1;
 
-    // 耳（角ばった四角形・立体感・右側のみ）
-    ctx.fillStyle=outline;ctx.fillRect(22,-10,8,10);ctx.fillStyle=bearMid;ctx.fillRect(23,-9,6,8);
-    ctx.globalAlpha=0.3;ctx.fillStyle='#000000';ctx.fillRect(24,-6,3,3);ctx.globalAlpha=1;
-    ctx.globalAlpha=0.15;ctx.fillStyle='#ffffff';ctx.fillRect(23,-9,6,2);ctx.globalAlpha=1;
+    // 耳（角ばった四角形・立体感・大きく・左右均等）
+    ctx.fillStyle=outline;ctx.fillRect(-4,-12,8,10);ctx.fillStyle=bearMid;ctx.fillRect(-3,-11,6,8);
+    ctx.globalAlpha=0.3;ctx.fillStyle='#000000';ctx.fillRect(-2,-8,3,3);ctx.globalAlpha=1;
+    ctx.globalAlpha=0.15;ctx.fillStyle='#ffffff';ctx.fillRect(-3,-11,6,2);ctx.globalAlpha=1;
+    ctx.fillStyle=outline;ctx.fillRect(28,-12,8,10);ctx.fillStyle=bearMid;ctx.fillRect(29,-11,6,8);
+    ctx.globalAlpha=0.3;ctx.fillStyle='#000000';ctx.fillRect(30,-8,3,3);ctx.globalAlpha=1;
+    ctx.globalAlpha=0.15;ctx.fillStyle='#ffffff';ctx.fillRect(29,-11,6,2);ctx.globalAlpha=1;
 
-    // 鼻（角ばった四角形・横向き・右に突き出す）
-    ctx.fillStyle=bearBlack;ctx.fillRect(26,3,6,6);
-    ctx.fillStyle='#5a4a3a';ctx.fillRect(27,4,4,4);
-    ctx.fillStyle='#2a1a0a';ctx.fillRect(26,8,2,1);ctx.fillRect(28,8,2,1);
-    ctx.globalAlpha=0.4;ctx.fillStyle='#000000';ctx.fillRect(26.5,9,1,0.8);ctx.fillRect(28.5,9,1,0.8);ctx.globalAlpha=1;
+    // 鼻（角ばった四角形・ゴツい表現・大きく）
+    ctx.fillStyle=bearBlack;ctx.fillRect(13,4,8,8);
+    ctx.fillStyle='#5a4a3a';ctx.fillRect(14,5,6,6);
+    ctx.fillStyle='#2a1a0a';ctx.fillRect(13,12,8,2);
+    ctx.globalAlpha=0.4;ctx.fillStyle='#000000';ctx.fillRect(14.5,12.5,2,1.5);ctx.fillRect(17.5,12.5,2,1.5);ctx.globalAlpha=1;
 
-    // 目（角ばった四角形・横向き・右側のみ・鋭い表現・強そう）
-    ctx.fillStyle=bearBlack;ctx.fillRect(18,1,6,7);
-    ctx.fillStyle='#ffffff';ctx.fillRect(19,2,4,3);
-    ctx.globalAlpha=0.8;ctx.fillStyle='#ffffff';ctx.fillRect(20,2,2,2);ctx.globalAlpha=1;
-    ctx.globalAlpha=0.6;ctx.fillStyle='#ffff99';ctx.fillRect(20,4,2,1);ctx.globalAlpha=1;
+    // 目（角ばった四角形・鋭い表現・強そうな目つき・大きく）
+    ctx.fillStyle=bearBlack;ctx.fillRect(5,2,7,8);
+    ctx.fillStyle='#ffffff';ctx.fillRect(6,3,5,3);
+    ctx.globalAlpha=0.6;ctx.fillStyle='#ffff99';ctx.fillRect(8,4,3,2);ctx.globalAlpha=1;
+    ctx.fillStyle=bearBlack;ctx.fillRect(18,3,7,8);
+    ctx.fillStyle='#ffffff';ctx.fillRect(19,4,5,3);
+    ctx.globalAlpha=0.6;ctx.fillStyle='#ffff99';ctx.fillRect(21,5,3,2);ctx.globalAlpha=1;
 
     // ハンマー攻撃
     const ext=atk===1?7:atk===2?13:atk>=3?19:0;
     const hammerWood='#8B6B47', hammerMetal='#1a1a1a', hammerShine='#444444';
 
     if(atk===0){
-      // 待機：ハンマーを腰に構える（縦向き・十兵衛のように）
-      ctx.fillStyle='#080810';ctx.fillRect(20,24,8,20);ctx.fillStyle=hammerWood;ctx.fillRect(21,25,6,18);
-      ctx.fillStyle=hammerMetal;ctx.fillRect(14,20,16,14);ctx.fillStyle=hammerShine;ctx.fillRect(16,21,12,2);
+      // 待機：ハンマー構える
+      ctx.fillStyle='#080810';ctx.fillRect(20,10,8,30);ctx.fillStyle=hammerWood;ctx.fillRect(21,11,6,28);
+      ctx.fillStyle=hammerMetal;ctx.fillRect(13,0,20,18);ctx.fillStyle=hammerShine;ctx.fillRect(15,2,16,3);
     } else {
       // 攻撃：ハンマー回転
       const swingProgress=Math.min(ext/35,1);
