@@ -294,18 +294,18 @@ function drawCharacter(sx,sy,ci,facing,walkFrame,moving,atkAnim,isJetting,isAirb
     ctx.globalAlpha=0.2;ctx.fillStyle='#000000';ctx.fillRect(22,19,6,4);ctx.globalAlpha=1;
     ctx.globalAlpha=0.15;ctx.fillStyle='#ffffff';ctx.fillRect(19,16,12,1);ctx.globalAlpha=1;
 
-    // 腕（グラデーション・立体感強化・逞しさ・前に構える）
+    // 腕（グラデーション・立体感強化・逞しさ）
     const armSwing=moving?movePhase*3:0;
-    const armGrad=ctx.createLinearGradient(-1-armSwing,11,8-armSwing,29);
+    const armGrad=ctx.createLinearGradient(-1-armSwing,16,8-armSwing,34);
     armGrad.addColorStop(0,'#C08855');armGrad.addColorStop(0.4,bearCol);armGrad.addColorStop(1,bearDark);
-    ctx.fillStyle=outline;ctx.fillRect(-2-armSwing,10,12,20);ctx.fillStyle=armGrad;ctx.fillRect(-1-armSwing,11,10,18);
-    ctx.globalAlpha=0.2;ctx.fillStyle='#000000';ctx.fillRect(2-armSwing,15,5,10);ctx.globalAlpha=1;
+    ctx.fillStyle=outline;ctx.fillRect(-2-armSwing,15,12,20);ctx.fillStyle=armGrad;ctx.fillRect(-1-armSwing,16,10,18);
+    ctx.globalAlpha=0.2;ctx.fillStyle='#000000';ctx.fillRect(2-armSwing,20,5,10);ctx.globalAlpha=1;
     // 左手の爪（4本）
-    for(let k=0;k<4;k++){ctx.fillStyle='#0a0500';ctx.fillRect(-1-armSwing+k*3,27,2,3);}
-    ctx.fillStyle=outline;ctx.fillRect(20+armSwing,11,12,20);ctx.fillStyle=armGrad;ctx.fillRect(21+armSwing,12,10,18);
-    ctx.globalAlpha=0.2;ctx.fillStyle='#000000';ctx.fillRect(24+armSwing,16,5,10);ctx.globalAlpha=1;
+    for(let k=0;k<4;k++){ctx.fillStyle='#0a0500';ctx.fillRect(-1-armSwing+k*3,32,2,3);}
+    ctx.fillStyle=outline;ctx.fillRect(20+armSwing,16,12,20);ctx.fillStyle=armGrad;ctx.fillRect(21+armSwing,17,10,18);
+    ctx.globalAlpha=0.2;ctx.fillStyle='#000000';ctx.fillRect(24+armSwing,21,5,10);ctx.globalAlpha=1;
     // 右手の爪（4本）
-    for(let k=0;k<4;k++){ctx.fillStyle='#0a0500';ctx.fillRect(21+armSwing+k*3,28,2,3);}
+    for(let k=0;k<4;k++){ctx.fillStyle='#0a0500';ctx.fillRect(21+armSwing+k*3,33,2,3);}
 
     // 頭（角ばった四角形・ゴツい表現・大きくして隙間を埋める）
     const headGrad=ctx.createLinearGradient(3,0,29,14);
@@ -341,16 +341,16 @@ function drawCharacter(sx,sy,ci,facing,walkFrame,moving,atkAnim,isJetting,isAirb
     const hammerWood='#8B6B47', hammerMetal='#1a1a1a', hammerShine='#444444';
 
     if(atk===0){
-      // 待機：ハンマー構える（腕に合わせて位置を上げた）
-      ctx.fillStyle='#080810';ctx.fillRect(20,5,8,30);ctx.fillStyle=hammerWood;ctx.fillRect(21,6,6,28);
-      ctx.fillStyle=hammerMetal;ctx.fillRect(13,-5,20,18);ctx.fillStyle=hammerShine;ctx.fillRect(15,-3,16,3);
+      // 待機：ハンマー構える
+      ctx.fillStyle='#080810';ctx.fillRect(20,10,8,30);ctx.fillStyle=hammerWood;ctx.fillRect(21,11,6,28);
+      ctx.fillStyle=hammerMetal;ctx.fillRect(13,0,20,18);ctx.fillStyle=hammerShine;ctx.fillRect(15,2,16,3);
     } else {
-      // 攻撃：ハンマー回転（腕の位置に合わせて中心をシフト）
+      // 攻撃：ハンマー回転
       const swingProgress=Math.min(ext/35,1);
       const angle=90-swingProgress*150;
       const angleRad=angle*Math.PI/180;
       const hammerCenterX=28;
-      const hammerCenterY=3+swingProgress*38;
+      const hammerCenterY=8+swingProgress*38;
       const hammerLength=40;
       const hammerHeadX=hammerCenterX+Math.cos(angleRad)*hammerLength;
       const hammerHeadY=hammerCenterY+Math.sin(angleRad)*hammerLength;
