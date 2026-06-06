@@ -5810,6 +5810,7 @@ function drawSplash(){
   ctx.globalAlpha=1;
 }
 function drawTitle(){
+  const t=frameTime;
   // 鬼ヶ島タイトル画面背景：朝日の砂浜
   const bgGrd=ctx.createLinearGradient(0,0,0,H);
   bgGrd.addColorStop(0,'#ffaa55');bgGrd.addColorStop(0.4,'#ff8844');bgGrd.addColorStop(1,'#4a2a1a');
