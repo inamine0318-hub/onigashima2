@@ -271,9 +271,13 @@ function drawCharacter(sx,sy,ci,facing,walkFrame,moving,atkAnim,isJetting,isAirb
     ctx.fillStyle=outline;ctx.fillRect(1,37,15,footY-37);ctx.fillStyle=footGrad;ctx.fillRect(2,38,13,footY-38);
     ctx.globalAlpha=0.2;ctx.fillStyle='#000000';ctx.fillRect(4,40,9,footY-40);ctx.globalAlpha=1;
     ctx.fillStyle=outline;ctx.fillRect(1,footY,15,4);ctx.fillStyle=footGrad;ctx.fillRect(2,footY,13,3);
+    // 左足の爪（4本）
+    for(let k=0;k<4;k++){ctx.fillStyle='#0a0500';ctx.fillRect(2+k*3,footY+2,2,3);}
     ctx.fillStyle=outline;ctx.fillRect(16,37,15,footY-37);ctx.fillStyle=footGrad;ctx.fillRect(17,38,13,footY-38);
     ctx.globalAlpha=0.2;ctx.fillStyle='#000000';ctx.fillRect(19,40,9,footY-40);ctx.globalAlpha=1;
     ctx.fillStyle=outline;ctx.fillRect(16,footY,15,4);ctx.fillStyle=footGrad;ctx.fillRect(17,footY,13,3);
+    // 右足の爪（4本）
+    for(let k=0;k<4;k++){ctx.fillStyle='#0a0500';ctx.fillRect(17+k*3,footY+2,2,3);}
 
     // 胴体（グラデーション・立体感強化・筋肉表現）
     const bodyGrad=ctx.createLinearGradient(2,19,2,35);
@@ -296,8 +300,12 @@ function drawCharacter(sx,sy,ci,facing,walkFrame,moving,atkAnim,isJetting,isAirb
     armGrad.addColorStop(0,'#C08855');armGrad.addColorStop(0.4,bearCol);armGrad.addColorStop(1,bearDark);
     ctx.fillStyle=outline;ctx.fillRect(-2-armSwing,15,12,20);ctx.fillStyle=armGrad;ctx.fillRect(-1-armSwing,16,10,18);
     ctx.globalAlpha=0.2;ctx.fillStyle='#000000';ctx.fillRect(2-armSwing,20,5,10);ctx.globalAlpha=1;
+    // 左手の爪（4本）
+    for(let k=0;k<4;k++){ctx.fillStyle='#0a0500';ctx.fillRect(-1-armSwing+k*3,32,2,3);}
     ctx.fillStyle=outline;ctx.fillRect(20+armSwing,16,12,20);ctx.fillStyle=armGrad;ctx.fillRect(21+armSwing,17,10,18);
     ctx.globalAlpha=0.2;ctx.fillStyle='#000000';ctx.fillRect(24+armSwing,21,5,10);ctx.globalAlpha=1;
+    // 右手の爪（4本）
+    for(let k=0;k<4;k++){ctx.fillStyle='#0a0500';ctx.fillRect(21+armSwing+k*3,33,2,3);}
 
     // 頭（角ばった四角形・ゴツい表現・大きくして隙間を埋める）
     const headGrad=ctx.createLinearGradient(3,0,29,14);
