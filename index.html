@@ -396,33 +396,21 @@ function drawCharacter(sx,sy,ci,facing,walkFrame,moving,atkAnim,isJetting,isAirb
     const movePhase=moving?Math.sin(walkFrame*Math.PI/12):0;
     const bob=moving?movePhase*2:0;
 
-    // 体（短くして頭の存在感UP）
-    box(0.5,6,7,5,col);box(1.5,7,5,3,mid);
-    // 肩（広げて逆三角形）
-    box(-0.5,4.5,3,3,col);box(0,5.5,1.5,2,mid);box(5.5,4.5,3,3,col);box(5.5,5.5,1.5,2,mid);
-    // 腕（太くしてハンマー持てる体格）
-    box(-0.5,7,1.5,5,col);box(7,8,1.5,5,col);
-    // 頭（10～15%大きく）
-    box(0.5,-1,7,8,col);box(1.5,0.5,5,6,mid);
-    // 耳（大きく、丸みを持たせる）
-    box(-0.5,-2.5,2,4,col);box(0,-1.5,1.5,3,mid);
-    box(6.5,-2.5,2,4,col);box(6.5,-1.5,1.5,3,mid);
-    // 目（黒目・頭が大きくなったので位置調整）
-    box(2,2,0.8,0.8,'#000000');box(2.2,2.2,0.4,0.4,'#000000');
-    box(5.2,2,0.8,0.8,'#000000');box(5.4,2.2,0.4,0.4,'#000000');
-    // 鼻（位置調整）
-    box(3.75,4,1.2,1.2,'#000000');
-    // 口（位置調整）
-    ctx.fillStyle='#000000';ctx.beginPath();ctx.moveTo(13,16);ctx.lineTo(15.5,17.5);ctx.lineTo(18.5,17.5);ctx.lineTo(21,16);ctx.fill();
-
-    // ハンマーと攻撃モーション
     if(atk===0){
-      // 待機：足を表示、ハンマーを構える
+      // ===== 待機時 =====
+      // 足
       box(1.5,12+bob,1.2,4,col);box(1.5,16+bob,0.8,1,white);
       box(5,12+bob,1.2,4,col);box(5,16+bob,0.8,1,white);
+      // 体
+      box(0.5,6,7,5,col);box(1.5,7,5,3,mid);
+      // 肩
+      box(-0.5,4.5,3,3,col);box(0,5.5,1.5,2,mid);box(5.5,4.5,3,3,col);box(5.5,5.5,1.5,2,mid);
+      // 腕
+      box(-0.5,7,1.5,5,col);box(7,8,1.5,5,col);
+      // ハンマー
       box(2,7,4,2,'#8B6B47');box(6.5,6,1.5,3,'#1a1a1a');
     } else {
-      // 攻撃時：全身で振る
+      // ===== 攻撃時 =====
       const prog=Math.min(atk/3,1);
       const angle=90-prog*150;
       const rad=angle*Math.PI/180;
@@ -439,6 +427,9 @@ function drawCharacter(sx,sy,ci,facing,walkFrame,moving,atkAnim,isJetting,isAirb
       box(-0.5,4.5,3,3,col);box(0,5.5,1.5,2,mid);box(5.5,4.5,3,3,col);box(5.5,5.5,1.5,2,mid);
       ctx.restore();
 
+      // 肩（回転の後）
+      box(-0.5,4.5,3,3,col);box(0,5.5,1.5,2,mid);box(5.5,4.5,3,3,col);box(5.5,5.5,1.5,2,mid);
+
       // 腕と手を上げて振りかざす
       ctx.save();
       ctx.translate(26,22-prog*6);
@@ -447,6 +438,19 @@ function drawCharacter(sx,sy,ci,facing,walkFrame,moving,atkAnim,isJetting,isAirb
       box(0,-0.25,5,0.5,'#8B6B47');box(5,-0.5,1.5,1,'#1a1a1a');
       ctx.restore();
     }
+
+    // 頭（常に表示）
+    box(0.5,-1,7,8,col);box(1.5,0.5,5,6,mid);
+    // 耳
+    box(-0.5,-2.5,2,4,col);box(0,-1.5,1.5,3,mid);
+    box(6.5,-2.5,2,4,col);box(6.5,-1.5,1.5,3,mid);
+    // 目
+    box(2,2,0.8,0.8,'#000000');box(2.2,2.2,0.4,0.4,'#000000');
+    box(5.2,2,0.8,0.8,'#000000');box(5.4,2.2,0.4,0.4,'#000000');
+    // 鼻
+    box(3.75,4,1.2,1.2,'#000000');
+    // 口
+    ctx.fillStyle='#000000';ctx.beginPath();ctx.moveTo(13,16);ctx.lineTo(15.5,17.5);ctx.lineTo(18.5,17.5);ctx.lineTo(21,16);ctx.fill();
 
     ctx.restore();
     return;
