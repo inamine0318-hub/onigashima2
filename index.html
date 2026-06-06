@@ -318,36 +318,21 @@ function drawCharacter(sx,sy,ci,facing,walkFrame,moving,atkAnim,isJetting,isAirb
     // 右手の爪（4本）
     for(let k=0;k<4;k++){ctx.fillStyle='#ffffff';ctx.fillRect(21+armSwing+k*3,33-armLift,2,3);}
 
-    // 頭（丸さと強さの中間・上半分は丸く、下は角ばり）
+    // 頭（完全に丸い）
     const headGrad=ctx.createLinearGradient(2,0,30,16);
     headGrad.addColorStop(0,'#C08855');headGrad.addColorStop(0.5,bearCol);headGrad.addColorStop(1,bearDark);
 
-    // 上半分（丸い頭）
+    // 外側（アウトライン）
     ctx.fillStyle=outline;
-    ctx.beginPath();
-    ctx.arc(16,2,16,Math.PI,0,false);
-    ctx.lineTo(32,10);ctx.lineTo(0,10);
-    ctx.fill();
+    ctx.beginPath();ctx.arc(16,9,17,0,Math.PI*2);ctx.fill();
 
-    // 下半分（角ばった顎）
-    ctx.fillRect(0,10,32,13);
-
-    // 内側グラデーション上部
+    // 内側（グラデーション）
     ctx.fillStyle=headGrad;
-    ctx.beginPath();
-    ctx.arc(16,3,15,Math.PI,0,false);
-    ctx.lineTo(31,10);ctx.lineTo(1,10);
-    ctx.fill();
-
-    // 内側下部
-    ctx.fillRect(1,10,30,12);
+    ctx.beginPath();ctx.arc(16,9,16,0,Math.PI*2);ctx.fill();
 
     // ハイライト
     ctx.globalAlpha=0.15;ctx.fillStyle='#ffffff';
-    ctx.beginPath();
-    ctx.arc(16,3,15,Math.PI,0,false);
-    ctx.lineTo(31,8);ctx.lineTo(1,8);
-    ctx.fill();
+    ctx.beginPath();ctx.arc(16,5,16,0,Math.PI);ctx.fill();
     ctx.globalAlpha=1;
 
     // 耳（角ばった四角形・立体感・中央に寄せた・やや広め）
@@ -367,12 +352,12 @@ function drawCharacter(sx,sy,ci,facing,walkFrame,moving,atkAnim,isJetting,isAirb
     ctx.fillStyle=bearBlack;ctx.fillRect(22,2,3,3);
 
     // 口周り（白っぽい毛）
-    ctx.fillStyle='#e8d4c8';ctx.fillRect(11,11,12,4);
-    // 口（∩の形・クマっぽく）
+    ctx.fillStyle='#e8d4c8';ctx.fillRect(10,15,12,5);
+    // 口（∩の形・クマっぽく・大きく）
     ctx.fillStyle=bearBlack;
-    ctx.beginPath();ctx.moveTo(13,12);ctx.quadraticCurveTo(16,14,19,12);ctx.fill();
-    // 舌（ピンク色）
-    ctx.fillStyle='#ff99aa';ctx.fillRect(15,13,2,2);
+    ctx.beginPath();ctx.moveTo(13,16);ctx.quadraticCurveTo(16,19,19,16);ctx.fill();
+    // 舌（ピンク色・大きく）
+    ctx.fillStyle='#ff99aa';ctx.fillRect(14,18,4,3);
 
     // ハンマー攻撃
     const ext=atk===1?7:atk===2?13:atk>=3?19:0;
