@@ -241,7 +241,7 @@ const SC_ACCNT =['#ff8800','#cc3300','#5566ee','#ffcc00','#99bbcc','#ffaa00','#8
 function drawCharacter(sx,sy,ci,facing,walkFrame,moving,atkAnim,isJetting,isAirborne){
   ctx.save();
 
-  // ===== マタキチ - 熊（自然な斜め向き・体型優先） =====
+  // ===== マタキチ - 熊（がっしり体型・首なし・大きな頭） =====
   if(ci===4){
     const VS=1.28;
     ctx.translate(Math.floor(sx+15),Math.floor(sy+CHARS[ci].h));
@@ -253,49 +253,47 @@ function drawCharacter(sx,sy,ci,facing,walkFrame,moving,atkAnim,isJetting,isAirb
     const atk=atkAnim||0;
     const movePhase=moving?Math.sin(walkFrame*Math.PI/12):0;
 
-    // 足（自然な脚・左右対称・歩行アニメ）
-    const footY=moving?45+movePhase*2:45;
-    ctx.fillStyle=outline;ctx.fillRect(2,38,13,footY-38);ctx.fillStyle=bearCol;ctx.fillRect(3,39,11,footY-39);
-    ctx.fillStyle=outline;ctx.fillRect(2,footY,13,4);ctx.fillStyle=bearCol;ctx.fillRect(3,footY,11,3);
+    // 足（太くてがっしり・左右対称・歩行アニメ）
+    const footY=moving?44+movePhase*2:44;
+    ctx.fillStyle=outline;ctx.fillRect(1,37,15,footY-37);ctx.fillStyle=bearCol;ctx.fillRect(2,38,13,footY-38);
+    ctx.fillStyle=outline;ctx.fillRect(1,footY,15,4);ctx.fillStyle=bearCol;ctx.fillRect(2,footY,13,3);
 
-    ctx.fillStyle=outline;ctx.fillRect(17,38,13,footY-38);ctx.fillStyle=bearCol;ctx.fillRect(18,39,11,footY-39);
-    ctx.fillStyle=outline;ctx.fillRect(17,footY,13,4);ctx.fillStyle=bearCol;ctx.fillRect(18,footY,11,3);
+    ctx.fillStyle=outline;ctx.fillRect(16,37,15,footY-37);ctx.fillStyle=bearCol;ctx.fillRect(17,38,13,footY-38);
+    ctx.fillStyle=outline;ctx.fillRect(16,footY,15,4);ctx.fillStyle=bearCol;ctx.fillRect(17,footY,13,3);
 
-    // 胴体（自然な長方形・安定感重視）
-    ctx.fillStyle=outline;ctx.fillRect(3,21,24,16);ctx.fillStyle=bearCol;ctx.fillRect(4,22,22,14);
+    // 胴体（横幅広く・どっしり・首なし）
+    ctx.fillStyle=outline;ctx.fillRect(1,18,30,18);ctx.fillStyle=bearCol;ctx.fillRect(2,19,28,16);
 
-    // 肩の丸み（円で自然につなぐ）
-    ctx.fillStyle=outline;ctx.beginPath();ctx.arc(4,22,7,0,Math.PI*2);ctx.fill();
-    ctx.fillStyle=bearCol;ctx.beginPath();ctx.arc(4,22,5.5,0,Math.PI*2);ctx.fill();
-    ctx.fillStyle=outline;ctx.beginPath();ctx.arc(28,23,7.5,0,Math.PI*2);ctx.fill();
-    ctx.fillStyle=bearCol;ctx.beginPath();ctx.arc(28,23,6,0,Math.PI*2);ctx.fill();
+    // 肩の丸み（大きく・頭へ自然につなぐ）
+    ctx.fillStyle=outline;ctx.beginPath();ctx.arc(2,18,9,0,Math.PI*2);ctx.fill();
+    ctx.fillStyle=bearCol;ctx.beginPath();ctx.arc(2,18,7,0,Math.PI*2);ctx.fill();
+    ctx.fillStyle=outline;ctx.beginPath();ctx.arc(30,19,10,0,Math.PI*2);ctx.fill();
+    ctx.fillStyle=bearCol;ctx.beginPath();ctx.arc(30,19,8,0,Math.PI*2);ctx.fill();
 
-    // 腕（自然な長さ・歩行時に軽く振る）
-    const armSwing=moving?movePhase*2:0;
-    ctx.fillStyle=outline;ctx.fillRect(0-armSwing,17,10,18);ctx.fillStyle=bearCol;ctx.fillRect(1-armSwing,18,8,16);
-    ctx.fillStyle=outline;ctx.fillRect(22+armSwing,18,10,18);ctx.fillStyle=bearCol;ctx.fillRect(23+armSwing,19,8,16);
+    // 腕（太く短め・歩行時に振る）
+    const armSwing=moving?movePhase*3:0;
+    ctx.fillStyle=outline;ctx.fillRect(-2-armSwing,15,12,20);ctx.fillStyle=bearCol;ctx.fillRect(-1-armSwing,16,10,18);
+    ctx.fillStyle=outline;ctx.fillRect(20+armSwing,16,12,20);ctx.fillStyle=bearCol;ctx.fillRect(21+armSwing,17,10,18);
 
-    // 首（胴体と頭をつなぐ）
-    ctx.fillStyle=outline;ctx.fillRect(12,14,6,8);ctx.fillStyle=bearCol;ctx.fillRect(13,15,4,6);
+    // 頭（大きく・首なし・胴体に直接つながる）
+    ctx.fillStyle=outline;ctx.beginPath();ctx.arc(15,2,12,0,Math.PI*2);ctx.fill();
+    ctx.fillStyle=bearCol;ctx.beginPath();ctx.arc(15,2,11,0,Math.PI*2);ctx.fill();
 
-    // 頭（適度なサイズ）
-    ctx.fillStyle=outline;ctx.beginPath();ctx.arc(15,7,9,0,Math.PI*2);ctx.fill();
-    ctx.fillStyle=bearCol;ctx.beginPath();ctx.arc(15,7,8,0,Math.PI*2);ctx.fill();
+    // 耳（頭の上に自然に・適度なサイズ）
+    ctx.fillStyle=outline;ctx.beginPath();ctx.arc(4,-4,6,0,Math.PI*2);ctx.fill();
+    ctx.fillStyle=bearCol;ctx.beginPath();ctx.arc(4,-4,5,0,Math.PI*2);ctx.fill();
+    ctx.fillStyle=outline;ctx.beginPath();ctx.arc(26,-3,6.5,0,Math.PI*2);ctx.fill();
+    ctx.fillStyle=bearCol;ctx.beginPath();ctx.arc(26,-3,5.5,0,Math.PI*2);ctx.fill();
 
-    // 耳（適度なサイズ）
-    ctx.fillStyle=outline;ctx.beginPath();ctx.arc(6,0,5,0,Math.PI*2);ctx.fill();
-    ctx.fillStyle=bearCol;ctx.beginPath();ctx.arc(6,0,4,0,Math.PI*2);ctx.fill();
-    ctx.fillStyle=outline;ctx.beginPath();ctx.arc(24,1,5.5,0,Math.PI*2);ctx.fill();
-    ctx.fillStyle=bearCol;ctx.beginPath();ctx.arc(24,1,4.5,0,Math.PI*2);ctx.fill();
+    // 鼻（鼻先を前に出す・熊らしく）
+    ctx.fillStyle=bearBlack;ctx.beginPath();ctx.arc(17,4,3.5,0,Math.PI*2);ctx.fill();
+    ctx.fillStyle=bearDark;ctx.fillRect(15,7,4,2);
 
-    // 鼻（小さく自然に）
-    ctx.fillStyle=bearBlack;ctx.beginPath();ctx.arc(16,9,2.5,0,Math.PI*2);ctx.fill();
-
-    // 目（自然な配置）
-    ctx.fillStyle=bearBlack;ctx.beginPath();ctx.arc(10,5,2,0,Math.PI*2);ctx.fill();
-    ctx.fillStyle='#ffffff';ctx.beginPath();ctx.arc(9,4,0.6,0,Math.PI*2);ctx.fill();
-    ctx.fillStyle=bearBlack;ctx.beginPath();ctx.arc(20,6,2,0,Math.PI*2);ctx.fill();
-    ctx.fillStyle='#ffffff';ctx.beginPath();ctx.arc(21,5,0.6,0,Math.PI*2);ctx.fill();
+    // 目（大きく見せる）
+    ctx.fillStyle=bearBlack;ctx.beginPath();ctx.arc(10,0,2.5,0,Math.PI*2);ctx.fill();
+    ctx.fillStyle='#ffffff';ctx.beginPath();ctx.arc(9,-1,0.8,0,Math.PI*2);ctx.fill();
+    ctx.fillStyle=bearBlack;ctx.beginPath();ctx.arc(20,1,2.5,0,Math.PI*2);ctx.fill();
+    ctx.fillStyle='#ffffff';ctx.beginPath();ctx.arc(21,0,0.8,0,Math.PI*2);ctx.fill();
 
     // ハンマー攻撃
     const ext=atk===1?7:atk===2?13:atk>=3?19:0;
