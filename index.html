@@ -427,15 +427,17 @@ function drawCharacter(sx,sy,ci,facing,walkFrame,moving,atkAnim,isJetting,isAirb
       // 手
       _r(skin,20,26, 10, 10); _r(skinS,21,27, 8, 8);
     }
-  } else if(ci===4){ // ===== マタキチ - ハンマー装備・回転振り下ろし =====
-    const skin='#DEAA58', skinS='#B88030', hammerWood='#8B6B47', hammerMetal='#1a1a1a', hammerShine='#444444';
+  } else if(ci===4){ // ===== マタキチ - 熊（ハンマー装備） =====
+    const skin='#704214', skinS='#5a3a2a', hammerWood='#8B6B47', hammerMetal='#1a1a1a', hammerShine='#444444';
+    // 胴体と腕の色を熊に統一
+    const bearBody='#704214', bearBodyDark='#5a3a2a';
 
     if(atk===0){
       // 待機：45度でハンマーを構える
       // 後腕 (ハンマーを支える)
-      _r(OL, 3,14, 7,16); _r(SC, 4,15, 5,14); _r(AC, 4,15, 5, 3);
+      _r(OL, 3,14, 7,16); _r(bearBody, 4,15, 5,14); _r(bearBodyDark, 4,15, 5, 3);
       // 前腕 (ハンマーを支える)
-      _r(OL,17,12, 8,14); _r(SC,18,13, 6,12); _r(AC,18,13, 6, 2);
+      _r(OL,17,12, 8,14); _r(bearBody,18,13, 6,12); _r(bearBodyDark,18,13, 6, 2);
       // 手
       _r(skin, 4,29, 6, 8); _r(skinS, 5,30, 4, 6);
       _r(skin,18,25, 8, 9); _r(skinS,19,26, 6, 7);
@@ -473,9 +475,9 @@ function drawCharacter(sx,sy,ci,facing,walkFrame,moving,atkAnim,isJetting,isAirb
       const hwid=Math.floor(5*hammerSize);
 
       // 腕の動き
-      _r(OL, 3-swingProgress*6,8, 7,17); _r(SC, 4-swingProgress*6,9, 5,15); _r(AC, 4-swingProgress*6,9, 5, 3);
-      _r(OL,17+swingProgress*6,14, 8+swingProgress*6, 12); _r(SC,18+swingProgress*6,15, 6+swingProgress*6, 10); _r(AC,18+swingProgress*6,15, 6+swingProgress*6, 2);
-      _r(OL,24+swingProgress*10,10, 8+swingProgress*6, 14); _r(SC,25+swingProgress*10,11, 6+swingProgress*6, 12); _r(AC,25+swingProgress*10,11, 6+swingProgress*6, 2);
+      _r(OL, 3-swingProgress*6,8, 7,17); _r(bearBody, 4-swingProgress*6,9, 5,15); _r(bearBodyDark, 4-swingProgress*6,9, 5, 3);
+      _r(OL,17+swingProgress*6,14, 8+swingProgress*6, 12); _r(bearBody,18+swingProgress*6,15, 6+swingProgress*6, 10); _r(bearBodyDark,18+swingProgress*6,15, 6+swingProgress*6, 2);
+      _r(OL,24+swingProgress*10,10, 8+swingProgress*6, 14); _r(bearBody,25+swingProgress*10,11, 6+swingProgress*6, 12); _r(bearBodyDark,25+swingProgress*10,11, 6+swingProgress*6, 2);
 
       // ハンマーの柄（回転軸から先端まで）
       ctx.save();
@@ -493,6 +495,16 @@ function drawCharacter(sx,sy,ci,facing,walkFrame,moving,atkAnim,isJetting,isAirb
       // 手（ハンマーの後に描画・手が見える）
       _r(skin,18+swingProgress*6,27, 9, 9); _r(skinS,19+swingProgress*6,28, 7, 7);
       _r(skin,25+swingProgress*10,20, 9, 9); _r(skinS,26+swingProgress*10,21, 7, 7);
+      // 頭（熊：上部に大きな球）
+      ctx.fillStyle=OL;ctx.beginPath();ctx.arc(15,5,10,0,Math.PI*2);ctx.fill();
+      ctx.fillStyle=bearBody;ctx.beginPath();ctx.arc(15,5,9,0,Math.PI*2);ctx.fill();
+      // 鼻
+      ctx.fillStyle='#000000';ctx.beginPath();ctx.arc(15,8,2,0,Math.PI*2);ctx.fill();
+      // 目
+      ctx.fillStyle='#000000';ctx.beginPath();ctx.arc(10,2,2,0,Math.PI*2);ctx.fill();
+      ctx.fillStyle='#ffffff';ctx.beginPath();ctx.arc(9,1,0.5,0,Math.PI*2);ctx.fill();
+      ctx.fillStyle='#000000';ctx.beginPath();ctx.arc(20,2,2,0,Math.PI*2);ctx.fill();
+      ctx.fillStyle='#ffffff';ctx.beginPath();ctx.arc(21,1,0.5,0,Math.PI*2);ctx.fill();
 
       // フィニッシャー時の衝撃表現
       if(atk>=3){
