@@ -241,7 +241,7 @@ const SC_ACCNT =['#ff8800','#cc3300','#5566ee','#ffcc00','#99bbcc','#ffaa00','#8
 function drawCharacter(sx,sy,ci,facing,walkFrame,moving,atkAnim,isJetting,isAirborne){
   ctx.save();
 
-  // ===== マタキチ - 熊（全身斜め向き・丸いシルエット優先） =====
+  // ===== マタキチ - 熊（自然な斜め向き・体型優先） =====
   if(ci===4){
     const VS=1.28;
     ctx.translate(Math.floor(sx+15),Math.floor(sy+CHARS[ci].h));
@@ -253,59 +253,49 @@ function drawCharacter(sx,sy,ci,facing,walkFrame,moving,atkAnim,isJetting,isAirb
     const atk=atkAnim||0;
     const movePhase=moving?Math.sin(walkFrame*Math.PI/12):0;
 
-    // 足（斜め向き：左足は奥、右足は手前）
-    const leftFootY=39+movePhase*3;
-    const rightFootY=43-movePhase*3;
-    ctx.fillStyle=outline;ctx.beginPath();ctx.ellipse(6,leftFootY+6,7,8,0,0,Math.PI*2);ctx.fill();
-    ctx.fillStyle=bearCol;ctx.beginPath();ctx.ellipse(6,leftFootY+6,5.5,6.5,0,0,Math.PI*2);ctx.fill();
-    ctx.fillStyle=outline;ctx.beginPath();ctx.ellipse(22,rightFootY+6,8,8.5,0,0,Math.PI*2);ctx.fill();
-    ctx.fillStyle=bearCol;ctx.beginPath();ctx.ellipse(22,rightFootY+6,6,6.5,0,0,Math.PI*2);ctx.fill();
+    // 足（自然な脚・左右対称・歩行アニメ）
+    const footY=moving?45+movePhase*2:45;
+    ctx.fillStyle=outline;ctx.fillRect(2,38,13,footY-38);ctx.fillStyle=bearCol;ctx.fillRect(3,39,11,footY-39);
+    ctx.fillStyle=outline;ctx.fillRect(2,footY,13,4);ctx.fillStyle=bearCol;ctx.fillRect(3,footY,11,3);
 
-    // 胴体（斜め向き：丸いシルエット・奥行き表現）
-    ctx.fillStyle=outline;ctx.beginPath();ctx.ellipse(14,28,14,12,0.15,0,Math.PI*2);ctx.fill();
-    ctx.fillStyle=bearCol;ctx.beginPath();ctx.ellipse(14,28,13,11,0.15,0,Math.PI*2);ctx.fill();
+    ctx.fillStyle=outline;ctx.fillRect(17,38,13,footY-38);ctx.fillStyle=bearCol;ctx.fillRect(18,39,11,footY-39);
+    ctx.fillStyle=outline;ctx.fillRect(17,footY,13,4);ctx.fillStyle=bearCol;ctx.fillRect(18,footY,11,3);
 
-    // 背中側の丸み（奥行き表現）
-    ctx.fillStyle=bearDark;ctx.beginPath();ctx.ellipse(8,27,5,9,0,0,Math.PI*2);ctx.fill();
+    // 胴体（自然な長方形・安定感重視）
+    ctx.fillStyle=outline;ctx.fillRect(3,21,24,16);ctx.fillStyle=bearCol;ctx.fillRect(4,22,22,14);
 
-    // 胸側の丸み（手前側）
-    ctx.fillStyle=bearCol;ctx.beginPath();ctx.ellipse(18,29,7,10,0,0,Math.PI*2);ctx.fill();
+    // 肩の丸み（円で自然につなぐ）
+    ctx.fillStyle=outline;ctx.beginPath();ctx.arc(4,22,7,0,Math.PI*2);ctx.fill();
+    ctx.fillStyle=bearCol;ctx.beginPath();ctx.arc(4,22,5.5,0,Math.PI*2);ctx.fill();
+    ctx.fillStyle=outline;ctx.beginPath();ctx.arc(28,23,7.5,0,Math.PI*2);ctx.fill();
+    ctx.fillStyle=bearCol;ctx.beginPath();ctx.arc(28,23,6,0,Math.PI*2);ctx.fill();
 
-    // 肩（左肩は奥、右肩は手前）
-    ctx.fillStyle=outline;ctx.beginPath();ctx.arc(3,15,8,0,Math.PI*2);ctx.fill();
-    ctx.fillStyle=bearCol;ctx.beginPath();ctx.arc(3,15,6.5,0,Math.PI*2);ctx.fill();
-    ctx.fillStyle=outline;ctx.beginPath();ctx.arc(27,20,9,0,Math.PI*2);ctx.fill();
-    ctx.fillStyle=bearCol;ctx.beginPath();ctx.arc(27,20,7,0,Math.PI*2);ctx.fill();
-
-    // 腕（斜め向き：左腕は奥、右腕は手前・歩行時に振る）
-    const armSwing=moving?movePhase*4:0;
-    ctx.fillStyle=outline;ctx.beginPath();ctx.ellipse(-3-armSwing,20,6,13,0.2,0,Math.PI*2);ctx.fill();
-    ctx.fillStyle=bearCol;ctx.beginPath();ctx.ellipse(-3-armSwing,20,4.5,11,0.2,0,Math.PI*2);ctx.fill();
-    ctx.fillStyle=outline;ctx.beginPath();ctx.ellipse(25+armSwing,26,7,14,-0.2,0,Math.PI*2);ctx.fill();
-    ctx.fillStyle=bearCol;ctx.beginPath();ctx.ellipse(25+armSwing,26,5.5,12,-0.2,0,Math.PI*2);ctx.fill();
+    // 腕（自然な長さ・歩行時に軽く振る）
+    const armSwing=moving?movePhase*2:0;
+    ctx.fillStyle=outline;ctx.fillRect(0-armSwing,17,10,18);ctx.fillStyle=bearCol;ctx.fillRect(1-armSwing,18,8,16);
+    ctx.fillStyle=outline;ctx.fillRect(22+armSwing,18,10,18);ctx.fillStyle=bearCol;ctx.fillRect(23+armSwing,19,8,16);
 
     // 首（胴体と頭をつなぐ）
-    ctx.fillStyle=outline;ctx.beginPath();ctx.ellipse(14,10,8,7,0.1,0,Math.PI*2);ctx.fill();
-    ctx.fillStyle=bearCol;ctx.beginPath();ctx.ellipse(14,10,6.5,5.5,0.1,0,Math.PI*2);ctx.fill();
+    ctx.fillStyle=outline;ctx.fillRect(12,14,6,8);ctx.fillStyle=bearCol;ctx.fillRect(13,15,4,6);
 
-    // 頭（全身斜め向き：左側奥、右側手前）
-    ctx.fillStyle=outline;ctx.beginPath();ctx.ellipse(15,0,10,11,0.3,0,Math.PI*2);ctx.fill();
-    ctx.fillStyle=bearCol;ctx.beginPath();ctx.ellipse(15,0,9,10,0.3,0,Math.PI*2);ctx.fill();
+    // 頭（適度なサイズ）
+    ctx.fillStyle=outline;ctx.beginPath();ctx.arc(15,7,9,0,Math.PI*2);ctx.fill();
+    ctx.fillStyle=bearCol;ctx.beginPath();ctx.arc(15,7,8,0,Math.PI*2);ctx.fill();
 
-    // 耳（左耳は奥、右耳は手前）
-    ctx.fillStyle=outline;ctx.beginPath();ctx.arc(4,-5,6,0,Math.PI*2);ctx.fill();
-    ctx.fillStyle=bearCol;ctx.beginPath();ctx.arc(4,-5,5,0,Math.PI*2);ctx.fill();
-    ctx.fillStyle=outline;ctx.beginPath();ctx.arc(26,-3,7,0,Math.PI*2);ctx.fill();
-    ctx.fillStyle=bearCol;ctx.beginPath();ctx.arc(26,-3,6,0,Math.PI*2);ctx.fill();
+    // 耳（適度なサイズ）
+    ctx.fillStyle=outline;ctx.beginPath();ctx.arc(6,0,5,0,Math.PI*2);ctx.fill();
+    ctx.fillStyle=bearCol;ctx.beginPath();ctx.arc(6,0,4,0,Math.PI*2);ctx.fill();
+    ctx.fillStyle=outline;ctx.beginPath();ctx.arc(24,1,5.5,0,Math.PI*2);ctx.fill();
+    ctx.fillStyle=bearCol;ctx.beginPath();ctx.arc(24,1,4.5,0,Math.PI*2);ctx.fill();
 
-    // 鼻（斜め向きで自然に）
-    ctx.fillStyle=bearBlack;ctx.beginPath();ctx.ellipse(16,3,3.5,3,0.2,0,Math.PI*2);ctx.fill();
+    // 鼻（小さく自然に）
+    ctx.fillStyle=bearBlack;ctx.beginPath();ctx.arc(16,9,2.5,0,Math.PI*2);ctx.fill();
 
-    // 目（斜め向きで見える目）
-    ctx.fillStyle=bearBlack;ctx.beginPath();ctx.arc(10,-1,2.5,0,Math.PI*2);ctx.fill();
-    ctx.fillStyle='#ffffff';ctx.beginPath();ctx.arc(9,-2,0.8,0,Math.PI*2);ctx.fill();
-    ctx.fillStyle=bearBlack;ctx.beginPath();ctx.arc(21,1,2.5,0,Math.PI*2);ctx.fill();
-    ctx.fillStyle='#ffffff';ctx.beginPath();ctx.arc(22,0,0.8,0,Math.PI*2);ctx.fill();
+    // 目（自然な配置）
+    ctx.fillStyle=bearBlack;ctx.beginPath();ctx.arc(10,5,2,0,Math.PI*2);ctx.fill();
+    ctx.fillStyle='#ffffff';ctx.beginPath();ctx.arc(9,4,0.6,0,Math.PI*2);ctx.fill();
+    ctx.fillStyle=bearBlack;ctx.beginPath();ctx.arc(20,6,2,0,Math.PI*2);ctx.fill();
+    ctx.fillStyle='#ffffff';ctx.beginPath();ctx.arc(21,5,0.6,0,Math.PI*2);ctx.fill();
 
     // ハンマー攻撃
     const ext=atk===1?7:atk===2?13:atk>=3?19:0;
