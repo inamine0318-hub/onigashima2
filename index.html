@@ -352,9 +352,10 @@ function drawCharacter(sx,sy,ci,facing,walkFrame,moving,atkAnim,isJetting,isAirb
     ctx.beginPath();ctx.arc(18.5,8.5,0.5,0,Math.PI*2);ctx.fill();
     ctx.globalAlpha=1;
 
-    // 目（黒点・少し大きく）
-    ctx.fillStyle=bearBlack;ctx.fillRect(7,2,3,3);
-    ctx.fillStyle=bearBlack;ctx.fillRect(22,2,3,3);
+    // 目（丸い黒点・少し大きく）
+    ctx.fillStyle=bearBlack;
+    ctx.beginPath();ctx.arc(8.5,3.5,2,0,Math.PI*2);ctx.fill();
+    ctx.beginPath();ctx.arc(23.5,3.5,2,0,Math.PI*2);ctx.fill();
 
     // 口周り（白っぽい毛・丸い）
     ctx.fillStyle='#e8d4c8';
