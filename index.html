@@ -290,13 +290,13 @@ function drawCharacter(sx,sy,ci,facing,walkFrame,moving,atkAnim,isJetting,isAirb
       console.log('atk攻撃中:',{atk,prog,angle});
 
       // 足を広げてスタンス
-      box(0.8-prog*1.5,12+bob,1.2,4,col);box(0.8-prog*1.5,16+bob,0.8,1,white);
-      box(5.2+prog*1.5,12+bob,1.2,4,col);box(5.2+prog*1.5,16+bob,0.8,1,white);
+      box(0.8-prog*3,12+bob,1.2,4,col);box(0.8-prog*3,16+bob,0.8,1,white);
+      box(5.2+prog*3,12+bob,1.2,4,col);box(5.2+prog*3,16+bob,0.8,1,white);
 
       // 体を前かがみに
       ctx.save();
       ctx.translate(15,24);
-      ctx.rotate(prog*1.0);
+      ctx.rotate(prog*2);
       box(0.5,6,7,5,col);box(1.5,7,5,3,mid);
       box(-0.5,4.5,3,3,col);box(0,5.5,1.5,2,mid);box(5.5,4.5,3,3,col);box(5.5,5.5,1.5,2,mid);
       ctx.restore();
@@ -306,7 +306,7 @@ function drawCharacter(sx,sy,ci,facing,walkFrame,moving,atkAnim,isJetting,isAirb
 
       // 腕と手を上げて振りかざす
       ctx.save();
-      ctx.translate(26,22-prog*10);
+      ctx.translate(26,22-prog*20);
       ctx.rotate(rad);
       box(-3,0,0.75,1.5,col);box(5.5,0,0.75,1.5,col);
       box(0,-0.25,5,0.5,'#8B6B47');box(5,-0.5,1.5,1,'#1a1a1a');
