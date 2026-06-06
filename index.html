@@ -241,6 +241,17 @@ const SC_ACCNT =['#ff8800','#cc3300','#5566ee','#ffcc00','#99bbcc','#ffaa00','#8
 function drawCharacter(sx,sy,ci,facing,walkFrame,moving,atkAnim,isJetting,isAirborne){
   ctx.save();
 
+  // ハイライト・シャドウレイヤー用の透明度マスク
+  const addCharacterShading=(cx,cy,w,h)=>{
+    // キャラの足元に影
+    ctx.globalAlpha=0.15;ctx.fillStyle='#000000';
+    ctx.beginPath();ctx.ellipse(cx,cy+h-3,w/2.2,h/12,0,0,Math.PI*2);ctx.fill();
+    // 上部ハイライト（軽い効果）
+    ctx.globalAlpha=0.08;ctx.fillStyle='#ffffff';
+    ctx.beginPath();ctx.ellipse(cx-w/3,cy+h/4,w/4,h/6,0,0,Math.PI*2);ctx.fill();
+    ctx.globalAlpha=1;
+  };
+
   // ===== マタキチ - 熊（高品質グラフィックス版） =====
   if(ci===4){
     const VS=1.28;
@@ -3171,53 +3182,102 @@ function drawEnemies(){
 
     if(e.type==='patrol'){
       if(currentStage===1){
-        // 子鬼 - 小柄な赤鬼
+        // 子鬼 - 小柄な赤鬼（高品質）
         const bob=Math.sin(t/300+e.startX*.005)*1;
-        // 体（楕円）
-        dr(ex+4,ey+8+bob,20,14,'#cc0000');
-        // 頭（丸い）
-        dr(ex+5,ey-2+bob,18,12,'#dd2222');
-        // 角（1本・上方）
-        dr(ex+13,ey-8+bob,4,8,'#1a1a1a');
-        // 目（白）
-        dr(ex+7,ey+1+bob,5,5,'#ffffff');dr(ex+18,ey+1+bob,5,5,'#ffffff');
+        // 体（グラデーション・立体感）
+        const bodyGrd=ctx.createRadialGradient(ex+14,ey+15+bob,2,ex+14,ey+15+bob,12);
+        bodyGrd.addColorStop(0,'#ff3333');bodyGrd.addColorStop(0.7,'#cc0000');bodyGrd.addColorStop(1,'#880000');
+        ctx.fillStyle=bodyGrd;ctx.fillRect(ex+4,ey+8+bob,20,14);
+        // 頭（グラデーション）
+        const headGrd=ctx.createRadialGradient(ex+14,ey+5+bob,3,ex+14,ey+5+bob,10);
+        headGrd.addColorStop(0,'#ff5555');headGrd.addColorStop(0.6,'#dd2222');headGrd.addColorStop(1,'#990000');
+        ctx.fillStyle=headGrd;ctx.fillRect(ex+5,ey-2+bob,18,12);
+        // 角（立体感）
+        const hornGrd=ctx.createLinearGradient(ex+13,ey-8+bob,ex+17,ey-8+bob);
+        hornGrd.addColorStop(0,'#3a3a3a');hornGrd.addColorStop(1,'#0a0a0a');
+        ctx.fillStyle=hornGrd;ctx.fillRect(ex+13,ey-8+bob,4,8);
+        ctx.globalAlpha=0.4;ctx.fillStyle='#000000';ctx.fillRect(ex+15,ey-6+bob,1,4);ctx.globalAlpha=1;
+        // 目（白・ハイライト付き）
+        ctx.fillStyle='#ffffff';ctx.fillRect(ex+7,ey+1+bob,5,5);ctx.fillRect(ex+18,ey+1+bob,5,5);
+        ctx.globalAlpha=0.5;ctx.fillStyle='#ffffcc';ctx.fillRect(ex+8,ey+1+bob,2,2);ctx.fillRect(ex+19,ey+1+bob,2,2);ctx.globalAlpha=1;
         // 目玉（黒）
-        dr(ex+8,ey+2+bob,3,3,'#000000');dr(ex+19,ey+2+bob,3,3,'#000000');
-        // 棍棒（右手）
-        dr(ex+24,ey+4+bob,5,16,'#663300');
-        // HPバー
-        dr(ex,ey-12,e.w,3,'#330008');dr(ex,ey-12,Math.ceil(e.w*(e.hp/e.maxHp)),3,'#ff1144');
+        ctx.fillStyle='#000000';ctx.fillRect(ex+8,ey+2+bob,3,3);ctx.fillRect(ex+19,ey+2+bob,3,3);
+        // 棍棒（グラデーション・立体感）
+        const clubGrd=ctx.createLinearGradient(ex+24,ey+4+bob,ex+29,ey+4+bob);
+        clubGrd.addColorStop(0,'#884400');clubGrd.addColorStop(1,'#441a00');
+        ctx.fillStyle=clubGrd;ctx.fillRect(ex+24,ey+4+bob,5,16);
+        ctx.globalAlpha=0.3;ctx.fillStyle='#000000';ctx.fillRect(ex+26,ey+6+bob,2,12);ctx.globalAlpha=1;
+        // HPバー（グラデーション背景）
+        ctx.fillStyle='#330008';ctx.fillRect(ex,ey-12,e.w,3);
+        const hpGrd=ctx.createLinearGradient(ex,ey-12,ex+Math.ceil(e.w*(e.hp/e.maxHp)),ey-12);
+        hpGrd.addColorStop(0,'#ff6677');hpGrd.addColorStop(1,'#cc0000');
+        ctx.fillStyle=hpGrd;ctx.fillRect(ex,ey-12,Math.ceil(e.w*(e.hp/e.maxHp)),3);
       } else if(currentStage===2){
-        // 地底鬼 - 岩に覆われた鬼
+        // 地底鬼 - 岩に覆われた鬼（高品質）
         const bob=Math.sin(t/400+e.startX*.005)*1;
-        // 体（茶色・でこぼこ）
-        dr(ex+3,ey+8+bob,24,14,'#664422');
-        // 岩片
-        dr(ex+2,ey+6+bob,6,6,'#888888');dr(ex+24,ey+7+bob,5,7,'#777777');dr(ex+12,ey+3+bob,6,6,'#666666');
-        // 頭（半分土に埋まった）
-        dr(ex+5,ey-2+bob,18,10,'#774422');
-        // 角（途中まで見える）
-        dr(ex+6,ey-5+bob,4,5,'#1a1a1a');
-        // 目
-        dr(ex+8,ey+0+bob,5,5,'#ffff99');dr(ex+17,ey+0+bob,5,5,'#ffff99');
-        // HPバー
-        dr(ex,ey-12,e.w,3,'#330008');dr(ex,ey-12,Math.ceil(e.w*(e.hp/e.maxHp)),3,'#cc7700');
+        // 体（グラデーション・岩質感）
+        const bodyGrd=ctx.createLinearGradient(ex+3,ey+8+bob,ex+27,ey+22+bob);
+        bodyGrd.addColorStop(0,'#774422');bodyGrd.addColorStop(1,'#553311');
+        ctx.fillStyle=bodyGrd;ctx.fillRect(ex+3,ey+8+bob,24,14);
+        // 岩片（立体感・グラデーション）
+        const rockGrd1=ctx.createRadialGradient(ex+5,ey+9+bob,1,ex+5,ey+9+bob,4);
+        rockGrd1.addColorStop(0,'#999999');rockGrd1.addColorStop(1,'#666666');
+        ctx.fillStyle=rockGrd1;ctx.fillRect(ex+2,ey+6+bob,6,6);
+        const rockGrd2=ctx.createRadialGradient(ex+26.5,ey+10.5+bob,1,ex+26.5,ey+10.5+bob,3.5);
+        rockGrd2.addColorStop(0,'#888888');rockGrd2.addColorStop(1,'#555555');
+        ctx.fillStyle=rockGrd2;ctx.fillRect(ex+24,ey+7+bob,5,7);
+        const rockGrd3=ctx.createRadialGradient(ex+15,ey+6+bob,1,ex+15,ey+6+bob,3.5);
+        rockGrd3.addColorStop(0,'#777777');rockGrd3.addColorStop(1,'#444444');
+        ctx.fillStyle=rockGrd3;ctx.fillRect(ex+12,ey+3+bob,6,6);
+        // 頭（グラデーション）
+        const headGrd=ctx.createLinearGradient(ex+5,ey-2+bob,ex+23,ey+8+bob);
+        headGrd.addColorStop(0,'#884422');headGrd.addColorStop(1,'#664411');
+        ctx.fillStyle=headGrd;ctx.fillRect(ex+5,ey-2+bob,18,10);
+        // 角（立体感）
+        const hornGrd=ctx.createLinearGradient(ex+6,ey-5+bob,ex+10,ey-5+bob);
+        hornGrd.addColorStop(0,'#3a3a3a');hornGrd.addColorStop(1,'#0a0a0a');
+        ctx.fillStyle=hornGrd;ctx.fillRect(ex+6,ey-5+bob,4,5);
+        // 目（発光効果）
+        ctx.fillStyle='#ffff99';ctx.fillRect(ex+8,ey+0+bob,5,5);ctx.fillRect(ex+17,ey+0+bob,5,5);
+        ctx.globalAlpha=0.4;ctx.fillStyle='#ffff33';ctx.fillRect(ex+9,ey+1+bob,3,3);ctx.fillRect(ex+18,ey+1+bob,3,3);ctx.globalAlpha=1;
+        // HPバー（グラデーション）
+        ctx.fillStyle='#330008';ctx.fillRect(ex,ey-12,e.w,3);
+        const hpGrd=ctx.createLinearGradient(ex,ey-12,ex+Math.ceil(e.w*(e.hp/e.maxHp)),ey-12);
+        hpGrd.addColorStop(0,'#ff9944');hpGrd.addColorStop(1,'#cc6600');
+        ctx.fillStyle=hpGrd;ctx.fillRect(ex,ey-12,Math.ceil(e.w*(e.hp/e.maxHp)),3);
       } else if(currentStage===3){
-        // 火炎鬼 - 炎をまとう
+        // 火炎鬼 - 炎をまとう（高品質）
         const bob=Math.sin(t/250+e.startX*.005)*2;
         const flm=Math.sin(t/150)*3;
-        // 体（赤）
-        dr(ex+4,ey+8+bob,20,14,'#ff4400');
-        // 炎（上方）
-        dr(ex+8,ey-5+flm,12,8,'#ff8800');dr(ex+6,ey-9+flm,4,6,'#ffff00');dr(ex+16,ey-8+flm,4,5,'#ffff00');
-        // 頭
-        dr(ex+5,ey-2+bob,18,10,'#ff6600');
-        // 目
-        dr(ex+8,ey+1+bob,5,4,'#000000');dr(ex+17,ey+1+bob,5,4,'#000000');
-        // 腕（炎色）
-        dr(ex+2,ey+10+bob,3,8,'#ff6600');dr(ex+25,ey+10+bob,3,8,'#ff6600');
-        // HPバー
-        dr(ex,ey-12,e.w,3,'#330008');dr(ex,ey-12,Math.ceil(e.w*(e.hp/e.maxHp)),3,'#ff3300');
+        // 体（グラデーション・炎感）
+        const fireBodyGrd=ctx.createRadialGradient(ex+14,ey+15+bob,2,ex+14,ey+15+bob,11);
+        fireBodyGrd.addColorStop(0,'#ff6622');fireBodyGrd.addColorStop(0.7,'#ff4400');fireBodyGrd.addColorStop(1,'#cc2200');
+        ctx.fillStyle=fireBodyGrd;ctx.fillRect(ex+4,ey+8+bob,20,14);
+        // 炎（複層・動的）
+        ctx.globalAlpha=0.4;
+        const flameGrd1=ctx.createRadialGradient(ex+14,ey-5+flm,3,ex+14,ey-5+flm,8);
+        flameGrd1.addColorStop(0,'#ffaa44');flameGrd1.addColorStop(1,'#ff8800');
+        ctx.fillStyle=flameGrd1;ctx.fillRect(ex+8,ey-5+flm,12,8);
+        ctx.globalAlpha=0.5;ctx.fillStyle='#ffff44';ctx.fillRect(ex+6,ey-9+flm,4,6);ctx.fillRect(ex+16,ey-8+flm,4,5);
+        ctx.globalAlpha=1;
+        // 頭（グラデーション）
+        const fireHeadGrd=ctx.createRadialGradient(ex+14,ey+2+bob,3,ex+14,ey+2+bob,9);
+        fireHeadGrd.addColorStop(0,'#ff7744');fireHeadGrd.addColorStop(1,'#ff5500');
+        ctx.fillStyle=fireHeadGrd;ctx.fillRect(ex+5,ey-2+bob,18,10);
+        // 目（黒・厳しい表情）
+        ctx.fillStyle='#000000';ctx.fillRect(ex+8,ey+1+bob,5,4);ctx.fillRect(ex+17,ey+1+bob,5,4);
+        // 腕（炎色・グラデーション）
+        const armGrd=ctx.createLinearGradient(ex+2,ey+10+bob,ex+5,ey+18+bob);
+        armGrd.addColorStop(0,'#ff8800');armGrd.addColorStop(1,'#ff4400');
+        ctx.fillStyle=armGrd;ctx.fillRect(ex+2,ey+10+bob,3,8);
+        const armGrd2=ctx.createLinearGradient(ex+25,ey+10+bob,ex+28,ey+18+bob);
+        armGrd2.addColorStop(0,'#ff8800');armGrd2.addColorStop(1,'#ff4400');
+        ctx.fillStyle=armGrd2;ctx.fillRect(ex+25,ey+10+bob,3,8);
+        // HPバー（グラデーション）
+        ctx.fillStyle='#330008';ctx.fillRect(ex,ey-12,e.w,3);
+        const hpGrd=ctx.createLinearGradient(ex,ey-12,ex+Math.ceil(e.w*(e.hp/e.maxHp)),ey-12);
+        hpGrd.addColorStop(0,'#ff7744');hpGrd.addColorStop(1,'#ff2200');
+        ctx.fillStyle=hpGrd;ctx.fillRect(ex,ey-12,Math.ceil(e.w*(e.hp/e.maxHp)),3);
       } else if(currentStage===4){
         // 封印守 - 石像風
         // 体（四角い石像）
@@ -3249,51 +3309,102 @@ function drawEnemies(){
         dr(ex,ey-12,e.w,3,'#330008');dr(ex,ey-12,Math.ceil(e.w*(e.hp/e.maxHp)),3,'#ff0000');
       }
     } else if(e.type==='charger'){
-      // 突進型 - 攻撃的エイリアン
+      // 突進型 - 攻撃的エイリアン（高品質）
       const lean=e.charging?e.chargeDir:e.dir;
       const chgGlow=e.charging&&Math.floor(t/80)%2;
-      // 後脚
-      dr(ex+3,ey+20,12,12,'#2a0606');dr(ex+17,ey+22,12,10,'#2a0606');
-      // 胴体
-      dr(ex+2,ey+6,28,18,'#440008');dr(ex+2,ey+6,28,4,chgGlow?'#ff5500':'#661111');
-      dr(ex+4,ey+6,24,2,'#993322');
-      // 頭 (前傾み)
-      const hx=lean>0?ex+14:ex+2;
-      dr(hx,ey,16,10,'#550011');dr(hx,ey,16,3,chgGlow?'#ff7700':'#881111');
-      // 目 (鋭い三角)
-      if(lean>0){
-        dr(ex+18,ey+1,10,7,'#0a0002');dr(ex+22,ey+2,6,5,chgGlow?'#ff5500':'#cc1100');dr(ex+25,ey+3,3,3,'#ffaa00');
-      } else {
-        dr(ex+4,ey+1,10,7,'#0a0002');dr(ex+4,ey+2,6,5,chgGlow?'#ff5500':'#cc1100');dr(ex+4,ey+3,3,3,'#ffaa00');
+      // 後脚（グラデーション）
+      const legGrd=ctx.createRadialGradient(ex+9,ey+26,2,ex+9,ey+26,8);
+      legGrd.addColorStop(0,'#4a1a1a');legGrd.addColorStop(1,'#1a0606');
+      ctx.fillStyle=legGrd;ctx.fillRect(ex+3,ey+20,12,12);
+      const legGrd2=ctx.createRadialGradient(ex+23,ey+27,2,ex+23,ey+27,8);
+      legGrd2.addColorStop(0,'#4a1a1a');legGrd2.addColorStop(1,'#1a0606');
+      ctx.fillStyle=legGrd2;ctx.fillRect(ex+17,ey+22,12,10);
+      // 胴体（グラデーション・チャージ効果）
+      const bodyGrd=ctx.createLinearGradient(ex+2,ey+6,ex+30,ey+24);
+      bodyGrd.addColorStop(0,'#550022');bodyGrd.addColorStop(1,'#330011');
+      ctx.fillStyle=bodyGrd;ctx.fillRect(ex+2,ey+6,28,18);
+      // チャージグロー
+      if(chgGlow){
+        ctx.globalAlpha=0.25;ctx.fillStyle='#ff6600';ctx.fillRect(ex+2,ey+6,28,4);ctx.globalAlpha=1;
       }
-      // 爪
+      ctx.fillStyle='#aa3333';ctx.fillRect(ex+4,ey+6,24,2);
+      // 頭（グラデーション・傾斜）
+      const hx=lean>0?ex+14:ex+2;
+      const headGrd=ctx.createLinearGradient(hx,ey,hx+16,ey+10);
+      headGrd.addColorStop(0,'#660033');headGrd.addColorStop(1,'#330011');
+      ctx.fillStyle=headGrd;ctx.fillRect(hx,ey,16,10);
+      if(chgGlow){
+        ctx.globalAlpha=0.3;ctx.fillStyle='#ff7700';ctx.fillRect(hx,ey,16,3);ctx.globalAlpha=1;
+      }
+      // 目（発光・鋭さ）
+      if(lean>0){
+        ctx.fillStyle='#0a0002';ctx.fillRect(ex+18,ey+1,10,7);
+        ctx.fillStyle=chgGlow?'#ff6600':'#cc1100';ctx.fillRect(ex+22,ey+2,6,5);
+        ctx.globalAlpha=0.6;ctx.fillStyle='#ffaa00';ctx.fillRect(ex+25,ey+3,3,3);ctx.globalAlpha=1;
+      } else {
+        ctx.fillStyle='#0a0002';ctx.fillRect(ex+4,ey+1,10,7);
+        ctx.fillStyle=chgGlow?'#ff6600':'#cc1100';ctx.fillRect(ex+4,ey+2,6,5);
+        ctx.globalAlpha=0.6;ctx.fillStyle='#ffaa00';ctx.fillRect(ex+4,ey+3,3,3);ctx.globalAlpha=1;
+      }
+      // 爪（立体感）
       const cx=lean>0?ex+28:ex-6;
-      dr(cx,ey+10,8,6,'#330008');dr(cx+(lean>0?2:-2),ey+12,6,5,'#552222');
+      const clawGrd=ctx.createRadialGradient(cx+2,ey+13,1,cx+2,ey+13,5);
+      clawGrd.addColorStop(0,'#552233');clawGrd.addColorStop(1,'#220011');
+      ctx.fillStyle=clawGrd;ctx.fillRect(cx,ey+10,8,6);
+      ctx.fillStyle='#773344';ctx.fillRect(cx+(lean>0?2:-2),ey+12,6,5);
       // チャージ火花
       if(e.charging&&Math.random()<.4)burst(e.x+e.w/2,e.y+e.h*.7,'#ff6600',1);
-      // HPバー
-      dr(ex,ey-10,e.w,4,'#330008');dr(ex,ey-10,Math.ceil(e.w*(e.hp/e.maxHp)),4,'#ff1144');
+      // HPバー（グラデーション）
+      ctx.fillStyle='#330008';ctx.fillRect(ex,ey-10,e.w,4);
+      const hpGrd=ctx.createLinearGradient(ex,ey-10,ex+Math.ceil(e.w*(e.hp/e.maxHp)),ey-10);
+      hpGrd.addColorStop(0,'#ff5588');hpGrd.addColorStop(1,'#cc0033');
+      ctx.fillStyle=hpGrd;ctx.fillRect(ex,ey-10,Math.ceil(e.w*(e.hp/e.maxHp)),4);
 
     } else if(e.type==='flyer'){
-      // 飛行型 - 浮遊霊体
+      // 飛行型 - 浮遊霊体（高品質）
       const flap=Math.sin(t/120)*5;
-      // 翼 (半透明)
-      ctx.globalAlpha=0.6;
-      dr(ex-10,ey+4+flap,12,18,'#160828');dr(ex-6,ey+6+flap,8,14,'#220a3a');
-      dr(ex+e.w-2,ey+4-flap,12,18,'#160828');dr(ex+e.w,ey+6-flap,8,14,'#220a3a');
+      // 翼（グラデーション・半透明）
+      ctx.globalAlpha=0.5;
+      const wingGrd1=ctx.createLinearGradient(ex-10,ey+4+flap,ex-6,ey+22+flap);
+      wingGrd1.addColorStop(0,'#3a1a5a');wingGrd1.addColorStop(1,'#1a0a2a');
+      ctx.fillStyle=wingGrd1;ctx.fillRect(ex-10,ey+4+flap,12,18);
+      const wingGrd2=ctx.createLinearGradient(ex-6,ey+6+flap,ex+2,ey+20+flap);
+      wingGrd2.addColorStop(0,'#4a2a7a');wingGrd2.addColorStop(1,'#220a3a');
+      ctx.fillStyle=wingGrd2;ctx.fillRect(ex-6,ey+6+flap,8,14);
+      const wingGrd3=ctx.createLinearGradient(ex+e.w-2,ey+4-flap,ex+e.w+10,ey+22-flap);
+      wingGrd3.addColorStop(0,'#3a1a5a');wingGrd3.addColorStop(1,'#1a0a2a');
+      ctx.fillStyle=wingGrd3;ctx.fillRect(ex+e.w-2,ey+4-flap,12,18);
+      const wingGrd4=ctx.createLinearGradient(ex+e.w,ey+6-flap,ex+e.w+8,ey+20-flap);
+      wingGrd4.addColorStop(0,'#4a2a7a');wingGrd4.addColorStop(1,'#220a3a');
+      ctx.fillStyle=wingGrd4;ctx.fillRect(ex+e.w,ey+6-flap,8,14);
       ctx.globalAlpha=1;
-      // 本体
-      dr(ex+1,ey,26,20,'#1a0828');dr(ex+1,ey,26,4,'#2e0a44');dr(ex+3,ey,22,2,'#5500aa');
-      // 目 (紫に光る)
-      dr(ex+5,ey+6,8,6,'#0a0016');dr(ex+15,ey+6,8,6,'#0a0016');
+      // 本体（グラデーション）
+      const bodyGrd=ctx.createLinearGradient(ex+1,ey,ex+27,ey+20);
+      bodyGrd.addColorStop(0,'#3a1a4a');bodyGrd.addColorStop(1,'#1a0a2a');
+      ctx.fillStyle=bodyGrd;ctx.fillRect(ex+1,ey,26,20);
+      ctx.fillStyle='#4a2a6a';ctx.fillRect(ex+1,ey,26,4);
+      ctx.globalAlpha=0.6;ctx.fillStyle='#7722ff';ctx.fillRect(ex+3,ey,22,2);ctx.globalAlpha=1;
+      // 目（紫に光る・発光）
+      ctx.fillStyle='#1a0a2a';ctx.fillRect(ex+5,ey+6,8,6);ctx.fillRect(ex+15,ey+6,8,6);
       if(Math.floor(t/180)%3>0){
-        dr(ex+6,ey+7,6,4,'#9900ff');dr(ex+7,ey+8,4,2,'#cc66ff');
-        dr(ex+16,ey+7,6,4,'#9900ff');dr(ex+17,ey+8,4,2,'#cc66ff');
+        ctx.globalAlpha=0.7;ctx.fillStyle='#aa33ff';ctx.fillRect(ex+6,ey+7,6,4);
+        ctx.globalAlpha=0.5;ctx.fillStyle='#dd99ff';ctx.fillRect(ex+7,ey+8,4,2);
+        ctx.globalAlpha=0.7;ctx.fillStyle='#aa33ff';ctx.fillRect(ex+16,ey+7,6,4);
+        ctx.globalAlpha=0.5;ctx.fillStyle='#dd99ff';ctx.fillRect(ex+17,ey+8,4,2);ctx.globalAlpha=1;
       }
-      // 触手(下)
-      for(let k=0;k<3;k++){const tx=ex+5+k*8,tl=10+Math.sin(t/200+k)*5;dr(tx,ey+18,4,tl,'#1a0828');dr(tx+1,ey+20,2,tl-4,'#2a0a44');}
-      // HPバー
-      dr(ex,ey-9,e.w,3,'#1a0028');dr(ex,ey-9,Math.ceil(e.w*(e.hp/e.maxHp)),3,'#aa00ff');
+      // 触手（グラデーション・波打つ）
+      for(let k=0;k<3;k++){
+        const tx=ex+5+k*8,tl=10+Math.sin(t/200+k)*5;
+        const tentGrd=ctx.createLinearGradient(tx,ey+18,tx,ey+18+tl);
+        tentGrd.addColorStop(0,'#2a0a3a');tentGrd.addColorStop(1,'#0a0a1a');
+        ctx.fillStyle=tentGrd;ctx.fillRect(tx,ey+18,4,tl);
+        ctx.globalAlpha=0.4;ctx.fillStyle='#4a2a5a';ctx.fillRect(tx+1,ey+20,2,tl-4);ctx.globalAlpha=1;
+      }
+      // HPバー（グラデーション）
+      ctx.fillStyle='#1a0028';ctx.fillRect(ex,ey-9,e.w,3);
+      const hpGrd=ctx.createLinearGradient(ex,ey-9,ex+Math.ceil(e.w*(e.hp/e.maxHp)),ey-9);
+      hpGrd.addColorStop(0,'#dd44ff');hpGrd.addColorStop(1,'#8800ff');
+      ctx.fillStyle=hpGrd;ctx.fillRect(ex,ey-9,Math.ceil(e.w*(e.hp/e.maxHp)),3);
     } else if(e.type==='jumper'){
       // 月面ホッパー (小型・ずんぐり)
       const air=!e.onGround;
@@ -4717,7 +4828,7 @@ function drawStageBgFlair(st,t){
 }
 
 // ================================================================
-//  月面古代遺跡 背景
+//  月面古代遺跡 背景 - 高品質グラフィックス版
 // ================================================================
 function drawBg(){
   const scfg=STAGE_CFG[currentStage-1];
@@ -4731,113 +4842,221 @@ function drawBg(){
   // 鬼ヶ島全ステージ背景（ステージごとに異なる世界観）
 
   if(st===1){
-    // Stage 1：海岸・鬼ヶ島の入口（豊かな海景観）
-    // 空
+    // Stage 1：海岸・鬼ヶ島の入口（豊かな海景観・高品質）
+    // 空グラデーション（複層化）
     const skyGrd=ctx.createLinearGradient(0,0,0,H*.4);
-    skyGrd.addColorStop(0,'#87ceeb');
+    skyGrd.addColorStop(0,'#5a9fd4');
+    skyGrd.addColorStop(0.3,'#87ceeb');
+    skyGrd.addColorStop(0.7,'#c5e0f5');
     skyGrd.addColorStop(1,'#e0f6ff');
     ctx.fillStyle=skyGrd;ctx.fillRect(0,0,W,H*.4);
 
-    // 海岸
-    ctx.fillStyle='#d9b896';ctx.fillRect(0,H*.4,W,H*.2);
+    // 海岸（テクスチャ）
+    const beachGrd=ctx.createLinearGradient(0,H*.4,0,H*.6);
+    beachGrd.addColorStop(0,'#e8c7a8');
+    beachGrd.addColorStop(1,'#c49a7a');
+    ctx.fillStyle=beachGrd;ctx.fillRect(0,H*.4,W,H*.2);
+    // 砂のテクスチャ
+    ctx.globalAlpha=0.15;ctx.fillStyle='#8b6f47';
+    for(let i=0;i<W;i+=20)ctx.fillRect(i,H*.45,18,2);ctx.globalAlpha=1;
 
     // 水平線
-    ctx.fillStyle='#4a8ac0';ctx.fillRect(0,H*.45,W,3);
+    ctx.fillStyle='#3a7aa0';ctx.fillRect(0,H*.45,W,2);
+    ctx.globalAlpha=0.6;ctx.fillStyle='#ffffff';ctx.fillRect(0,H*.46,W,1);ctx.globalAlpha=1;
 
-    // 海
+    // 海（複層グラデーション）
     const seaGrd=ctx.createLinearGradient(0,H*.45,0,H);
-    seaGrd.addColorStop(0,'#1a7aa0');
-    seaGrd.addColorStop(1,'#0d3d66');
+    seaGrd.addColorStop(0,'#2a8ab0');
+    seaGrd.addColorStop(0.3,'#1a7aa0');
+    seaGrd.addColorStop(0.6,'#0d5a80');
+    seaGrd.addColorStop(1,'#061e3a');
     ctx.fillStyle=seaGrd;ctx.fillRect(0,H*.45,W,H*.55);
 
-    // 波パターン（白い波）
-    ctx.globalAlpha=0.4;ctx.fillStyle='#ffffff';
+    // 波パターン（複層・グラデーション効果）
+    // 波層1：浅い波
+    ctx.globalAlpha=0.35;ctx.fillStyle='#c5e8ff';
     for(let i=0;i<W;i+=25){
       const waveY=H*.48+Math.sin(i*0.04+t*.003)*2;
       ctx.fillRect(i,waveY,15,2);
+    }
+    // 波層2：深い波
+    ctx.globalAlpha=0.25;ctx.fillStyle='#7fa8d1';
+    for(let i=0;i<W;i+=25){
       const waveY2=H*.55+Math.sin(i*0.05+t*.004+2)*3;
       ctx.fillRect(i,waveY2,20,2);
     }
+    // 波層3：白いハイライト
+    ctx.globalAlpha=0.18;ctx.fillStyle='#ffffff';
+    for(let i=0;i<W;i+=40){
+      const waveY3=H*.5+Math.sin(i*0.03+t*.005)*1.5;
+      ctx.fillRect(i,waveY3,12,1);
+    }
     ctx.globalAlpha=1;
 
-    // 岩礁（海の手前）
-    ctx.fillStyle='#555555';
-    ctx.beginPath();ctx.arc(W*.15,H*.52,12,0,Math.PI*2);ctx.fill();
-    ctx.beginPath();ctx.arc(W*.25,H*.56,8,0,Math.PI*2);ctx.fill();
-    ctx.beginPath();ctx.arc(W*.75,H*.54,10,0,Math.PI*2);ctx.fill();
-    ctx.beginPath();ctx.arc(W*.85,H*.58,7,0,Math.PI*2);ctx.fill();
+    // 岩礁（立体感・グラデーション）
+    const rocks=[
+      {x:W*.15,y:H*.52,r:12},{x:W*.25,y:H*.56,r:8},{x:W*.75,y:H*.54,r:10},{x:W*.85,y:H*.58,r:7}
+    ];
+    rocks.forEach(rock=>{
+      const rg=ctx.createRadialGradient(rock.x-rock.r*.3,rock.y-rock.r*.3,1,rock.x,rock.y,rock.r);
+      rg.addColorStop(0,'#777777');rg.addColorStop(0.6,'#555555');rg.addColorStop(1,'#333333');
+      ctx.fillStyle=rg;ctx.beginPath();ctx.arc(rock.x,rock.y,rock.r,0,Math.PI*2);ctx.fill();
+      // シャドウ
+      ctx.globalAlpha=0.3;ctx.fillStyle='#000000';
+      ctx.beginPath();ctx.arc(rock.x+rock.r*.3,rock.y+rock.r*.3,rock.r*.4,0,Math.PI*2);ctx.fill();ctx.globalAlpha=1;
+    });
 
-    // 遠くの島（水平線の向こう）
-    ctx.globalAlpha=0.35;
-    ctx.fillStyle='#4a6a7a';
-    ctx.beginPath();ctx.moveTo(W*.2,H*.48);ctx.lineTo(W*.3,H*.35);ctx.lineTo(W*.4,H*.48);ctx.fill(); // 左の島
-    ctx.beginPath();ctx.moveTo(W*.6,H*.48);ctx.lineTo(W*.75,H*.32);ctx.lineTo(W*.9,H*.48);ctx.fill(); // 右の島
+    // 遠くの島（水平線の向こう・グラデーション）
+    ctx.globalAlpha=0.4;
+    const islandGrd1=ctx.createLinearGradient(W*.2,H*.35,W*.2,H*.48);
+    islandGrd1.addColorStop(0,'#3a5a6a');islandGrd1.addColorStop(1,'#5a7a8a');
+    ctx.fillStyle=islandGrd1;
+    ctx.beginPath();ctx.moveTo(W*.2,H*.48);ctx.lineTo(W*.3,H*.35);ctx.lineTo(W*.4,H*.48);ctx.fill();
+    const islandGrd2=ctx.createLinearGradient(W*.6,H*.32,W*.6,H*.48);
+    islandGrd2.addColorStop(0,'#3a5a6a');islandGrd2.addColorStop(1,'#5a7a8a');
+    ctx.fillStyle=islandGrd2;
+    ctx.beginPath();ctx.moveTo(W*.6,H*.48);ctx.lineTo(W*.75,H*.32);ctx.lineTo(W*.9,H*.48);ctx.fill();
     ctx.globalAlpha=1;
 
-    // 壊れた鳥居（海岸の奥）
-    ctx.globalAlpha=0.5;ctx.fillStyle='#8B4513';
-    ctx.fillRect(W*.35,H*.32,4,H*.18); // 左の柱
-    ctx.fillRect(W*.46,H*.32,4,H*.18); // 右の柱
-    ctx.fillRect(W*.33,H*.32,16,4);   // 横木
+    // 壊れた鳥居（古木風・グラデーション）
+    ctx.globalAlpha=0.55;
+    const torii1Grd=ctx.createLinearGradient(W*.35,H*.32,W*.35,H*.5);
+    torii1Grd.addColorStop(0,'#9B5514');torii1Grd.addColorStop(1,'#6B3310');
+    ctx.fillStyle=torii1Grd;ctx.fillRect(W*.35,H*.32,4,H*.18);
+    const torii2Grd=ctx.createLinearGradient(W*.46,H*.32,W*.46,H*.5);
+    torii2Grd.addColorStop(0,'#9B5514');torii2Grd.addColorStop(1,'#6B3310');
+    ctx.fillStyle=torii2Grd;ctx.fillRect(W*.46,H*.32,4,H*.18);
+    ctx.fillRect(W*.33,H*.32,16,4);
     ctx.globalAlpha=1;
   }else if(st===2){
-    // Stage 2：山道・崩れた崖（岩山が険しい）
+    // Stage 2：山道・崩れた崖（岩山が険しい・高品質）
     const bgGrd=ctx.createLinearGradient(0,0,0,H);
-    bgGrd.addColorStop(0,'#87ceeb');bgGrd.addColorStop(0.5,'#d4a574');bgGrd.addColorStop(1,'#8b7355');
+    bgGrd.addColorStop(0,'#6a9dd8');bgGrd.addColorStop(0.35,'#87ceeb');
+    bgGrd.addColorStop(0.5,'#d4a574');bgGrd.addColorStop(0.75,'#a68860');bgGrd.addColorStop(1,'#6b5645');
     ctx.fillStyle=bgGrd;ctx.fillRect(0,0,W,H);
-    // 崖（ガタガタ）
-    ctx.globalAlpha=0.5;ctx.fillStyle='#696969';
+    // 空のテクスチャ
+    ctx.globalAlpha=0.08;ctx.fillStyle='#ffffff';
+    for(let i=0;i<8;i++)ctx.fillRect(Math.random()*W,Math.random()*H*.4,Math.random()*60+20,1);ctx.globalAlpha=1;
+
+    // 崖（ガタガタ・グラデーション・立体感）
+    ctx.globalAlpha=0.6;
+    const cliffGrd=ctx.createLinearGradient(0,H*.35,0,H);
+    cliffGrd.addColorStop(0,'#7a7a7a');cliffGrd.addColorStop(0.5,'#696969');cliffGrd.addColorStop(1,'#4a4a4a');
+    ctx.fillStyle=cliffGrd;
     ctx.beginPath();ctx.moveTo(W*.1,H*.35);
     for(let i=0;i<=10;i++)ctx.lineTo(W*(0.1+i*0.09),H*(0.35+(i%2)*0.05));
     ctx.lineTo(W,H*.5);ctx.lineTo(W,H);ctx.lineTo(0,H);ctx.fill();
-    // 落石（警告）
-    ctx.globalAlpha=0.3;ctx.fillStyle='#a9a9a9';
-    for(let i=0;i<3;i++)ctx.beginPath(),ctx.arc(W*(0.2+i*0.3),H*(0.25+Math.sin(t*.002+i)*0.1),5,0,Math.PI*2),ctx.fill();
+    // 崖の線（陰影効果）
+    ctx.globalAlpha=0.25;ctx.strokeStyle='#000000';ctx.lineWidth=2;
+    ctx.beginPath();ctx.moveTo(W*.1,H*.35);
+    for(let i=0;i<=10;i++)ctx.lineTo(W*(0.1+i*0.09),H*(0.35+(i%2)*0.05));
+    ctx.stroke();ctx.globalAlpha=1;
+
+    // 落石（立体感・グラデーション）
+    ctx.globalAlpha=0.5;
+    for(let i=0;i<3;i++){
+      const rockX=W*(0.2+i*0.3),rockY=H*(0.25+Math.sin(t*.002+i)*0.1);
+      const rg=ctx.createRadialGradient(rockX-2,rockY-2,1,rockX,rockY,5);
+      rg.addColorStop(0,'#d0d0d0');rg.addColorStop(1,'#808080');
+      ctx.fillStyle=rg;ctx.beginPath();ctx.arc(rockX,rockY,5,0,Math.PI*2);ctx.fill();
+      ctx.globalAlpha=0.2;ctx.fillStyle='#000000';
+      ctx.beginPath();ctx.arc(rockX+2,rockY+2,3,0,Math.PI*2);ctx.fill();ctx.globalAlpha=0.5;
+    }
     ctx.globalAlpha=1;
   }else if(st===3){
-    // Stage 3：洞窟・暗い（妖怪の気配）
+    // Stage 3：洞窟・暗い（妖怪の気配・高品質）
     const bgGrd=ctx.createLinearGradient(0,0,0,H);
-    bgGrd.addColorStop(0,'#2a2a3a');bgGrd.addColorStop(1,'#1a1a2a');
+    bgGrd.addColorStop(0,'#1a1a2a');bgGrd.addColorStop(0.4,'#2a2a3a');bgGrd.addColorStop(1,'#0f0f1a');
     ctx.fillStyle=bgGrd;ctx.fillRect(0,0,W,H);
-    // 洞窟の天井（鍾乳石）
-    ctx.globalAlpha=0.3;ctx.fillStyle='#3a3a4a';
-    for(let i=0;i<5;i++)ctx.fillRect(W*(i*0.2+0.05),0,W*.08,H*.15+Math.sin(t*.003+i)*H*.05);
-    // 奥行きの暗さ
-    ctx.globalAlpha=0.08;ctx.fillStyle='#000000';
+
+    // 洞窟の天井（鍾乳石・グラデーション）
+    for(let i=0;i<5;i++){
+      const sx=W*(i*0.2+0.05),sh=H*.15+Math.sin(t*.003+i)*H*.05;
+      const stalGrd=ctx.createLinearGradient(sx,0,sx,sh);
+      stalGrd.addColorStop(0,'#2a2a3a');stalGrd.addColorStop(1,'#0a0a1a');
+      ctx.globalAlpha=0.35;ctx.fillStyle=stalGrd;ctx.fillRect(sx,0,W*.08,sh);
+      // 先端のハイライト
+      ctx.globalAlpha=0.15;ctx.fillStyle='#4a4a6a';ctx.fillRect(sx+1,sh-2,W*.06,2);
+    }
+    ctx.globalAlpha=1;
+
+    // 奥行きの暗さ（段階的グラデーション）
+    ctx.globalAlpha=0.12;ctx.fillStyle='#000000';
     ctx.fillRect(0,H*.3,W,H*.7);
+    ctx.globalAlpha=0.08;
+    ctx.fillRect(0,H*.5,W,H*.5);
     ctx.globalAlpha=1;
   }else if(st===4){
-    // Stage 4：火山・溶岩（赤い空）
+    // Stage 4：火山・溶岩（赤い空・高品質）
     const bgGrd=ctx.createLinearGradient(0,0,0,H);
-    bgGrd.addColorStop(0,'#ff6644');bgGrd.addColorStop(0.4,'#ff8844');bgGrd.addColorStop(1,'#8b3a0e');
+    bgGrd.addColorStop(0,'#cc3311');bgGrd.addColorStop(0.25,'#ff6644');
+    bgGrd.addColorStop(0.5,'#ff8844');bgGrd.addColorStop(0.75,'#bb5522');bgGrd.addColorStop(1,'#5a2010');
     ctx.fillStyle=bgGrd;ctx.fillRect(0,0,W,H);
-    // 溶岩の炎（背景）
+
+    // 溶岩の炎（複層・ダイナミック）
     const fl=Math.sin(t/300)*.3+.6;
+    // 下層：深い赤
+    ctx.globalAlpha=fl*.2;ctx.fillStyle='#8b3a0e';
+    ctx.fillRect(0,H*.7,W,H*.3);
+    // 中層：オレンジ
     ctx.globalAlpha=fl*.15;ctx.fillStyle='#ff4400';
     ctx.fillRect(0,H*.6,W,H*.4);
-    ctx.globalAlpha=fl*.1;ctx.fillStyle='#ff8800';
-    ctx.fillRect(0,H*.7,W,H*.3);
-    // 火山島のシルエット
-    ctx.globalAlpha=0.4;ctx.fillStyle='#2a0a00';
+    // 上層：黄色
+    ctx.globalAlpha=fl*.12;ctx.fillStyle='#ffaa00';
+    ctx.fillRect(W*.1,H*.55,W*.8,H*.2);
+    // 炎の先端（パーティクル感）
+    ctx.globalAlpha=fl*.08;ctx.fillStyle='#ffdd00';
+    for(let i=0;i<6;i++){
+      const cx=W*(0.2+i*0.13);
+      ctx.beginPath();ctx.arc(cx,H*.5+Math.sin(t/150+i)*(H*.08),W*.06,0,Math.PI*2);ctx.fill();
+    }
+    ctx.globalAlpha=1;
+
+    // 火山島のシルエット（グラデーション・立体感）
+    const volcanoGrd=ctx.createLinearGradient(W*.5,H*.1,W*.5,H*.5);
+    volcanoGrd.addColorStop(0,'#3a1a0a');volcanoGrd.addColorStop(1,'#1a0a00');
+    ctx.globalAlpha=0.5;ctx.fillStyle=volcanoGrd;
     ctx.beginPath();ctx.moveTo(W*.3,H*.5);ctx.lineTo(W*.5,H*.1);ctx.lineTo(W*.7,H*.5);ctx.fill();
+    // 火山の陰
+    ctx.globalAlpha=0.25;ctx.fillStyle='#000000';
+    ctx.beginPath();ctx.moveTo(W*.5,H*.1);ctx.lineTo(W*.7,H*.5);ctx.lineTo(W*.55,H*.5);ctx.fill();
     ctx.globalAlpha=1;
   }else if(st===5){
-    // Stage 5：鬼の城周辺・砦（ラスト）
+    // Stage 5：鬼の城周辺・砦（ラスト・高品質）
     const bgGrd=ctx.createLinearGradient(0,0,0,H);
-    bgGrd.addColorStop(0,'#6a3a2a');bgGrd.addColorStop(0.5,'#4a4a5a');bgGrd.addColorStop(1,'#2a2a3a');
+    bgGrd.addColorStop(0,'#4a2a1a');bgGrd.addColorStop(0.3,'#6a3a2a');
+    bgGrd.addColorStop(0.5,'#4a4a5a');bgGrd.addColorStop(0.8,'#3a3a4a');bgGrd.addColorStop(1,'#1a1a2a');
     ctx.fillStyle=bgGrd;ctx.fillRect(0,0,W,H);
-    // 砦のシルエット
-    ctx.globalAlpha=0.5;ctx.fillStyle='#1a0a0a';
+    // 暗い雲状テクスチャ
+    ctx.globalAlpha=0.12;ctx.fillStyle='#000000';
+    for(let i=0;i<12;i++)ctx.fillRect(Math.random()*W,Math.random()*H,Math.random()*W*.3+30,2);ctx.globalAlpha=1;
+
+    // 砦のシルエット（グラデーション・立体感）
+    const fortGrd=ctx.createLinearGradient(W*.2,H*.2,W*.8,H*.7);
+    fortGrd.addColorStop(0,'#2a0a0a');fortGrd.addColorStop(1,'#0a0a0a');
+    ctx.globalAlpha=0.6;ctx.fillStyle=fortGrd;
     // 砦の壁
     ctx.fillRect(W*.2,H*.2,W*.6,H*.5);
     // 砦の塔
-    ctx.fillRect(W*.25,H*.05,W*.1,H*.3);ctx.fillRect(W*.65,H*.05,W*.1,H*.3);
-    // 鬼のシルエット群（恐怖感）
-    ctx.globalAlpha=0.3;
+    const towerGrd=ctx.createLinearGradient(W*.25,H*.05,W*.25,H*.35);
+    towerGrd.addColorStop(0,'#3a0a0a');towerGrd.addColorStop(1,'#0a0a0a');
+    ctx.fillStyle=towerGrd;ctx.fillRect(W*.25,H*.05,W*.1,H*.3);
+    const towerGrd2=ctx.createLinearGradient(W*.65,H*.05,W*.65,H*.35);
+    towerGrd2.addColorStop(0,'#3a0a0a');towerGrd2.addColorStop(1,'#0a0a0a');
+    ctx.fillStyle=towerGrd2;ctx.fillRect(W*.65,H*.05,W*.1,H*.3);
+    // 塔の窓（エフェクト）
+    ctx.globalAlpha=0.4;ctx.fillStyle='#ff4400';
+    ctx.fillRect(W*.28,H*.1,W*.04,H*.04);ctx.fillRect(W*.28,H*.18,W*.04,H*.04);
+    ctx.fillRect(W*.68,H*.1,W*.04,H*.04);ctx.fillRect(W*.68,H*.18,W*.04,H*.04);
+
+    // 鬼のシルエット群（恐怖感・グラデーション）
     for(let i=0;i<5;i++){
       const sx=W*(0.15+i*0.15);
-      ctx.beginPath();ctx.arc(sx,H*.6,8,0,Math.PI*2);ctx.fill(); // 頭
-      ctx.fillRect(sx-6,H*.65,12,H*.25); // 体
+      const demonGrd=ctx.createRadialGradient(sx-3,H*.6-2,1,sx,H*.6,8);
+      demonGrd.addColorStop(0,'#5a1a1a');demonGrd.addColorStop(1,'#0a0a0a');
+      ctx.globalAlpha=0.35;ctx.fillStyle=demonGrd;
+      ctx.beginPath();ctx.arc(sx,H*.6,8,0,Math.PI*2);ctx.fill();
+      ctx.fillStyle='rgba(10,0,0,0.5)';ctx.fillRect(sx-6,H*.65,12,H*.25);
     }
     ctx.globalAlpha=1;
   }
@@ -5289,55 +5508,74 @@ function drawEffect(ef){
 }
 
 // ================================================================
-//  HUD
+//  HUD - 高品質グラフィックス版
 // ================================================================
 function drawHUD(){
-  // 上バー背景
-  dr(0,0,W,42,'#000014');dr(0,42,W,1,'#223');
+  // 上バー背景（グラデーション）
+  const barGrd=ctx.createLinearGradient(0,0,0,42);
+  barGrd.addColorStop(0,'#0a0a1a');
+  barGrd.addColorStop(0.5,'#000014');
+  barGrd.addColorStop(1,'#000810');
+  ctx.fillStyle=barGrd;ctx.fillRect(0,0,W,42);
+  // バー下部グロー
+  ctx.globalAlpha=0.3;dr(0,41,W,2,'#4488ff');ctx.globalAlpha=1;
+  // バー下フチ
+  dr(0,42,W,1,'#223344');
 
   // ステージ番号 (ポーズボタン右側)
   const scfg=STAGE_CFG[currentStage-1];
   const sb=getSysBtns();
-  ctx.fillStyle='#556677';ctx.font='bold 9px monospace';ctx.textAlign='left';
-  ctx.fillText(`ST.${currentStage}/${TOTAL_STAGES} ${scfg.name}`,sb.pause.x+sb.pause.w+6,28);
+  ctx.fillStyle='#8899bb';ctx.font='bold 10px monospace';ctx.textAlign='left';
+  ctx.fillText(`ST.${currentStage}/${TOTAL_STAGES}  ${scfg.name}`,sb.pause.x+sb.pause.w+8,28);
 
-  // ポーズボタン
+  // ポーズボタン（高品質）
   {
-    // ポーズボタン (中央) - 目立つデザイン
     const pcx=sb.pause.x+sb.pause.w/2, pcy=sb.pause.y+sb.pause.h/2;
-    // 背景 + 角丸っぽいfillRect
-    ctx.globalAlpha=0.92;
-    dr(sb.pause.x,sb.pause.y,sb.pause.w,sb.pause.h,paused?'#2a004a':'#0a1a3a');
-    ctx.globalAlpha=1;
-    // 太い上フチ
-    dr(sb.pause.x,sb.pause.y,sb.pause.w,3,paused?'#ff44ff':'#44aaff');
-    // 左右フチ(細)
-    dr(sb.pause.x,sb.pause.y,2,sb.pause.h,paused?'#cc44ff':'#2266aa');
-    dr(sb.pause.x+sb.pause.w-2,sb.pause.y,2,sb.pause.h,paused?'#cc44ff':'#2266aa');
+    // 背景グラデーション
+    const pauseGrd=ctx.createRadialGradient(pcx,pcy,0,pcx,pcy,Math.max(sb.pause.w,sb.pause.h)/2);
+    pauseGrd.addColorStop(0,paused?'#6a00aa':'#1a3a7a');
+    pauseGrd.addColorStop(1,paused?'#2a004a':'#0a1a3a');
+    ctx.globalAlpha=0.95;ctx.fillStyle=pauseGrd;ctx.fillRect(sb.pause.x,sb.pause.y,sb.pause.w,sb.pause.h);ctx.globalAlpha=1;
+    // 太い上フチ（グロー効果）
+    dr(sb.pause.x,sb.pause.y,sb.pause.w,2,paused?'#ff66ff':'#66ccff');
+    ctx.globalAlpha=0.4;dr(sb.pause.x,sb.pause.y-1,sb.pause.w,1,paused?'#ff88ff':'#88ddff');ctx.globalAlpha=1;
+    // 左右フチ
+    ctx.globalAlpha=0.6;ctx.strokeStyle=paused?'#cc44ff':'#2288cc';ctx.lineWidth=1;
+    ctx.strokeRect(sb.pause.x+0.5,sb.pause.y+0.5,sb.pause.w-1,sb.pause.h-1);ctx.globalAlpha=1;
     // アイコン
-    ctx.fillStyle=paused?'#ff88ff':'#88ddff';
-    ctx.font=`bold 15px monospace`;ctx.textAlign='center';ctx.textBaseline='middle';
-    ctx.fillText(paused?'▶ GO':'❚❚',pcx,pcy);
-    ctx.textBaseline='alphabetic';
+    ctx.fillStyle=paused?'#ff88ff':'#88ddff';ctx.font=`bold 16px monospace`;ctx.textAlign='center';ctx.textBaseline='middle';
+    ctx.fillText(paused?'▶':'❚❚',pcx,pcy);ctx.textBaseline='alphabetic';
   }
 
-  // スコア (左寄り中央)
-  ctx.fillStyle='#ffdd00';ctx.font='bold 11px monospace';ctx.textAlign='right';
-  ctx.fillText('SCORE '+String(score).padStart(6,'0'),sb.pause.x-6,28);
+  // スコア (左寄り中央・グロー効果)
+  ctx.globalAlpha=0.8;ctx.fillStyle='#ffdd00';
+  ctx.font='bold 12px monospace';ctx.textAlign='right';
+  ctx.fillText('SCORE '+String(score).padStart(6,'0'),sb.pause.x-8,28);ctx.globalAlpha=1;
 
-  // キャラ名・ニックネーム (左上)
+  // キャラ名・ニックネーム (左上・高品質)
   const c=CHARS[player.ci];
   ctx.textAlign='left';
-  ctx.fillStyle='#ffffff';ctx.font='bold 12px monospace';
+  ctx.globalAlpha=0.95;ctx.fillStyle='#ffffff';ctx.font='bold 13px monospace';
   ctx.fillText(c.nick,8,22);
-  ctx.fillStyle='#5566aa';ctx.font='8px monospace';
-  ctx.fillText(c.name,8,33);
+  ctx.globalAlpha=0.7;ctx.fillStyle='#7799cc';ctx.font='8px monospace';
+  ctx.fillText(c.name,8,33);ctx.globalAlpha=1;
 
-  // HPバー
+  // HPバー（グラデーション・立体感）
   const hbx=10,hby=37,hbw=100;
-  ctx.fillStyle='#440011';ctx.fillRect(hbx,hby,hbw,7);
-  ctx.fillStyle='#ff3355';ctx.fillRect(hbx,hby,Math.floor(hbw*(player.hp/player.maxHp)),7);
-  ctx.fillStyle='#ff8899';ctx.fillRect(hbx,hby,hbw,1);
+  // 背景
+  const hpBgGrd=ctx.createLinearGradient(hbx,hby,hbx,hby+7);
+  hpBgGrd.addColorStop(0,'#660022');hpBgGrd.addColorStop(1,'#330011');
+  ctx.fillStyle=hpBgGrd;ctx.fillRect(hbx,hby,hbw,7);
+  // HP前景
+  const hpVal=Math.floor(hbw*(player.hp/player.maxHp));
+  const hpGrd=ctx.createLinearGradient(hbx,hby,hbx,hby+7);
+  hpGrd.addColorStop(0,'#ff5577');hpGrd.addColorStop(1,'#cc0033');
+  ctx.fillStyle=hpGrd;ctx.fillRect(hbx,hby,hpVal,7);
+  // HPバーハイライト
+  ctx.globalAlpha=0.4;ctx.fillStyle='#ffffff';ctx.fillRect(hbx,hby,hpVal,1);ctx.globalAlpha=1;
+  // HPバー枠
+  ctx.globalAlpha=0.6;ctx.strokeStyle='#ff6688';ctx.lineWidth=1;
+  ctx.strokeRect(hbx+0.5,hby+0.5,hbw-1,6);ctx.globalAlpha=1;
   ctx.fillStyle='#ff8899';ctx.font='bold 9px monospace';ctx.textAlign='left';
   ctx.fillText('HP',hbx,hby-1);
 
@@ -6735,6 +6973,10 @@ function drawPlay(){
     ctx.fillText('FINISH!!',Math.floor(c.x-cam.x),Math.floor(c.y));
     ctx.globalAlpha=1;
   });
+  // グロー・シャドウ効果レイヤー（全体的な美観向上）
+  ctx.globalAlpha=0.04;ctx.fillStyle='#000000';
+  ctx.fillRect(0,0,W,H);ctx.globalAlpha=1;
+
   drawBtns();
   drawHUD();
   // ボス登場バナー
@@ -6824,11 +7066,15 @@ function drawPlay(){
 }
 
 // ================================================================
-//  ゲームオーバー
+//  ゲームオーバー - 高品質グラフィックス版
 // ================================================================
 function drawGameOver(){
-  dr(0,0,W,H,'#000');
-  // きびだんごモチーフ背景
+  // 背景グラデーション
+  const bgGrd=ctx.createLinearGradient(0,0,0,H);
+  bgGrd.addColorStop(0,'#1a0000');bgGrd.addColorStop(0.5,'#000000');bgGrd.addColorStop(1,'#0a0000');
+  ctx.fillStyle=bgGrd;ctx.fillRect(0,0,W,H);
+
+  // きびだんごモチーフ背景（グラデーション・立体感）
   const dango=[
     {x:W*.15,y:H*.15,r:40,col:'#FFD700'},
     {x:W*.75,y:H*.2,r:35,col:'#FFE55C'},
@@ -6837,15 +7083,25 @@ function drawGameOver(){
     {x:W*.5,y:H*.85,r:50,col:'#FFA500'}
   ];
   dango.forEach(d=>{
-    ctx.globalAlpha=0.15;
-    ctx.fillStyle=d.col;
-    ctx.beginPath();ctx.arc(d.x,d.y,d.r,0,Math.PI*2);ctx.fill();
-    ctx.globalAlpha=0.25;
-    ctx.strokeStyle=d.col;ctx.lineWidth=2;
-    ctx.stroke();
+    // 外光
+    ctx.globalAlpha=0.18;
+    const dGrd=ctx.createRadialGradient(d.x-d.r/3,d.y-d.r/3,d.r/4,d.x,d.y,d.r);
+    dGrd.addColorStop(0,d.col);dGrd.addColorStop(1,'rgba(255,200,0,0)');
+    ctx.fillStyle=dGrd;ctx.beginPath();ctx.arc(d.x,d.y,d.r*1.2,0,Math.PI*2);ctx.fill();
+    // 本体グラデーション
+    ctx.globalAlpha=0.3;
+    const dGrad=ctx.createRadialGradient(d.x-d.r*.3,d.y-d.r*.3,d.r*.2,d.x,d.y,d.r);
+    dGrad.addColorStop(0,d.col);dGrad.addColorStop(1,'rgba(200,150,0,1)');
+    ctx.fillStyle=dGrad;ctx.beginPath();ctx.arc(d.x,d.y,d.r,0,Math.PI*2);ctx.fill();
+    // 光の枠線
+    ctx.globalAlpha=0.35;ctx.strokeStyle=d.col;ctx.lineWidth=2.5;
+    ctx.beginPath();ctx.arc(d.x,d.y,d.r,0,Math.PI*2);ctx.stroke();
+    ctx.globalAlpha=0.15;ctx.strokeStyle='#ffffff';ctx.lineWidth=1;
+    ctx.beginPath();ctx.arc(d.x,d.y,d.r-2,0,Math.PI*2);ctx.stroke();
   });
   ctx.globalAlpha=1;
-  dr(0,0,W,H,'rgba(40,0,0,.75)');
+  // 暗いオーバーレイ
+  ctx.globalAlpha=0.65;dr(0,0,W,H,'rgba(30,0,0,1)');ctx.globalAlpha=1;
   ctx.textAlign='center';
   ctx.fillStyle='#330000';ctx.font=`bold ${Math.min(W*.06,44)}px monospace`;ctx.fillText('修行を重ねて',W/2+2,H*.25+2);
   ctx.fillStyle='#ff9944';ctx.fillText('修行を重ねて',W/2,H*.25);
