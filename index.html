@@ -6649,11 +6649,29 @@ function drawPlay(){
 // ================================================================
 function drawGameOver(){
   dr(0,0,W,H,'#000');
-  STARS.forEach(s=>dr((s.x%W+W)%W,s.y,s.s,s.s,'#fff'));
+  // きびだんごモチーフ背景
+  const dango=[
+    {x:W*.15,y:H*.15,r:40,col:'#FFD700'},
+    {x:W*.75,y:H*.2,r:35,col:'#FFE55C'},
+    {x:W*.2,y:H*.65,r:45,col:'#FFC107'},
+    {x:W*.8,y:H*.7,r:38,col:'#FFD700'},
+    {x:W*.5,y:H*.85,r:50,col:'#FFA500'}
+  ];
+  dango.forEach(d=>{
+    ctx.globalAlpha=0.15;
+    ctx.fillStyle=d.col;
+    ctx.beginPath();ctx.arc(d.x,d.y,d.r,0,Math.PI*2);ctx.fill();
+    ctx.globalAlpha=0.25;
+    ctx.strokeStyle=d.col;ctx.lineWidth=2;
+    ctx.stroke();
+  });
+  ctx.globalAlpha=1;
   dr(0,0,W,H,'rgba(40,0,0,.75)');
   ctx.textAlign='center';
-  ctx.fillStyle='#330000';ctx.font=`bold ${Math.min(W*.06,44)}px monospace`;ctx.fillText('MISSION FAILED',W/2+2,H*.3+2);
-  ctx.fillStyle='#ff3333';ctx.fillText('MISSION FAILED',W/2,H*.3);
+  ctx.fillStyle='#330000';ctx.font=`bold ${Math.min(W*.06,44)}px monospace`;ctx.fillText('修行を重ねて',W/2+2,H*.25+2);
+  ctx.fillStyle='#ff9944';ctx.fillText('修行を重ねて',W/2,H*.25);
+  ctx.fillStyle='#330000';ctx.font=`bold ${Math.min(W*.05,36)}px monospace`;ctx.fillText('再び鬼ヶ島へ',W/2+2,H*.35+2);
+  ctx.fillStyle='#ff9944';ctx.fillText('再び鬼ヶ島へ',W/2,H*.35);
   ctx.fillStyle='#ffdd44';ctx.font=`bold ${Math.min(W*.03,22)}px monospace`;
   ctx.fillText('SCORE '+String(score).padStart(6,'0'),W/2,H*.44);
   const scores=getScores();
