@@ -5812,6 +5812,33 @@ function drawTitle(){
   ctx.globalAlpha=0.3;ctx.fillStyle='#1a0a00';
   ctx.beginPath();ctx.moveTo(W*.05,H*.5);ctx.lineTo(W*.2,H*.08);ctx.lineTo(W*.35,H*.5);ctx.fill();
   ctx.beginPath();ctx.moveTo(W*.65,H*.5);ctx.lineTo(W*.85,H*.08);ctx.lineTo(W,H*.5);ctx.fill();
+  // ── 川：左上から流れてくる桃 ──
+  const riverY=H*.25;
+  // 川の背景
+  ctx.globalAlpha=0.35;ctx.fillStyle='#5a8aaa';ctx.fillRect(0,riverY-20,W*.35,40);
+  ctx.globalAlpha=0.2;ctx.fillStyle='#ffffff';
+  for(let i=0;i<4;i++){
+    const wx=W*(0.02+i*0.08)+(t*.04)%W;
+    ctx.fillRect(wx,riverY-8,20,3);ctx.fillRect(wx,riverY+5,20,3);
+  }
+  // 流れてくる桃（複数）
+  const peachSpawnInterval=3000;
+  for(let pi=0;pi<4;pi++){
+    const peachPhase=((t+pi*peachSpawnInterval)%12000)/12000;
+    const px=W*0.15+peachPhase*W*0.3;
+    const py=riverY+Math.sin(peachPhase*Math.PI)*15;
+    // 桃の身（ピンク）
+    ctx.globalAlpha=0.8;ctx.fillStyle='#ff9977';
+    ctx.beginPath();ctx.arc(px,py,12,0,Math.PI*2);ctx.fill();
+    // 桃の濃い部分（下半分）
+    ctx.fillStyle='#ff6655';
+    ctx.beginPath();ctx.arc(px,py,12,0,Math.PI);ctx.fill();
+    // 桃の葉
+    ctx.globalAlpha=0.9;ctx.fillStyle='#55aa55';
+    ctx.beginPath();ctx.ellipse(px-3,py-12,4,6,0.4,0,Math.PI*2);ctx.fill();
+    ctx.beginPath();ctx.ellipse(px+3,py-12,4,6,-0.4,0,Math.PI*2);ctx.fill();
+  }
+  ctx.globalAlpha=1;
   // 海の水平線
   ctx.globalAlpha=0.5;ctx.fillStyle='#4a7aaa';ctx.fillRect(0,H*.5,W,H*.1);
   // 砂浜グラデーション
