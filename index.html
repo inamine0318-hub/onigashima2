@@ -577,21 +577,21 @@ function drawCharacter(sx,sy,ci,facing,walkFrame,moving,atkAnim,isJetting,isAirb
       _r(spearCol, 8,24, 28, 4); // 矛の柄メイン（横向き・腰の高さ・幅4）
       _r(spearCol, 9,23, 26, 2); // 矛の柄上部
       _r(spearCol, 9,28, 26, 2); // 矛の柄下部
-      // 矛先（三つ又フォーク・金色・横向き・細く）
+      // 矛先（三つ又フォーク・金色・横向き・細く・柄と合わせた位置）
       // 中央の先端（横向き・細い中央の刃）
-      _r(spearTip, 38, 20, 12, 2); // 矛の中央先端（金色・細く横向き）
-      _r(spearTipDark, 39, 21, 10, 1); // 先端の濃い部分
+      _r(spearTip, 38, 23, 12, 2); // 矛の中央先端（金色・細く横向き）
+      _r(spearTipDark, 39, 24, 10, 1); // 先端の濃い部分
       // 左右の先端（横向き・細い副刃）
-      _r(spearTip, 38, 16, 8, 2); // 矛の左先端（金色・細く）
-      _r(spearTipDark, 39, 17, 6, 1); // 左先端の濃い部分
-      _r(spearTip, 38, 24, 8, 2); // 矛の右先端（金色・細く）
-      _r(spearTipDark, 39, 25, 6, 1); // 右先端の濃い部分
+      _r(spearTip, 38, 19, 8, 2); // 矛の左先端（金色・細く）
+      _r(spearTipDark, 39, 20, 6, 1); // 左先端の濃い部分
+      _r(spearTip, 38, 27, 8, 2); // 矛の右先端（金色・細く）
+      _r(spearTipDark, 39, 28, 6, 1); // 右先端の濃い部分
       // 刃の接続部（柄への接続）
-      _r(spearTip, 36, 19, 2, 6); // 刃から柄への接続部
+      _r(spearTip, 36, 22, 2, 6); // 刃から柄への接続部
       // 光沢（刃の質感・目立つように明るく）
-      _r('#ffdd00', 40, 20, 4, 1); // 中央先端の光沢
-      _r('#ffdd00', 40, 16, 3, 1); // 左先端の光沢
-      _r('#ffdd00', 40, 24, 3, 1); // 右先端の光沢
+      _r('#ffdd00', 40, 23, 4, 1); // 中央先端の光沢
+      _r('#ffdd00', 40, 19, 3, 1); // 左先端の光沢
+      _r('#ffdd00', 40, 27, 3, 1); // 右先端の光沢
     } else {
       // 攻撃：槍を突き出す
       _r(OL,-bkPull,21, 5,14); _r(gi,1-bkPull,22, 3,12); _r(skin,1-bkPull,22, 3, 3);
@@ -602,21 +602,21 @@ function drawCharacter(sx,sy,ci,facing,walkFrame,moving,atkAnim,isJetting,isAirb
       _r(spearCol, 9,23, 26+eA, 2); // 矛の柄上部
       _r(spearCol, 9,28, 26+eA, 2); // 矛の柄下部
       const spx=40+ext;
-      // 矛先（三つ又フォーク・金色・横向き・細く）
+      // 矛先（三つ又フォーク・金色・横向き・細く・柄と合わせた位置）
       // 中央の先端（横向き・細い中央の刃）
-      _r(spearTip, spx-2, 20, 12, 2); // 矛の中央先端（金色・細く横向き）
-      _r(spearTipDark, spx-1, 21, 10, 1); // 先端の濃い部分
+      _r(spearTip, spx-2, 23, 12, 2); // 矛の中央先端（金色・細く横向き）
+      _r(spearTipDark, spx-1, 24, 10, 1); // 先端の濃い部分
       // 左右の先端（横向き・細い副刃）
-      _r(spearTip, spx-2, 16, 8, 2); // 矛の左先端（金色・細く）
-      _r(spearTipDark, spx-1, 17, 6, 1); // 左先端の濃い部分
-      _r(spearTip, spx-2, 24, 8, 2); // 矛の右先端（金色・細く）
-      _r(spearTipDark, spx-1, 25, 6, 1); // 右先端の濃い部分
+      _r(spearTip, spx-2, 19, 8, 2); // 矛の左先端（金色・細く）
+      _r(spearTipDark, spx-1, 20, 6, 1); // 左先端の濃い部分
+      _r(spearTip, spx-2, 27, 8, 2); // 矛の右先端（金色・細く）
+      _r(spearTipDark, spx-1, 28, 6, 1); // 右先端の濃い部分
       // 刃の接続部（柄への接続）
-      _r(spearTip, spx-4, 19, 2, 6); // 刃から柄への接続部
+      _r(spearTip, spx-4, 22, 2, 6); // 刃から柄への接続部
       // 光沢（刃の質感・目立つように明るく）
-      _r('#ffdd00', spx, 20, 4, 1); // 中央先端の光沢
-      _r('#ffdd00', spx, 16, 3, 1); // 左先端の光沢
-      _r('#ffdd00', spx, 24, 3, 1); // 右先端の光沢
+      _r('#ffdd00', spx, 23, 4, 1); // 中央先端の光沢
+      _r('#ffdd00', spx, 19, 3, 1); // 左先端の光沢
+      _r('#ffdd00', spx, 27, 3, 1); // 右先端の光沢
       // 手
       _r(skin,20,26, 10, 10); _r(skinS,21,27, 8, 8);
     }
@@ -1942,12 +1942,12 @@ function doAttack(){
       }
       break;
     }
-    case 3:{ // 十兵衛 - 槍突進攻撃（穂先のみダメージ判定・レベル応じてリーチ拡大）
+    case 3:{ // 十兵衛 - 槍突進攻撃（穂先のみダメージ判定・レベル応じてリーチ拡大・通常攻撃と強攻撃で異なるリーチ）
       const wdmg=step<2?2:lv>=2?4:3;
-      // 槍の穂先の位置と大きさ（レベルに応じてリーチ拡大）
-      const reach=lv>=2?14:lv>=1?11:8;
+      // 槍の穂先の位置と大きさ（レベルと攻撃種別に応じてリーチ拡大）
+      const reach=step<2?(lv>=2?16:lv>=1?13:10):(lv>=2?22:lv>=1?18:14);
       const tipX=f>0?px+pw+reach:px-reach, tipY=py+12;
-      const tipW=lv>=2?16:lv>=1?13:10;
+      const tipW=step<2?(lv>=2?16:lv>=1?13:10):(lv>=2?18:lv>=1?15:12);
       projectiles.push({x:tipX,y:tipY,vx:f*6,vy:0,w:tipW,h:8,col:'#8B7355',dmg:wdmg,life:6,hit:[],pierce:false,homing:false,whip:false,spear:true});
       burst(tipX,tipY,'#DAA520',step<2?3:6);sfx('slash');
       if(lv>=2&&step===2){
