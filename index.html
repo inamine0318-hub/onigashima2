@@ -970,17 +970,46 @@ function drawCharacter(sx,sy,ci,facing,walkFrame,moving,atkAnim,isJetting,isAirb
       ctx.globalAlpha=1;
     }
   } else if(ci===7){ // スーパー十兵衛 - 超強化版の槍使い（金髪・赤道着・白鉢巻）
-    const skin='#DEAA58', skinS='#B88030';
-    const gi='#cc3300', giBr='#ff4400'; // 赤い道着
-    const hair='#ffdd00'; // 金髪
-    // 頭髪（金色・ボリュームアップ）
-    _r(OL, 8,10,16,10); _r(hair, 9,11,14, 8); _r('#ffee88', 9,11,14, 2);
-    // 白い鉢巻（白いヘッドバンド）
-    _r('#ffffff',7,15, 18, 3); _r('#e8e8e8', 7,15, 18, 1); _r('#cccccc', 8,16, 16, 1);
-    // 顔
-    _r(skin, 9,17, 12, 10); _r(skinS, 10,18, 10, 8);
-    _r('#000000', 11,19, 2, 2); _r('#000000', 15,19, 2, 2);
-    _r('#ffffff', 11,19, 2, 1); _r('#ffffff', 15,19, 2, 1);
+    const skin='#DEAA58', skinS='#B88030', skinB='#DD6448';
+
+    // 人間の顔（楕円・肌色）
+    ctx.fillStyle=OL;ctx.beginPath();ctx.ellipse(13,9,13,12,0,0,Math.PI*2);ctx.fill();
+    ctx.fillStyle=skin;ctx.beginPath();ctx.ellipse(13,9,12,11,0,0,Math.PI*2);ctx.fill();
+    ctx.fillStyle='#F0C068';ctx.beginPath();ctx.ellipse(13,5,12,6,0,0,Math.PI*2);ctx.fill();
+    // 耳
+    _r(OL, 0, 4, 4, 7);_r('#CC9048', 1, 5, 2, 5);_r(skinS, 1, 6, 1, 3);
+    // 顔影・ほっぺ
+    ctx.globalAlpha=0.22;_r(skinS, 4,12, 3, 6);ctx.globalAlpha=1;
+    ctx.globalAlpha=0.28;_r(skinB, 3, 7, 4, 3);_r(skinB,18, 7, 4, 3);ctx.globalAlpha=1;
+    // 目（黒点3×3px）
+    _r('#0A0604', 7, 6, 3, 3);_r('#FFFFFF', 7, 6, 1, 1);
+    _r('#0A0604',17, 6, 3, 3);_r('#FFFFFF',17, 6, 1, 1);
+    // 鼻（2×1px）
+    _r('#8A4820',12,11, 2, 1);
+
+    // 白い鉢巻（目の上）
+    _r('#ffffff', 2, 2, 24, 2); _r('#f0f0f0', 3, 3, 22, 1);
+    _r('#e0e0e0', 4, 4, 20, 1);
+
+    // 金髪ツンツン（鉢巻きの上から立ち上がる・スパイク状）
+    const hairCol='#ffdd00', hairDark='#ffcc00';
+    // 左側のツンツン
+    _r(hairCol, 2, -8, 2, 10); _r(hairDark, 3, -7, 1, 8);
+    _r(hairCol, 4, -10, 2, 12); _r(hairDark, 5, -9, 1, 10);
+    // 左中央のツンツン
+    _r(hairCol, 7, -12, 2, 14); _r(hairDark, 8,-11, 1, 12);
+    _r(hairCol, 9, -10, 2, 12); _r(hairDark,10, -9, 1, 10);
+    // 中央のツンツン（最も高く・強調）
+    _r(hairCol,12, -14, 3, 16); _r(hairDark,13,-13, 1, 14);
+    _r('#ffee88',12, -14, 2, 14);
+    // 右中央のツンツン
+    _r(hairCol,15, -10, 2, 12); _r(hairDark,16, -9, 1, 10);
+    _r(hairCol,17, -12, 2, 14); _r(hairDark,18,-11, 1, 12);
+    // 右側のツンツン
+    _r(hairCol,20, -10, 2, 12); _r(hairDark,21, -9, 1, 10);
+    _r(hairCol,22, -8, 2, 10); _r(hairDark,23, -7, 1, 8);
+    // ツンツン髪の根元（鉢巻きを覆う）
+    _r('#ffdd00', 2, -2, 24, 3); _r('#ffee88', 3, -1, 22, 2);
     // 胴体（赤い道着・腰で括れた形）
     _r(OL, 3+bodyX,19,24,10); _r(gi, 4+bodyX,20,22, 8);
     _r(OL, 5+bodyX,27, 20, 3); _r('#000000', 5+bodyX,28,20, 2); _r(gi, 6+bodyX,29,18, 1);
@@ -6514,19 +6543,16 @@ function drawTitle(){
 //  キャラ選択
 // ================================================================
 function csLayout(){
-  const bw=70,bh=60,gap=6;
-  const r1y=Math.floor(H*0.12);
-  const r2y=Math.floor(H*0.28);
+  const bw=60,bh=50,gap=8;
+  const cy=Math.floor(H*0.2);
   const totalW=5*(bw+gap)-gap, sx=(W-totalW)/2;
   const chars=[];
-  // 1行目: 0, 3, 4
-  chars[0]={x:sx,y:r1y,w:bw,h:bh};
-  chars[3]={x:sx+(bw+gap),y:r1y,w:bw,h:bh};
-  chars[4]={x:sx+2*(bw+gap),y:r1y,w:bw,h:bh};
-  // 2行目: 7, 8
-  const totalW2=2*(bw+gap)-gap, sx2=(W-totalW2)/2;
-  chars[7]={x:sx2,y:r2y,w:bw,h:bh};
-  chars[8]={x:sx2+(bw+gap),y:r2y,w:bw,h:bh};
+  // 横1列: 0, 3, 4, 7, 8
+  chars[0]={x:sx,y:cy,w:bw,h:bh};
+  chars[3]={x:sx+(bw+gap),y:cy,w:bw,h:bh};
+  chars[4]={x:sx+2*(bw+gap),y:cy,w:bw,h:bh};
+  chars[7]={x:sx+3*(bw+gap),y:cy,w:bw,h:bh};
+  chars[8]={x:sx+4*(bw+gap),y:cy,w:bw,h:bh};
   return{
     chars,
     start:{x:W/2-78,y:H*.78,w:156,h:42},
