@@ -1348,6 +1348,8 @@ function buildStageData(){
   const P=(x,y,w)=>TERRAIN.push({x,y,w,h:16,type:'slab'});
   const T=(x,y,w)=>TERRAIN.push({x,y,w,h:16,type:'trap',trapTimer:0,trapState:'stable'});
   const C=(x,y,w)=>TERRAIN.push({x,y,w,h:30,type:'ceil'});
+  const DG=(x,y,w)=>TERRAIN.push({x,y,w,h:30,type:'disappear',disappearTimer:0,disappearing:false});
+  const MG=(x,y,w,dir,spd)=>TERRAIN.push({x,y,w,h:30,type:'moving',moveDir:dir||1,moveSpeed:spd||2});
   const E=(x,y,t)=>ENEMY_SPAWNS.push({x,y,type:t});
   const IT=(x,y,tp)=>ITEM_SPAWNS.push({x,y,type:tp});
   const L=(x,cy,period,offset)=>HAZARD_LASERS.push({x,ceilY:cy,period,offset,warn:false,active:false});
@@ -1436,9 +1438,9 @@ function buildStageData(){
       P(1520,355,80);P(1900,310,80);P(2280,315,80);P(2650,380,80);
       P(3040,340,80);P(3500,335,80);P(3950,360,80);P(4300,315,80);
       P(4700,340,80);P(5100,390,80);
-      SP(200,460,240,0);SP(600,470,240,80);SP(1100,450,240,160);
-      SP(1700,460,240,40);SP(2300,465,240,120);SP(2900,455,240,200);
-      SP(3500,460,240,60);SP(4100,445,240,140);SP(4700,460,240,220);SP(5300,465,240,80);
+      SP(200,460,240,0);SP(1700,460,240,40);SP(2300,465,240,120);SP(3500,460,240,60);SP(4700,460,240,220);
+      MG(600,470,240,1,2);MG(3000,450,240,-1,1.5);MG(5000,465,240,1,2);
+      DG(1100,450,240);DG(2900,455,240);
       // セクション1（0-1400px）：3敵
       E(200,428,'patrol');E(650,278,'bomber');E(1100,328,'flyer');
       // セクション2（1400-2800px）：3敵
@@ -1477,6 +1479,8 @@ function buildStageData(){
       P(3150,330,80);P(3450,375,80);P(3800,310,80);P(4150,250,80);
       P(4500,310,80);P(4800,360,80);P(5150,280,80);
       T(500,300,80);T(1500,350,80);T(2700,330,80);T(4000,360,80);
+      MG(750,415,130,-1,1.5);MG(2000,380,110,1,2);MG(4500,390,140,-1,1.5);
+      DG(1200,435,120);DG(3500,395,125);
       // セクション1（0-1400px）：3敵
       E(200,428,'charger');E(650,248,'sniper');E(1100,328,'flyer');
       // セクション2（1400-2800px）：3敵
@@ -1512,7 +1516,7 @@ function buildStageData(){
       P(1450,285,90);P(1800,310,90);P(2200,355,90);P(2650,330,90);
       P(3100,310,90);P(3600,360,90);P(4050,395,90);P(4500,415,90);
       T(350,375,100);T(850,310,100);T(1700,290,100);T(2900,350,100);T(4000,420,100);
-      SP(600,450,220,0);SP(1500,450,220,73);SP(3300,450,220,146);
+      DG(600,450,220);DG(1500,450,220);DG(2800,380,200);DG(4000,410,200);
       // セクション1（0-1400px）：3敵
       E(200,428,'charger');E(650,248,'sniper');E(1100,328,'flyer');
       // セクション2（1400-2800px）：3敵
@@ -1544,41 +1548,6 @@ function buildStageData(){
   STAGE_HOLES=holes_data[currentStage-1]||[];
 
   // 各ステージの鉄球配置（Stage 2以降のみ）
-  const ironBalls_data=[
-    [],  // Stage 1: 鉄球なし
-    [  // Stage 2
-      {x: 700, holeX1: 600, holeX2: 800},
-      {x: 1900, holeX1: 1800, holeX2: 2000},
-      {x: 3300, holeX1: 3200, holeX2: 3400},
-      {x: 4700, holeX1: 4600, holeX2: 4800}
-    ],
-    [  // Stage 3
-      {x: 400, holeX1: 300, holeX2: 500},
-      {x: 1200, holeX1: 1100, holeX2: 1300},
-      {x: 2200, holeX1: 2100, holeX2: 2300},
-      {x: 3400, holeX1: 3300, holeX2: 3500},
-      {x: 4600, holeX1: 4500, holeX2: 4700}
-    ],
-    [  // Stage 4
-      {x: 300, holeX1: 200, holeX2: 400},
-      {x: 1000, holeX1: 900, holeX2: 1100},
-      {x: 1900, holeX1: 1800, holeX2: 2000},
-      {x: 3000, holeX1: 2900, holeX2: 3100},
-      {x: 4350, holeX1: 4200, holeX2: 4500}
-    ],
-    [  // Stage 5
-      {x: 500, holeX1: 400, holeX2: 600},
-      {x: 1600, holeX1: 1500, holeX2: 1700},
-      {x: 2900, holeX1: 2800, holeX2: 3000},
-      {x: 4300, holeX1: 4200, holeX2: 4400}
-    ]
-  ];
-  STAGE_IRON_BALLS = ironBalls_data[currentStage-1] || [];
-  // 鉄球の Y座標を設定（穴の直上）
-  const ibBottomY = H - 60;
-  STAGE_IRON_BALLS.forEach(ball=>{
-    ball.y = ibBottomY - 80;  // 穴の直上（約80px）
-  });
 
   // 穴以外の底部を足場として追加（見える地面と同じ高さ）
   const holes=holes_data[currentStage-1]||[];
@@ -2279,22 +2248,6 @@ function update(){
   // 鉄球との衝突判定と乗る処理
   const prevOnIronBall=player.onIronBall||false;
   player.onIronBall=false;
-  for(let i=0;i<STAGE_IRON_BALLS.length;i++){
-    const ball=STAGE_IRON_BALLS[i];
-    const ballR=25;
-    // プレイヤー底部とボールの接触判定
-    if(player.x+player.w*0.5>ball.x-ballR && player.x+player.w*0.5<ball.x+ballR &&
-       player.y+player.h>ball.y-ballR && player.y+player.h<ball.y+ballR+30){
-      player.onIronBall=true;
-      player.ironBallIndex=i;
-      // プレイヤーをボールの上に配置
-      player.y=ball.y-player.h-ballR+5;
-      player.onGround=true;
-      // ボール上では下向き速度を制限（スムーズな乗り心地）
-      if(player.vy>0)player.vy=0;
-      break;
-    }
-  }
   // 鉄球から落ちたかチェック（ダメージ処理）
   if(prevOnIronBall&&!player.onIronBall){
     const dmg=Math.max(1,Math.floor(player.maxHp*0.5));
@@ -2489,6 +2442,36 @@ function update(){
         if(t.trapTimer<=0)t.trapState='stable';
       }
     });
+  }
+
+  // --- ギミック床更新 ---
+  for(let i=TERRAIN.length-1;i>=0;i--){
+    const t=TERRAIN[i];
+    // 踏むと消える床
+    if(t.type==='disappear'){
+      const onTop=player.onGround&&player.x+player.w>t.x&&player.x<t.x+t.w&&Math.abs((player.y+player.h)-t.y)<4;
+      if(onTop&&!t.disappearing){
+        t.disappearing=true;
+        t.disappearTimer=120;
+      }
+      if(t.disappearing){
+        t.disappearTimer--;
+        if(t.disappearTimer<=0){
+          burst((t.x+t.w/2)-cam.x,t.y,'#ff5544',10);
+          TERRAIN.splice(i,1);
+          continue;
+        }
+      }
+    }
+    // 移動する床
+    if(t.type==='moving'){
+      t.x+=t.moveDir*t.moveSpeed;
+      // 範囲外に出たら反対方向
+      if(t.x<0||t.x+t.w>WORLD_W){
+        t.moveDir*=-1;
+        t.x+=t.moveDir*t.moveSpeed*2;
+      }
+    }
   }
 
   // --- パワーアップタイマー ---
@@ -5408,6 +5391,34 @@ function drawTerrain(){
       }
       return;
     }
+    // 踏むと消える床 (disappear)
+    if(ter.type==='disappear'){
+      const progress=ter.disappearing?1-(ter.disappearTimer/120):0;
+      ctx.globalAlpha=1-progress*0.3;
+      dr(tx,ter.y,ter.w,ter.h,'#cc4433');
+      for(let bx=tx;bx<tx+ter.w;bx+=32)dr(bx,ter.y,1,ter.h,'#771100');
+      dr(tx,ter.y,ter.w,2,'#ff6644');dr(tx,ter.y,ter.w,1,'#ffaa88');
+      if(ter.disappearing){
+        ctx.globalAlpha=progress*.6;
+        dr(tx,ter.y,ter.w,ter.h,'#ff3333');
+        ctx.globalAlpha=1;
+      }
+      return;
+    }
+    // 移動する床 (moving)
+    if(ter.type==='moving'){
+      dr(tx,ter.y,ter.w,ter.h,'#2244aa');
+      for(let bx=tx;bx<tx+ter.w;bx+=32)dr(bx,ter.y,1,ter.h,'#0a1444');
+      dr(tx,ter.y,ter.w,2,'#4466ff');dr(tx,ter.y,ter.w,1,'#88aaff');
+      // 移動矢印エフェクト
+      const arrow=Math.floor((frameTime+ter.x)%(ter.moveSpeed*20))/10;
+      ctx.globalAlpha=0.4;
+      for(let ax=tx+arrow;ax<tx+ter.w;ax+=ter.moveSpeed*20){
+        dr(ax,ter.y+ter.h/2-2,4,4,'#ffff44');
+      }
+      ctx.globalAlpha=1;
+      return;
+    }
     const isG=ter.h>20;
     dr(tx,ter.y,ter.w,ter.h,isG?tM:'#12121e');
     // タイル割り石目
@@ -6519,25 +6530,6 @@ function drawArenaWalls(){
   drawWall(BOSS_ARENA_RIGHT);
 }
 
-function drawIronBalls(){
-  STAGE_IRON_BALLS.forEach(ball=>{
-    const bx=Math.floor(ball.x-cam.x);
-    const by=Math.floor(ball.y);
-    if(bx<-40||bx>W+40)return;
-    const r=25;
-    // 鉄球メイン（濃いグレー）
-    ctx.fillStyle='#3a3a3a';
-    ctx.beginPath();ctx.arc(bx+r,by,r,0,Math.PI*2);ctx.fill();
-    // グロス＆ハイライト
-    ctx.fillStyle='#666666';
-    ctx.beginPath();ctx.arc(bx+r-8,by-8,r*.4,0,Math.PI*2);ctx.fill();
-    ctx.globalAlpha=0.5;
-    ctx.fillStyle='#999999';
-    ctx.beginPath();ctx.arc(bx+r-6,by-10,r*.25,0,Math.PI*2);ctx.fill();
-    ctx.globalAlpha=1;
-  });
-}
-
 function drawHazards(){
   const now=frameTime;
   // 落ちてくる岩
@@ -6665,7 +6657,6 @@ function drawPlay(){
   drawBg();
   drawZeroGZones();
   drawTerrain();
-  drawIronBalls();
   drawHazards();
   drawGoal();
   drawArenaWalls();
