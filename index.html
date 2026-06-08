@@ -969,6 +969,142 @@ function drawCharacter(sx,sy,ci,facing,walkFrame,moving,atkAnim,isJetting,isAirb
       _r('#e8f4ff', 6,12, atk*6+4,26);
       ctx.globalAlpha=1;
     }
+  } else if(ci===7){ // スーパー十兵衛 - 超強化版の槍使い（金髪・赤道着・白鉢巻）
+    const skin='#DEAA58', skinS='#B88030';
+    const gi='#cc3300', giBr='#ff4400'; // 赤い道着
+    const hair='#ffdd00'; // 金髪
+    // 頭髪（金色・ボリュームアップ）
+    _r(OL, 8,10,16,10); _r(hair, 9,11,14, 8); _r('#ffee88', 9,11,14, 2);
+    // 白い鉢巻（白いヘッドバンド）
+    _r('#ffffff',7,15, 18, 3); _r('#e8e8e8', 7,15, 18, 1); _r('#cccccc', 8,16, 16, 1);
+    // 顔
+    _r(skin, 9,17, 12, 10); _r(skinS, 10,18, 10, 8);
+    _r('#000000', 11,19, 2, 2); _r('#000000', 15,19, 2, 2);
+    _r('#ffffff', 11,19, 2, 1); _r('#ffffff', 15,19, 2, 1);
+    // 胴体（赤い道着・腰で括れた形）
+    _r(OL, 3+bodyX,19,24,10); _r(gi, 4+bodyX,20,22, 8);
+    _r(OL, 5+bodyX,27, 20, 3); _r('#000000', 5+bodyX,28,20, 2); _r(gi, 6+bodyX,29,18, 1);
+    _r(OL, 4+bodyX,30,22, 8); _r(giBr, 5+bodyX,31,20, 6);
+    // 足（見える部分）
+    _r(OL, 4+lx,38,10, 9); _r(gi, 5+lx,39, 8, 7); _r('#ffff88', 5+lx,39, 8, 2);
+    _r(OL, 2+lx,45,13, 4); _r('#111122', 3+lx,45,11, 3); _r(skin, 3+lx,45,11, 1);
+    _r(OL,16+rx,38,10, 9); _r(gi,17+rx,39, 8, 7); _r('#ffff88',17+rx,39, 8, 2);
+    _r(OL,14+rx,45,13, 4); _r('#111122',15+rx,45,11, 3); _r(skin,15+rx,45,11, 1);
+    // 肩（赤に対応）
+    ctx.fillStyle=OL;ctx.beginPath();ctx.arc(4+bodyX,22,7,Math.PI*.4,Math.PI*1.6);ctx.fill();
+    ctx.fillStyle=OL;ctx.beginPath();ctx.arc(27+bodyX,22,7,Math.PI*1.4,Math.PI*.6);ctx.fill();
+    ctx.fillStyle=gi;ctx.beginPath();ctx.arc(4+bodyX,22,6,Math.PI*.4,Math.PI*1.6);ctx.fill();
+    ctx.fillStyle=gi;ctx.beginPath();ctx.arc(27+bodyX,22,6,Math.PI*1.4,Math.PI*.6);ctx.fill();
+    // 腕と槍（ボリューム増）
+    const spearCol='#ffaa00', spearTip='#ffdd00', spearTipDark='#ffbb00'; // 金の槍
+    if(atk===0){
+      _r(OL, 1,20, 6,12); _r(gi, 2,21, 4,10); _r(skin, 2,21, 4, 3);
+      _r(OL, 4,16, 9, 8); _r(gi, 5,17, 7, 6); _r(skin, 5,17, 7, 2);
+      _r(OL,16,24, 8,12); _r(gi,17,25, 6,10); _r(skin,17,25, 6, 3);
+      _r(OL,22,20, 10,10); _r(gi,23,21, 8, 8); _r(skin,23,21, 8, 2);
+      _r(skin, 0,28, 8, 8); _r(skinS, 1,29, 6, 6);
+      _r(skin,21,27, 10,10); _r(skinS,22,28, 8, 8);
+      // 槍（金色・太め化）
+      _r(spearCol, 7,24, 30, 5); // メイン柄（太くする）
+      _r(spearCol, 8,23, 28, 2);
+      _r(spearCol, 8,29, 28, 2);
+      // 穂先（大きめ）
+      _r(spearTip, 37, 23, 14, 2);
+      _r(spearTipDark, 38, 24, 12, 1);
+      _r(spearTip, 37, 19, 9, 2);
+      _r(spearTipDark, 38, 20, 7, 1);
+      _r(spearTip, 37, 27, 9, 2);
+      _r(spearTipDark, 38, 28, 7, 1);
+      _r(spearTip, 35, 22, 2, 6);
+      _r('#ffff00', 40, 23, 5, 1);
+      _r('#ffff00', 40, 19, 4, 1);
+      _r('#ffff00', 40, 27, 4, 1);
+    } else {
+      _r(OL,-bkPull,21, 5,14); _r(gi,1-bkPull,22, 3,12); _r(skin,1-bkPull,22, 3, 3);
+      const eA=Math.floor(ext*.22);
+      _r(OL,22,16, 8+eA, 8); _r(gi,23,17, 6+eA, 6); _r(skin,23,17, 6+eA, 2);
+      _r(spearCol, 7,24, 30+eA, 5);
+      _r(spearCol, 8,23, 28+eA, 2);
+      _r(spearCol, 8,29, 28+eA, 2);
+      const spx=40+ext;
+      _r(spearTip, spx-2, 23, 14, 2);
+      _r(spearTipDark, spx-1, 24, 12, 1);
+      _r(spearTip, spx-2, 19, 9, 2);
+      _r(spearTipDark, spx-1, 20, 7, 1);
+      _r(spearTip, spx-2, 27, 9, 2);
+      _r(spearTipDark, spx-1, 28, 7, 1);
+      _r(spearTip, spx-4, 22, 2, 6);
+      _r('#ffff00', spx, 23, 5, 1);
+      _r('#ffff00', spx, 19, 4, 1);
+      _r('#ffff00', spx, 27, 4, 1);
+      _r(skin,20,26, 10, 10); _r(skinS,21,27, 8, 8);
+    }
+  } else if(ci===8){ // からくり桃太郎 - 木製ロボット（歯車・団子・刀・赤金）
+    const wood='#8B6F47', woodDark='#6B5535', woodLight='#A89068';
+    const gear='#888888', gearDark='#444444', gearLight='#CCCCCC';
+    const metal='#ffaa00', metalDark='#cc7700';
+    // 頭部（木製）
+    _r(OL, 7,10, 18, 10); _r(wood, 8,11, 16, 8); _r(woodLight, 8,11, 16, 2);
+    // 顔（赤い装飾・桃太郎イメージ）
+    _r('#ff4444', 9,14, 4, 4); _r('#ff4444', 17,14, 4, 4); // 赤い目
+    _r('#000000', 10,15, 2, 2); _r('#000000', 18,15, 2, 2);
+    _r('#ffffff', 10,15, 1, 1); _r('#ffffff', 18,15, 1, 1);
+    _r('#ff8800',11,17, 8, 2); // 金色の口
+    // 歯車（頭の側面に装飾）
+    const gear1=Math.sin(frameTime/150);
+    ctx.save();
+    ctx.translate(5,20);ctx.rotate(gear1*Math.PI*2);
+    _r(gearDark,-3,-3, 6, 6); // 中央
+    _r(gear,-2,-2, 4, 4);
+    _r(gearLight,-1,-1, 2, 2);
+    ctx.restore();
+    ctx.save();
+    ctx.translate(27,20);ctx.rotate(-gear1*Math.PI*2);
+    _r(gearDark,-3,-3, 6, 6);
+    _r(gear,-2,-2, 4, 4);
+    _r(gearLight,-1,-1, 2, 2);
+    ctx.restore();
+    // 胴体（木製・四角）
+    _r(OL, 2+bodyX,19,26,14); _r(wood, 3+bodyX,20,24,12);
+    _r(woodLight, 3+bodyX,20,24, 2); _r(woodDark, 3+bodyX,30,24, 2);
+    // 中央に金属プレート（センターライン）
+    _r(metal, 15+bodyX,20, 2,12);
+    // 団子パーツ（腹部に3つの球）
+    const dangoY1=24, dangoY2=28, dangoY3=32;
+    const dangoX=15+bodyX;
+    ctx.fillStyle='#ff6666';ctx.beginPath();ctx.arc(dangoX, dangoY1, 2.5, 0, Math.PI*2);ctx.fill();
+    ctx.fillStyle='#ffff66';ctx.beginPath();ctx.arc(dangoX, dangoY2, 2.5, 0, Math.PI*2);ctx.fill();
+    ctx.fillStyle='#66ff66';ctx.beginPath();ctx.arc(dangoX, dangoY3, 2.5, 0, Math.PI*2);ctx.fill();
+    // 串（団子の中央を通す）
+    _r('#8B6F47', dangoX-0.5, dangoY1-3, 1, 9);
+    // 腕（機械的）
+    if(atk===0){
+      _r(OL, 0,20, 5,13); _r(metal, 1,21, 3,11); _r(gear, 1,21, 3, 3);
+      _r(OL, 0,14, 7, 8); _r(metal, 1,15, 5, 6); _r(gearLight, 1,15, 5, 2);
+      _r(OL,27,22, 5,13); _r(metal,28,23, 3,11); _r(gear,28,23, 3, 3);
+      _r(OL,25,16, 7, 8); _r(metal,26,17, 5, 6); _r(gearLight,26,17, 5, 2);
+    } else {
+      _r(OL,-bkPull,21, 5,14); _r(metal,1-bkPull,22, 3,12); _r(gear,1-bkPull,22, 3, 3);
+      const eA=Math.floor(ext*.22);
+      _r(OL,22,16, 8+eA, 8); _r(metal,23,17, 6+eA, 6); _r(gearLight,23,17, 6+eA, 2);
+    }
+    // 足（木製ボックス脚）
+    _r(OL, 5+lx,38,10, 9); _r(wood, 6+lx,39, 8, 7); _r(woodLight, 6+lx,39, 8, 2);
+    _r(OL, 3+lx,45,13, 4); _r(metal, 4+lx,46,11, 2); _r(gearDark, 4+lx,46,11, 1);
+    _r(OL,17+rx,38,10, 9); _r(wood,18+rx,39, 8, 7); _r(woodLight,18+rx,39, 8, 2);
+    _r(OL,15+rx,45,13, 4); _r(metal,16+rx,46,11, 2); _r(gearDark,16+rx,46,11, 1);
+    // 肩（木製に対応）
+    ctx.fillStyle=OL;ctx.beginPath();ctx.arc(3+bodyX,22,7,Math.PI*.4,Math.PI*1.6);ctx.fill();
+    ctx.fillStyle=OL;ctx.beginPath();ctx.arc(29+bodyX,22,7,Math.PI*1.4,Math.PI*.6);ctx.fill();
+    ctx.fillStyle=wood;ctx.beginPath();ctx.arc(3+bodyX,22,6,Math.PI*.4,Math.PI*1.6);ctx.fill();
+    ctx.fillStyle=wood;ctx.beginPath();ctx.arc(29+bodyX,22,6,Math.PI*1.4,Math.PI*.6);ctx.fill();
+    // 手に刀を持つ（金属・短い）
+    if(atk===0){
+      _r(metal, 22,25, 10, 2); _r(metalDark, 23,26, 8, 1);
+    } else {
+      const eA=Math.floor(ext*.22);
+      _r(metal, 22,25, 10+eA, 2); _r(metalDark, 23,26, 8+eA, 1);
+    }
   } else if(ci===5){ // 装甲ロボット BUSTER - 肩キャノン＋バックスラスター
     const t2b=frameTime;
     // バックスラスターパック
@@ -1320,7 +1456,8 @@ const CHARS=[
   {name:'クマ型',   nick:'クマのマタキチ', dna:'熊DNA',  col:'#704214',w:36,h:46,spd:5.5,jmp:-9.0, maxHp:7, atkCd:20,atkLabel:'猛突進',    glide:false,djump:true, wallSlide:false,ability:'HP最大・攻撃1.5倍・ボス被ダメ軽減・突進無敵'},
   null,
   null,
-  null,
+  {name:'スーパー十兵衛',nick:'スーパー十兵衛', dna:'猿DNA', col:'#aa7722',w:28,h:44,spd:6.8,jmp:-10.0,maxHp:10,atkCd:14,atkLabel:'超槍',glide:false,djump:true,wallSlide:true,ability:'全能力超強化・画面半分リーチ'},
+  {name:'からくり桃太郎',nick:'からくり桃太郎',dna:'機械DNA',col:'#ff4444',w:32,h:44,spd:8.5,jmp:-10.5,maxHp:12,atkCd:12,atkLabel:'団子砲',glide:false,djump:true,wallSlide:false,ability:'最強体力・最強攻撃・最速'},
 ];
 
 // ================================================================
@@ -2054,35 +2191,34 @@ function doAttack(){
       player.invincible=Math.max(player.invincible,24);
       break;
     }
-    case 7:{ // わらしべ走者
-      // 空中: スタンプ急降下
-      if(!player.onGround){
-        player.vy=Math.max(player.vy,11);
-        player.comboStep=0;player.comboTimer=0;
-        projectiles.push({x:px-10,y:py+ph,vx:0,vy:0,w:pw+20,h:14,col:'#cc8822',dmg:3+lv,life:14,hit:[],pierce:true,homing:false,stomp:true});
-        burst(px+pw*.5,py+ph,'#d4a830',10);addShake(3);sfx('bomb');
-        break;
+    case 7:{ // スーパー十兵衛 - 超強化槍（リーチW/2・強力ノックバック）
+      const wdmg=step<2?3:lv>=2?5:4;
+      const reach=step<2?(lv>=2?25:lv>=1?22:19):(lv>=2?32:lv>=1?28:24); // リーチ拡大
+      const tipX=f>0?px+pw+reach:px-reach, tipY=py+12;
+      const tipW=step<2?(lv>=2?18:lv>=1?15:12):(lv>=2?20:lv>=1?17:14);
+      projectiles.push({x:tipX,y:tipY,vx:f*6,vy:0,w:tipW,h:8,col:'#ffaa00',dmg:wdmg,life:6,hit:[],pierce:false,homing:false,whip:false,spear:true,knockback:f*(step<2?5:7)});
+      burst(tipX,tipY,'#ffdd00',step<2?4:8);sfx('slash');
+      if(lv>=2&&step===2){
+        addShake(3);
       }
-      // 地上コンボ: わら/アブ/ミカン/馬
+      break;
+    }
+    case 8:{ // からくり桃太郎 - 団子砲・最強攻撃（ホーミング・最速）
+      const mdmg=step<2?4:lv>=2?6:5;
+      const mdX=f>0?px+pw+2:px-2, mdY=py+ph*.4;
       if(step<2){
-        if(step===0){
-          for(let k=0;k<2;k++){
-            projectiles.push({x:f>0?px+pw+2:px-38,y:py+ph*.35+(k-0.5)*10,vx:f*(11+k*2),vy:(k-0.5)*0.6,w:38,h:10,col:'#d4b44e',dmg:2,life:36,hit:[],pierce:false,homing:false,straw:true});
-          }
-          sfx('slash');
-        }else{
-          projectiles.push({x:f>0?px+pw+2:px-22,y:py+ph*.4,vx:f*5,vy:-1.5,w:22,h:16,col:'#886611',dmg:3,life:95,hit:[],pierce:false,homing:true,missile:true,abu:true});
-          sfx('needle');
-        }
+        // 通常: 団子発射（ホーミング）
+        projectiles.push({x:mdX,y:mdY,vx:f*(12+step*2),vy:-0.5,w:14,h:14,col:step===0?'#ff6666':'#ffff66',dmg:mdmg,life:120,hit:[],pierce:false,homing:true,missile:true});
+        burst(mdX,mdY,step===0?'#ff8888':'#ffff88',step===0?4:6);sfx('needle');
       }else{
-        if(lv<2){
-          const rad=lv===1?65:45, dmg=lv===1?5:4;
-          projectiles.push({x:mx,y:py+ph*.4,vx:f*7,vy:-3.5,w:26,h:26,col:'#ff7700',dmg,life:110,hit:[],pierce:false,homing:false,bomb:true,rad,gravity:true,gravMult:0.6,bounces:0,maxBounces:3,mikan:true});
-          sfx('bomb');
-        }else{
-          projectiles.push({x:f>0?px+pw:px-80,y:py,vx:f*9,vy:0,w:80,h:40,col:'#7a5218',dmg:6,life:130,hit:[],pierce:true,homing:false,horse:true});
-          burst(f>0?px+pw+4:px-4,py+ph*.4,'#d4a830',18);addShake(5);sfx('bomb');
+        // フィニッシャー: 大量団子砲
+        for(let k=0;k<(lv>=2?5:3);k++){
+          setTimeout(()=>{if(player){
+            const vy=-1+Math.random()*0.5;
+            projectiles.push({x:mdX,y:mdY+k*3,vx:f*(14+k),vy,w:16,h:16,col:k%3===0?'#ff6666':(k%3===1?'#ffff66':'#66ff66'),dmg:mdmg+1,life:130,hit:[],pierce:false,homing:true,missile:true});
+          }},k*50);
         }
+        burst(mdX,mdY,'#ffff00',14);addShake(4);sfx('bomb');
       }
       break;
     }
