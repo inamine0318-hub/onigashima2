@@ -1978,7 +1978,7 @@ document.addEventListener('keydown',e=>{
   if(state==='cutscene'){if(e.key==='Enter'||e.key===' ')advanceCutscene();return;}
   if(state==='ending'){if((e.key==='Enter'||e.key===' ')&&endingDone){clearSave();currentStage=1;state='charselect';bgmPlay('title');}return;}
   if(state==='charselect'){
-    const validChars=[0,3,4];
+    const validChars=[0,3,4,7,8];
     const curIdx=validChars.indexOf(selChar);
     if(e.key==='ArrowLeft'){selChar=validChars[(curIdx-1+validChars.length)%validChars.length];}
     if(e.key==='ArrowRight'){selChar=validChars[(curIdx+1)%validChars.length];}
@@ -2056,7 +2056,7 @@ function handleCSTap(e){
     const lp=toLogical(t.clientX,t.clientY);
     const tx=lp.x,ty=lp.y;
     z.chars.forEach((b,i)=>{
-      if(tx>=b.x&&tx<=b.x+b.w&&ty>=b.y&&ty<=b.y+b.h){
+      if(b && tx>=b.x&&tx<=b.x+b.w&&ty>=b.y&&ty<=b.y+b.h){
         if(i===6){if(getTsukuyomiUnlocked())selChar=6;}
         else selChar=i;
       }
