@@ -2272,41 +2272,51 @@ function doAttack(){
       player.invincible=Math.max(player.invincible,24);
       break;
     }
-    case 7:{ // スーパー十兵衛 - 究極の広範囲超リーチ槍（複数段・円形・派手）
+    case 7:{ // スーパー十兵衛 - 究極の広範囲超リーチ槍+フィニッシャー突進（複数段・円形・派手・無敵）
       const wdmg=step<2?4:lv>=2?6:5;
       const reach=step<2?(lv>=2?50:lv>=1?45:40):(lv>=2?65:lv>=1?60:55); // 超リーチ
       const tipX=f>0?px+pw+reach:px-reach, tipY=py+12;
       const tipW=step<2?(lv>=2?32:lv>=1?28:25):(lv>=2?38:lv>=1?35:32); // 超広幅
 
-      // メイン攻撃（中央・太い）
-      projectiles.push({x:tipX,y:tipY,vx:f*6,vy:0,w:tipW,h:18,col:'#ffaa00',dmg:wdmg,life:6,hit:[],pierce:false,homing:false,whip:false,spear:true,knockback:f*(step<2?6:8)});
+      if(step<2){
+        // 通常攻撃：メイン+サイド攻撃
+        projectiles.push({x:tipX,y:tipY,vx:f*6,vy:0,w:tipW,h:18,col:'#ffaa00',dmg:wdmg,life:6,hit:[],pierce:false,homing:false,whip:false,spear:true,knockback:f*6});
+        const sideReach=reach-8;
+        const tipX_up=f>0?px+pw+sideReach:px-sideReach;
+        projectiles.push({x:tipX_up,y:tipY-10,vx:f*5,vy:-2,w:tipW-8,h:10,col:'#ffcc00',dmg:wdmg-1,life:5,hit:[],pierce:false,homing:false,spear:true,knockback:f*6});
+        projectiles.push({x:tipX_up,y:tipY+10,vx:f*5,vy:2,w:tipW-8,h:10,col:'#ffcc00',dmg:wdmg-1,life:5,hit:[],pierce:false,homing:false,spear:true,knockback:f*6});
+        projectiles.push({x:tipX,y:tipY,vx:0,vy:0,w:60,h:40,col:'rgba(255,170,0,0)',dmg:0,life:5,hit:[],pierce:true,homing:false,noRender:true});
+        burst(tipX,tipY,'#ffff00',12);
+        burst(tipX,tipY,'#ff8800',6);
+        burst(tipX_up,tipY-10,'#ffdd00',8);
+        burst(tipX_up,tipY+10,'#ffdd00',8);
+        for(let k=0;k<6;k++){const a=Math.random()*Math.PI*2;const sp=Math.random()*5+2;particles.push({x:tipX,y:tipY,vx:Math.cos(a)*sp,vy:Math.sin(a)*sp-1,col:k%2?'#ffff00':'#ffdd00',life:20});}
+      }else{
+        // フィニッシャー：広範囲攻撃+無敵突進
+        player.invincible=Math.max(player.invincible,28); // 無敵時間
+        player.charging=true;
+        player.chargeTimer=20;
+        player.chargeDir=f;
+        player.chargeSpd=16; // 突進スピード
 
-      // サイド攻撃1（上）
-      const sideReach=reach-8;
-      const tipX_up=f>0?px+pw+sideReach:px-sideReach;
-      projectiles.push({x:tipX_up,y:tipY-10,vx:f*5,vy:-2,w:tipW-8,h:10,col:'#ffcc00',dmg:wdmg-1,life:5,hit:[],pierce:false,homing:false,spear:true,knockback:f*6});
+        // メイン攻撃（突進方向に強力）
+        projectiles.push({x:tipX,y:tipY,vx:f*8,vy:0,w:tipW,h:20,col:'#ffff00',dmg:wdmg+1,life:8,hit:[],pierce:false,homing:false,whip:false,spear:true,knockback:f*10});
+        const sideReach=reach-8;
+        const tipX_up=f>0?px+pw+sideReach:px-sideReach;
+        projectiles.push({x:tipX_up,y:tipY-12,vx:f*6,vy:-3,w:tipW-6,h:12,col:'#ffdd00',dmg:wdmg,life:6,hit:[],pierce:false,homing:false,spear:true,knockback:f*8});
+        projectiles.push({x:tipX_up,y:tipY+12,vx:f*6,vy:3,w:tipW-6,h:12,col:'#ffdd00',dmg:wdmg,life:6,hit:[],pierce:false,homing:false,spear:true,knockback:f*8});
+        projectiles.push({x:tipX,y:tipY,vx:0,vy:0,w:80,h:50,col:'rgba(255,255,0,0)',dmg:0,life:6,hit:[],pierce:true,homing:false,noRender:true});
 
-      // サイド攻撃2（下）
-      projectiles.push({x:tipX_up,y:tipY+10,vx:f*5,vy:2,w:tipW-8,h:10,col:'#ffcc00',dmg:wdmg-1,life:5,hit:[],pierce:false,homing:false,spear:true,knockback:f*6});
-
-      // 円形広範囲エフェクト（敵の接近判定用）
-      projectiles.push({x:tipX,y:tipY,vx:0,vy:0,w:60,h:40,col:'rgba(255,170,0,0)',dmg:0,life:5,hit:[],pierce:true,homing:false,noRender:true});
-
-      // 派手エフェクト
-      burst(tipX,tipY,'#ffff00',step<2?12:20);
-      burst(tipX,tipY,'#ff8800',step<2?6:12);
-      burst(tipX_up,tipY-10,'#ffdd00',8);
-      burst(tipX_up,tipY+10,'#ffdd00',8);
-
-      // パーティクル
-      for(let k=0;k<(step<2?6:16);k++){
-        const a=Math.random()*Math.PI*2;const sp=Math.random()*5+2;
-        particles.push({x:tipX,y:tipY,vx:Math.cos(a)*sp,vy:Math.sin(a)*sp-1,col:k%2?'#ffff00':'#ffdd00',life:20});
+        burst(tipX,tipY,'#ffff00',24);
+        burst(tipX,tipY,'#ff8800',16);
+        burst(tipX_up,tipY-12,'#ffdd00',12);
+        burst(tipX_up,tipY+12,'#ffdd00',12);
+        for(let k=0;k<20;k++){const a=Math.random()*Math.PI*2;const sp=Math.random()*6+3;particles.push({x:tipX,y:tipY,vx:Math.cos(a)*sp,vy:Math.sin(a)*sp-1.5,col:k%2?'#ffff00':'#ffdd00',life:24});}
+        addShake(6);
       }
 
       sfx('slash');
-      addShake(step<2?3:5);
-      if(lv>=2&&step===2){addShake(5);}
+      addShake(step<2?3:4);
       break;
     }
     case 8:{ // からくり桃太郎 - 団子砲・最強攻撃（ホーミング・最速・レベル反映）
