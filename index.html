@@ -857,25 +857,6 @@ function drawCharacter(sx,sy,ci,facing,walkFrame,moving,atkAnim,isJetting,isAirb
           _r('#ffcc44',bx-4,19, 1, 6);
         }
       }
-    } else if(ci===7){ // ===== わらしべ走者 - 投げ攻撃 =====
-      const w7SC='#DEAA58',w7SD='#B88030';
-      if(atk===0){
-        // 待機: 両腕を曲げてとってを握る
-        _r(OL, 0,22, 5, 8); _r(SC, 1,23, 3, 7); _r(w7SC, 1,23, 3, 3);
-        _r(OL, 0,29, 5, 4); _r(SC, 1,30, 3, 3); // 前腕（内側へ曲げる）
-        _r(OL, 1,32, 4, 3); _r(w7SC, 2,33, 2, 2); // 手（とって握る）
-        _r(OL,22,22, 5, 8); _r(SC,23,23, 3, 7); _r(w7SC,23,23, 3, 3);
-        _r(OL,21,29, 5, 4); _r(SC,22,30, 3, 3);
-        _r(OL,22,32, 4, 3); _r(w7SC,23,33, 2, 2);
-      } else {
-        // 投げ攻撃: 後腕を引き、前腕を高く伸ばす（籠は固定済み）
-        _r(OL,-bkPull,20, 5,14); _r(SC,1-bkPull,21, 3,12); _r(w7SC,1-bkPull,21, 3, 3);
-        _r(OL,-2-bkPull,32, 8, 5); _r(SC,-1-bkPull,33, 6, 4);
-        const eA=Math.floor(ext*.18),eB=Math.floor(ext*.32);
-        _r(OL,20,14, 6+eA,10); _r(SC,21,15, 4+eA, 8); _r(w7SC,21,15, 4+eA, 3);
-        _r(OL,24+eB, 7, 6+eA, 9); _r(SC,25+eB, 8, 4+eA, 7); _r(w7SC,25+eB, 8, 4+eA, 3);
-        _r(OL,28+ext, 4, 6, 5); _r(SC,29+ext, 5, 4, 4);
-      }
     } else { // ===== 熊 LARC - 銃戦闘 =====
       if(atk===0){
         const sw=moving?(wf===0?1:-1):0;
