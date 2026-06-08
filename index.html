@@ -6957,13 +6957,26 @@ function drawPlay(){
       dr(bx+3,by+p.h-4,2,3,'#664433');
       dr(bx+p.w-4,by+p.h-3,3,2,'#664433');
     }else if(p.spear){
-      // 十兵衛の槍：槍本体を主役に、白いビームなし
-      ctx.globalAlpha=0.25;dr(bx-1,by-2,p.w+2,p.h+4,p.col);ctx.globalAlpha=1;
-      dr(bx,by,p.w,p.h,p.col);
-      // 槍の穂先を強調（黄金色）
-      const tipX=bx+p.w-6, tipY=by+p.h/2-4;
-      ctx.fillStyle='#DAA520';ctx.fillRect(tipX,tipY,6,8);
-      ctx.fillStyle='#CD853F';ctx.fillRect(tipX+1,tipY+1,4,6);
+      // 十兵衛の槍：金色の一本槍・フォーク型三つ又穂先
+      const spearGold='#DAA520', spearGoldDark='#CD853F';
+      // 槍の柄（金色）
+      ctx.globalAlpha=0.28;dr(bx-1,by-2,p.w+2,p.h+4,spearGold);ctx.globalAlpha=1;
+      dr(bx,by,p.w,p.h,spearGold);
+      dr(bx+1,by+1,Math.max(p.w-2,1),Math.max(p.h-2,1),spearGoldDark);
+      // 槍の穂先（フォーク型三つ又・金色・横向き）
+      const tipBaseX=bx+p.w-2;
+      const tipY_top=by-3, tipY_mid=by+p.h/2-2, tipY_bot=by+p.h+2;
+      // 中央先端（太い）
+      ctx.fillStyle=spearGold;ctx.fillRect(tipBaseX,tipY_mid,6,4);
+      ctx.fillStyle=spearGoldDark;ctx.fillRect(tipBaseX+1,tipY_mid+1,4,2);
+      // 左先端（細め）
+      ctx.fillStyle=spearGold;ctx.fillRect(tipBaseX,tipY_top,5,3);
+      ctx.fillStyle=spearGoldDark;ctx.fillRect(tipBaseX+1,tipY_top+1,3,1);
+      // 右先端（細め）
+      ctx.fillStyle=spearGold;ctx.fillRect(tipBaseX,tipY_bot,5,3);
+      ctx.fillStyle=spearGoldDark;ctx.fillRect(tipBaseX+1,tipY_bot+1,3,1);
+      // 穂先の接続部（柄から穂先へ）
+      ctx.fillStyle=spearGold;ctx.fillRect(tipBaseX-1,tipY_mid-2,2,8);
     }else if(p.pierce&&p.w>=30){
       ctx.globalAlpha=0.35;dr(bx-2,by-3,p.w+4,p.h+6,p.col);ctx.globalAlpha=1;
       dr(bx,by,p.w,p.h,p.col);dr(bx,by+Math.floor(p.h*.35),p.w,Math.floor(p.h*.3),'#ffffff');
