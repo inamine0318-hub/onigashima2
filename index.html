@@ -2318,7 +2318,7 @@ function doAttack(){
         const dCnt=lv>=2?3:lv>=1?2:1;
         for(let d=0;d<dCnt;d++){
           const dy=dCnt===1?0:(d-0.5)*5;
-          projectiles.push({x:mdX,y:mdY+dy,vx:f*(12+step*2),vy:-0.5+dy*0.1,w:dW,h:dW,col:step===0?'#ff6666':'#ffff66',dmg:mdmg,life:120,hit:[],pierce:false,homing:true,missile:true});
+          projectiles.push({x:mdX,y:mdY+dy,vx:f*(12+step*2),vy:-0.5+dy*0.1,w:dW,h:dW,col:step===0?'#ff6666':'#ffff66',dmg:mdmg,life:120,hit:[],pierce:false,homing:true,missile:true,dango:true});
         }
         burst(mdX,mdY,step===0?'#ff8888':'#ffff88',step===0?(lv>=2?8:6):(lv>=2?10:8));sfx('needle');
       }else{
@@ -2326,7 +2326,7 @@ function doAttack(){
         for(let k=0;k<(lv>=2?5:3);k++){
           setTimeout(()=>{if(player){
             const vy=-1+Math.random()*0.5;
-            projectiles.push({x:mdX,y:mdY+k*3,vx:f*(14+k),vy,w:16,h:16,col:k%3===0?'#ff6666':(k%3===1?'#ffff66':'#66ff66'),dmg:mdmg+1,life:130,hit:[],pierce:false,homing:true,missile:true});
+            projectiles.push({x:mdX,y:mdY+k*3,vx:f*(14+k),vy,w:16,h:16,col:k%3===0?'#ff6666':(k%3===1?'#ffff66':'#66ff66'),dmg:mdmg+1,life:130,hit:[],pierce:false,homing:true,missile:true,dango:true});
           }},k*50);
         }
         burst(mdX,mdY,'#ffff00',14);addShake(4);sfx('bomb');
