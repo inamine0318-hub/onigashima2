@@ -5537,18 +5537,26 @@ function drawStageItems(){
       dr(ix+6,iy-10,8,5,'#88ccff');
       ctx.globalAlpha=0.16+Math.sin(it.anim+t*1.2)*.08;dr(ix-1,iy-20,22,30,'#4488ff');ctx.globalAlpha=1;
     }else{
-      // Chip dango (三色団子) - 串に刺さった玉が見やすく
+      // Chip dango (三色団子) - 串に刺さった丸い玉
+      // 串の上部（玉1の上）
+      dr(ix+8,iy-18,4,4,'#8B5A2B');
       // 串（中央の茶色）
-      dr(ix+8,iy-14,4,24,'#8B5A2B');
-      // 玉1（上・赤）- でかく、明確に
-      dr(ix+4,iy-14,12,12,'#ff2222');
-      ctx.globalAlpha=0.5;dr(ix+3,iy-15,14,14,'#ff6666');ctx.globalAlpha=1;
-      // 玉2（中・白）
-      dr(ix+4,iy-2,12,12,'#ffffff');
-      ctx.globalAlpha=0.4;dr(ix+2,iy-4,16,16,'#ffff99');ctx.globalAlpha=1;
-      // 玉3（下・緑）
-      dr(ix+4,iy+10,12,12,'#22dd22');
-      ctx.globalAlpha=0.5;dr(ix+3,iy+9,14,14,'#66ff66');ctx.globalAlpha=1;
+      dr(ix+8,iy-14,4,20,'#8B5A2B');
+      // 串の下部（玉3の下）
+      dr(ix+8,iy+10,4,4,'#8B5A2B');
+
+      // 玉1（上・赤・丸）
+      ctx.fillStyle='#ff2222';ctx.beginPath();ctx.arc(ix+10,iy-8,6,0,Math.PI*2);ctx.fill();
+      ctx.globalAlpha=0.5;ctx.fillStyle='#ff6666';ctx.beginPath();ctx.arc(ix+10,iy-8,6.5,0,Math.PI*2);ctx.fill();ctx.globalAlpha=1;
+
+      // 玉2（中・白・丸）
+      ctx.fillStyle='#ffffff';ctx.beginPath();ctx.arc(ix+10,iy+4,6,0,Math.PI*2);ctx.fill();
+      ctx.globalAlpha=0.4;ctx.fillStyle='#ffff99';ctx.beginPath();ctx.arc(ix+10,iy+4,6.5,0,Math.PI*2);ctx.fill();ctx.globalAlpha=1;
+
+      // 玉3（下・緑・丸）
+      ctx.fillStyle='#22dd22';ctx.beginPath();ctx.arc(ix+10,iy+16,6,0,Math.PI*2);ctx.fill();
+      ctx.globalAlpha=0.5;ctx.fillStyle='#66ff66';ctx.beginPath();ctx.arc(ix+10,iy+16,6.5,0,Math.PI*2);ctx.fill();ctx.globalAlpha=1;
+
       // グロー（黄色）
       ctx.globalAlpha=0.1+Math.sin(it.anim+t*2)*.08;dr(ix-1,iy-16,22,30,'#ffdd00');ctx.globalAlpha=1;
     }
