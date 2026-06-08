@@ -3938,6 +3938,25 @@ function drawEnemies(){
         dr(ex+8,ey+11,4,4,'#ffff00');dr(ex+13,ey+11,4,4,'#ffff00');
         // HPバー
         dr(ex,ey-10,e.w,3,'#330008');dr(ex,ey-10,Math.ceil(e.w*(e.hp/e.maxHp)),3,'#ffff00');
+      } else if(currentStage===2){
+        // 地底蛾 - 茶色・グレー・翼が大きい
+        const flap=Math.sin(t/110)*4;
+        // 翼（左右・茶色・大きい）
+        ctx.globalAlpha=0.75;
+        dr(ex-14,ey+4+flap,12,18,'#664422');dr(ex+28,ey+4+flap,12,18,'#664422');
+        ctx.globalAlpha=0.9;
+        dr(ex-12,ey+6+flap,10,14,'#775533');dr(ex+30,ey+6+flap,10,14,'#775533');
+        ctx.globalAlpha=1;
+        // 体（太い・グレー）
+        dr(ex+4,ey+2,20,20,'#999999');
+        dr(ex+6,ey+0,16,6,'#aaaaaa');
+        // 触角（茶色）
+        dr(ex+9,ey-2,3,4,'#664422');dr(ex+18,ey-2,3,4,'#664422');
+        // 目（黄色い複眼）
+        dr(ex+8,ey+8,5,5,'#ffff00');dr(ex+19,ey+8,5,5,'#ffff00');
+        ctx.globalAlpha=0.5;dr(ex+9,ey+9,3,3,'#ffff88');dr(ex+20,ey+9,3,3,'#ffff88');ctx.globalAlpha=1;
+        // HPバー
+        dr(ex,ey-10,e.w,3,'#330008');dr(ex,ey-10,Math.ceil(e.w*(e.hp/e.maxHp)),3,'#996633');
       } else if(currentStage===3){
         // 炎スライム - 水滴型・炎色
         const bob=Math.sin(t/150)*2;
