@@ -1337,6 +1337,68 @@ function drawAnimalHead(ci,_r,AC,atk){
     _r('#3a2a1a', 9,17, 8, 1);
     break;
   }
+  case 7: { // ===== スーパー十兵衛 (槍使いの武闘家・金髪・白いハチマキ) =====
+    const sk='#DEAA58', skS='#B88030', skB='#DD6448';
+
+    // 人間の顔（楕円・肌色）
+    ctx.fillStyle=OL;ctx.beginPath();ctx.ellipse(13,9,13,12,0,0,Math.PI*2);ctx.fill();
+    ctx.fillStyle=sk;ctx.beginPath();ctx.ellipse(13,9,12,11,0,0,Math.PI*2);ctx.fill();
+    ctx.fillStyle='#F0C068';ctx.beginPath();ctx.ellipse(13,5,12,6,0,0,Math.PI*2);ctx.fill();
+    // 耳
+    _r(OL, 0, 4, 4, 7);_r('#CC9048', 1, 5, 2, 5);_r(skS, 1, 6, 1, 3);
+    // 顔影・ほっぺ
+    ctx.globalAlpha=0.22;_r(skS, 4,12, 3, 6);ctx.globalAlpha=1;
+    ctx.globalAlpha=0.28;_r(skB, 3, 7, 4, 3);_r(skB,18, 7, 4, 3);ctx.globalAlpha=1;
+    // 目（黒点3×3px）
+    _r('#0A0604', 7, 6, 3, 3);_r('#FFFFFF', 7, 6, 1, 1);
+    _r('#0A0604',17, 6, 3, 3);_r('#FFFFFF',17, 6, 1, 1);
+    // 鼻（2×1px）
+    _r('#8A4820',12,11, 2, 1);
+
+    // 白いハチマキ（目の上）
+    _r('#ffffff', 2, 2, 24, 2); _r('#f0f0f0', 3, 3, 22, 1);
+    _r('#e0e0e0', 4, 4, 20, 1);
+
+    // 金髪ツンツン（鉢巻きの上から立ち上がる・スパイク状）
+    const hairCol='#ffdd00', hairDark='#ffcc00';
+    // 左側のツンツン
+    _r(hairCol, 2, -8, 2, 10); _r(hairDark, 3, -7, 1, 8);
+    _r(hairCol, 4, -10, 2, 12); _r(hairDark, 5, -9, 1, 10);
+    // 左中央のツンツン
+    _r(hairCol, 7, -12, 2, 14); _r(hairDark, 8,-11, 1, 12);
+    _r(hairCol, 9, -10, 2, 12); _r(hairDark,10, -9, 1, 10);
+    // 中央のツンツン（最も高く・強調）
+    _r(hairCol,12, -14, 3, 16); _r(hairDark,13,-13, 1, 14);
+    _r('#ffee88',12, -14, 2, 14);
+    // 右中央のツンツン
+    _r(hairCol,15, -10, 2, 12); _r(hairDark,16, -9, 1, 10);
+    _r(hairCol,17, -12, 2, 14); _r(hairDark,18,-11, 1, 12);
+    // 右側のツンツン
+    _r(hairCol,20, -10, 2, 12); _r(hairDark,21, -9, 1, 10);
+    _r(hairCol,22, -8, 2, 10); _r(hairDark,23, -7, 1, 8);
+    // ツンツン髪の根元（鉢巻きを覆う）
+    _r('#ffdd00', 2, -2, 24, 3); _r('#ffee88', 3, -1, 22, 2);
+    break;
+  }
+  case 8: { // ===== からくり桃太郎 (木製ロボット・ちょんまげ・赤い顔) =====
+    const wood='#8B6F47', woodDark='#6B5535', woodLight='#A89068';
+    // 頭部（木製）
+    _r(OL, 7,10, 18, 10); _r(wood, 8,11, 16, 8); _r(woodLight, 8,11, 16, 2);
+    // ちょんまげ（頭の上・黒い髷）
+    _r('#1a1a1a', 11, 6, 8, 5); // 髷のベース
+    _r('#000000', 12, 5, 6, 3); // 髷の頭頂部
+    // ちょんまげの毛（側面・後ろ）
+    _r('#000000', 9, 8, 2, 4);   // 左側
+    _r('#000000', 21, 8, 2, 4);  // 右側
+    _r('#000000', 8, 10, 2, 3);  // 左下
+    _r('#000000', 22, 10, 2, 3); // 右下
+    // 顔（赤い装飾・桃太郎イメージ）
+    _r('#ff4444', 9,14, 4, 4); _r('#ff4444', 17,14, 4, 4); // 赤い目
+    _r('#000000', 10,15, 2, 2); _r('#000000', 18,15, 2, 2);
+    _r('#ffffff', 10,15, 1, 1); _r('#ffffff', 18,15, 1, 1);
+    _r('#ff8800',11,17, 8, 2); // 金色の口
+    break;
+  }
   case 5: { // ===== 装甲ロボット ゴッドバスター =====
     const MT1='#1a2838',MT2='#243444',MT3='#2e4050',MHL='#4a6070',MGW=AC;
     const gl=Math.sin(frameTime/120)*.18+.82;
@@ -6533,8 +6595,8 @@ function drawTitle(){
 //  キャラ選択
 // ================================================================
 function csLayout(){
-  const bw=60,bh=50,gap=8;
-  const cy=Math.floor(H*0.2);
+  const bw=55,bh=45,gap=10;
+  const cy=Math.floor(H*0.18);
   const totalW=5*(bw+gap)-gap, sx=(W-totalW)/2;
   const chars=[];
   // 横1列: 0, 3, 4, 7, 8
@@ -6545,7 +6607,7 @@ function csLayout(){
   chars[8]={x:sx+4*(bw+gap),y:cy,w:bw,h:bh};
   return{
     chars,
-    start:{x:W/2-78,y:H*.78,w:156,h:42},
+    start:{x:W/2-78,y:H*.75,w:156,h:42},
     secret:null
   };
 }
