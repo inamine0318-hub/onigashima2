@@ -1943,10 +1943,10 @@ function doAttack(){
     case 3:{ // 十兵衛 - 槍突進攻撃（穂先のみダメージ判定・レベル応じてリーチ拡大・通常攻撃と強攻撃で異なるリーチ）
       const wdmg=step<2?2:lv>=2?4:3;
       // 槍の穂先の位置と大きさ（レベルと攻撃種別に応じてリーチ拡大）
-      const reach=step<2?(lv>=2?16:lv>=1?13:10):(lv>=2?22:lv>=1?18:14);
+      const reach=step<2?(lv>=2?19:lv>=1?16:13):(lv>=2?25:lv>=1?21:17);
       const tipX=f>0?px+pw+reach:px-reach, tipY=py+12;
       const tipW=step<2?(lv>=2?16:lv>=1?13:10):(lv>=2?18:lv>=1?15:12);
-      projectiles.push({x:tipX,y:tipY,vx:f*6,vy:0,w:tipW,h:8,col:'#8B7355',dmg:wdmg,life:6,hit:[],pierce:false,homing:false,whip:false,spear:true});
+      projectiles.push({x:tipX,y:tipY,vx:f*6,vy:0,w:tipW,h:8,col:'#8B7355',dmg:wdmg,life:6,hit:[],pierce:false,homing:false,whip:false,spear:true,knockback:f*(step<2?3:5)});
       burst(tipX,tipY,'#DAA520',step<2?3:6);sfx('slash');
       if(lv>=2&&step===2){
         addShake(2);
@@ -2537,6 +2537,7 @@ function update(){
       if(ov({x:p.x,y:p.y,w:p.w,h:p.h},e)){
         if(p.bomb){effects.push({type:'explode',x:p.x+p.w/2,y:p.y+p.h/2,r:p.rad||70,maxTimer:22,timer:22,dmg:p.dmg,applied:false});projectiles.splice(i,1);removed=true;break;}
         p.hit.push(e.id);if(p.dmg>0){hitE(j,p.dmg);if(p.poison&&e.hp>0){e.poisoned=Math.min((e.poisoned||0)+3,3);e.poisonTimer=0;}}
+        if(p.knockback&&e.hp>0){e.vx=p.knockback;}
         if(p.pull&&e.hp>0){const pd=player.x+player.w/2>e.x+e.w/2?1:-1;e.vx=pd*8;}
         if(!p.pierce){projectiles.splice(i,1);removed=true;break;}
       }
