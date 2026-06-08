@@ -2309,13 +2309,18 @@ function doAttack(){
       if(lv>=2&&step===2){addShake(5);}
       break;
     }
-    case 8:{ // からくり桃太郎 - 団子砲・最強攻撃（ホーミング・最速）
+    case 8:{ // からくり桃太郎 - 団子砲・最強攻撃（ホーミング・最速・レベル反映）
       const mdmg=step<2?4:lv>=2?6:5;
       const mdX=f>0?px+pw+2:px-2, mdY=py+ph*.4;
       if(step<2){
-        // 通常: 団子発射（ホーミング）
-        projectiles.push({x:mdX,y:mdY,vx:f*(12+step*2),vy:-0.5,w:14,h:14,col:step===0?'#ff6666':'#ffff66',dmg:mdmg,life:120,hit:[],pierce:false,homing:true,missile:true});
-        burst(mdX,mdY,step===0?'#ff8888':'#ffff88',step===0?4:6);sfx('needle');
+        // 通常: 団子発射（ホーミング・lv反映で派手化）
+        const dW=lv>=2?18:lv>=1?16:14;
+        const dCnt=lv>=2?3:lv>=1?2:1;
+        for(let d=0;d<dCnt;d++){
+          const dy=dCnt===1?0:(d-0.5)*5;
+          projectiles.push({x:mdX,y:mdY+dy,vx:f*(12+step*2),vy:-0.5+dy*0.1,w:dW,h:dW,col:step===0?'#ff6666':'#ffff66',dmg:mdmg,life:120,hit:[],pierce:false,homing:true,missile:true});
+        }
+        burst(mdX,mdY,step===0?'#ff8888':'#ffff88',step===0?(lv>=2?8:6):(lv>=2?10:8));sfx('needle');
       }else{
         // フィニッシャー: 大量団子砲
         for(let k=0;k<(lv>=2?5:3);k++){
