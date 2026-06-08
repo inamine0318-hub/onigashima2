@@ -6514,13 +6514,19 @@ function drawTitle(){
 //  キャラ選択
 // ================================================================
 function csLayout(){
-  const bw=100,bh=80,gap=6;
-  const r1y=Math.floor(H*0.15);
-  const totalW=3*(bw+gap)-gap, sx=(W-totalW)/2;
+  const bw=70,bh=60,gap=6;
+  const r1y=Math.floor(H*0.12);
+  const r2y=Math.floor(H*0.28);
+  const totalW=5*(bw+gap)-gap, sx=(W-totalW)/2;
   const chars=[];
+  // 1行目: 0, 3, 4
   chars[0]={x:sx,y:r1y,w:bw,h:bh};
   chars[3]={x:sx+(bw+gap),y:r1y,w:bw,h:bh};
   chars[4]={x:sx+2*(bw+gap),y:r1y,w:bw,h:bh};
+  // 2行目: 7, 8
+  const totalW2=2*(bw+gap)-gap, sx2=(W-totalW2)/2;
+  chars[7]={x:sx2,y:r2y,w:bw,h:bh};
+  chars[8]={x:sx2+(bw+gap),y:r2y,w:bw,h:bh};
   return{
     chars,
     start:{x:W/2-78,y:H*.78,w:156,h:42},
@@ -6529,8 +6535,8 @@ function csLayout(){
 }
 function drawCharSelect(){
   const t=frameTime;
-  // selCharが[0,3,4]に含まれない場合は0に修正
-  if(![0,3,4].includes(selChar))selChar=0;
+  // selCharが[0,3,4,7,8]に含まれない場合は0に修正
+  if(![0,3,4,7,8].includes(selChar))selChar=0;
   // 背景: 鬼ヶ島テーマ（黒と深紅のグラデーション）
   const bgGrad=ctx.createLinearGradient(0,0,0,H);
   bgGrad.addColorStop(0,'#0a0a0f');
@@ -6565,9 +6571,9 @@ function drawCharSelect(){
   ctx.fillStyle='#aabbff';ctx.font=`bold ${Math.min(W*.04,16)}px monospace`;
   ctx.fillText('キャラクターを選択',W/2,H*.07);
 
-  // ── キャラカード (3体: index 0, 3, 4) ──
+  // ── キャラカード (5体: index 0, 3, 4, 7, 8) ──
   const z=csLayout();
-  [0,3,4].forEach(i=>{
+  [0,3,4,7,8].forEach(i=>{
     const b=z.chars[i];
     if(!b)return;
     const sel=i===selChar;
