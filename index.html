@@ -1800,7 +1800,7 @@ let frameTime=0;
 // ================================================================
 //  ゲーム変数
 // ================================================================
-let state='splash', selChar=2, player=null, cam={x:0}, score=0;
+let state='splash', selChar=2, selGameMode=0, player=null, cam={x:0}, score=0;
 let STAGE_HOLES=[];
 let splashImg=new Image(), splashReady=false, splashTimer=0;
 splashImg.onload=()=>{splashReady=true;console.log('[SPLASH] logo loaded');};
@@ -1924,14 +1924,14 @@ canvas.addEventListener('touchstart',e=>{
   if(state==='charselect'){handleCSTap(e);return;}
   if(state==='cutscene'){advanceCutscene();return;}
   if(state==='ending'){
-    if(endingDone){clearSave();currentStage=1;state='charselect';bgmPlay('title');}
+    if(endingDone){clearSave();currentStage=1;selGameMode=0;state='charselect';bgmPlay('title');}
     return;
   }
   if(state==='gameover'){
     const lp0c=toLogical(e.changedTouches[0].clientX,e.changedTouches[0].clientY);
     const gb=getGameOverBtns();
     if(inBtn(lp0c,gb.retry)){retryStage();return;}
-    if(inBtn(lp0c,gb.charsel)){state='charselect';bgmPlay('title');return;}
+    if(inBtn(lp0c,gb.charsel)){selGameMode=0;state='charselect';bgmPlay('title');return;}
     return;
   }
   if(state==='stageclear'){
@@ -1977,21 +1977,28 @@ document.addEventListener('keydown',e=>{
     paused=!paused;if(paused)bgmStop();else bgmPlay(bossTriggered&&boss&&boss.hp>0?'boss':'play');return;
   }
   if(state==='title'&&(e.key==='Enter'||e.key===' ')){bgmPlay('title');state='story';storyStartTime=Date.now();storyHeld=false;storyDone=false;return;}
-  if(state==='story'){if(e.key==='Enter'||e.key===' ')state='charselect';return;}
+  if(state==='story'){if(e.key==='Enter'||e.key===' '){selGameMode=0;state='charselect';}return;}
   if(state==='cutscene'){if(e.key==='Enter'||e.key===' ')advanceCutscene();return;}
-  if(state==='ending'){if((e.key==='Enter'||e.key===' ')&&endingDone){clearSave();currentStage=1;state='charselect';bgmPlay('title');}return;}
+  if(state==='ending'){if((e.key==='Enter'||e.key===' ')&&endingDone){clearSave();currentStage=1;selGameMode=0;state='charselect';bgmPlay('title');}return;}
   if(state==='charselect'){
     const validChars=[0,3,4,7,8];
     const curIdx=validChars.indexOf(selChar);
+    const hasHidden=getHiddenStageUnlocked();
     if(e.key==='ArrowLeft'){selChar=validChars[(curIdx-1+validChars.length)%validChars.length];}
     if(e.key==='ArrowRight'){selChar=validChars[(curIdx+1)%validChars.length];}
-    if(e.key==='Enter')startGame(true);return;
+    if(hasHidden&&e.key==='ArrowUp'){selGameMode=0;}
+    if(hasHidden&&e.key==='ArrowDown'){selGameMode=1;}
+    if(e.key==='Enter'){
+      currentStage=(hasHidden&&selGameMode===1)?6:1;
+      startGame(true);
+      return;
+    }
   }
   if(state==='gameover'&&(e.key==='Enter'||e.key===' ')){retryStage();return;}
-  if(state==='gameover'&&e.key==='Escape'){state='charselect';bgmPlay('title');return;}
+  if(state==='gameover'&&e.key==='Escape'){selGameMode=0;state='charselect';bgmPlay('title');return;}
   if(state==='stageclear'&&(e.key==='Enter'||e.key===' ')){
     if(clearResultTimer>0)return;
-    if(currentStage<TOTAL_STAGES){currentStage++;startGame();}
+    if(currentStage<5){currentStage++;startGame();}
     else{clearSave();currentStage=1;endingStartTime=Date.now();endingDone=false;state='ending';bgmPlay('title');}return;
   }
   if(state==='play'&&!paused){
@@ -2041,10 +2048,6 @@ function spawnEnemies(){
   });
 }
 function startGame(resetStage){
-  if(resetStage){
-    currentStage=1;
-    if(getHiddenStageUnlocked())currentStage=6;
-  }
   if(selChar===6)setTsukuyomiUnlocked(false); // 選んだ瞬間消費
   buildStageData();
   player=mkPlayer(selChar);cam.x=0;score=0;
@@ -6788,10 +6791,12 @@ function csLayout(){
   chars[4]={x:sx+2*(bw+gap),y:cy,w:bw,h:bh};
   chars[7]={x:sx+3*(bw+gap),y:cy,w:bw,h:bh};
   chars[8]={x:sx+4*(bw+gap),y:cy,w:bw,h:bh};
+  const btnY=H*.75, btnH=42, btnGap=12;
   return{
     chars,
-    start:{x:W/2-78,y:H*.75,w:156,h:42},
-    secret:null
+    start:{x:W/2-78,y:btnY,w:156,h:btnH},
+    newgame:{x:W/2-162,y:btnY,w:150,h:btnH},
+    hidden:{x:W/2+12,y:btnY,w:150,h:btnH}
   };
 }
 function drawCharSelect(){
@@ -6899,15 +6904,35 @@ function drawCharSelect(){
   ctx.fillText(abl.slice(mid),rx,panY+panH+4);
 
   // STARTボタン
-  const s=z.start;
-  const sg=Math.sin(t/250)*.15+.85;
-  ctx.globalAlpha=sg;
-  dr(s.x,s.y,s.w,s.h,'#0a1a44');
-  dr(s.x,s.y,s.w,2,AC);dr(s.x,s.y,2,s.h,AC);
-  dr(s.x+s.w-2,s.y,2,s.h,'#0a0a22');dr(s.x,s.y+s.h-2,s.w,2,'#0a0a22');
-  ctx.fillStyle='#ffffff';ctx.font=`bold ${Math.min(W*.028,18)}px monospace`;ctx.textAlign='center';
-  ctx.fillText('▶  START MISSION',W/2,s.y+s.h*.65);
-  ctx.globalAlpha=1;
+  const hasHidden=getHiddenStageUnlocked();
+  if(!hasHidden){
+    // 隠しステージなし：通常ボタン
+    const s=z.start;
+    const sg=Math.sin(t/250)*.15+.85;
+    ctx.globalAlpha=sg;
+    dr(s.x,s.y,s.w,s.h,'#0a1a44');
+    dr(s.x,s.y,s.w,2,AC);dr(s.x,s.y,2,s.h,AC);
+    dr(s.x+s.w-2,s.y,2,s.h,'#0a0a22');dr(s.x,s.y+s.h-2,s.w,2,'#0a0a22');
+    ctx.fillStyle='#ffffff';ctx.font=`bold ${Math.min(W*.028,18)}px monospace`;ctx.textAlign='center';
+    ctx.fillText('▶  START MISSION',W/2,s.y+s.h*.65);
+    ctx.globalAlpha=1;
+  }else{
+    // 隠しステージあり：二択ボタン
+    const ngBtn=z.newgame, hidBtn=z.hidden;
+    const sg=Math.sin(t/250)*.15+.85;
+    const drawModeBtn=(btn,label,isSelected)=>{
+      ctx.globalAlpha=isSelected?sg:0.5;
+      dr(btn.x,btn.y,btn.w,btn.h,'#0a1a44');
+      dr(btn.x,btn.y,btn.w,2,isSelected?AC:'#555');
+      dr(btn.x,btn.y,2,btn.h,isSelected?AC:'#555');
+      dr(btn.x+btn.w-2,btn.y,2,btn.h,'#0a0a22');dr(btn.x,btn.y+btn.h-2,btn.w,2,'#0a0a22');
+      ctx.fillStyle=isSelected?'#ffffff':'#888888';ctx.font=`bold ${Math.min(W*.024,14)}px monospace`;ctx.textAlign='center';
+      ctx.fillText(label,btn.x+btn.w/2,btn.y+btn.h*.65);
+      ctx.globalAlpha=1;
+    };
+    drawModeBtn(ngBtn,'▶  新規ゲーム',selGameMode===0);
+    drawModeBtn(hidBtn,'★  幻のステージ',selGameMode===1);
+  }
 
 }
 
