@@ -1753,6 +1753,38 @@ function buildStageData(){
       G(5500,450,200);G(5850,440,180);G(6200,450,200);G(6550,460,250);
       E(5600,440,'charger');E(5900,430,'charger');E(6500,440,'charger');E(6750,450,'brute');
       break;
+    case 6: // 幻の祠: 島崩壊型 - 全ステージ強化版敵混合
+      G(0,460,200);G(300,445,250);G(650,425,280);G(1000,410,250);
+      // 段差1: 4段の階段
+      G(1200,410,100);G(1300,390,100);G(1400,370,100);G(1500,350,100);
+      G(1650,380,280);G(2050,360,300);G(2450,340,320);
+      // 段差2: 4段の階段
+      G(2700,355,100);G(2800,335,100);G(2900,315,100);G(3000,295,100);
+      G(3250,370,280);G(3650,385,300);G(4050,395,280);
+      // 段差3: 4段の階段
+      G(4300,410,100);G(4400,390,100);G(4500,370,100);G(4600,350,100);
+      G(4900,420,280);G(5300,440,300);
+      P(100,395,100);P(480,355,100);P(850,315,100);P(1250,280,100);
+      P(1600,310,100);P(2050,320,100);P(2450,335,100);P(2800,305,100);
+      P(3150,340,100);P(3600,360,100);P(4050,375,100);
+      // セクション1（0-1500px）：各ステージ強化版敵4体
+      E(200,428,'charger');E(650,333,'sniper');E(1100,313,'charger');E(1500,328,'flyer');
+      // セクション2（1500-3000px）：4体
+      E(1700,355,'jumper');E(2150,335,'sniper');E(2600,333,'bomber');E(3000,298,'charger');
+      // セクション3（3000-4500px）：4体
+      E(3200,370,'charger');E(3650,388,'brute');E(4100,380,'sniper');E(4600,353,'flyer');
+      // セクション4（4500-6000px）：3体
+      E(4900,398,'charger');E(5300,443,'brute');E(5700,420,'charger');
+      // ボス前セクション（全強化版敵）
+      G(6100,445,200);G(6450,440,180);G(6800,450,200);
+      E(6200,428,'charger');E(6600,428,'sniper');
+      // アイテム配置
+      IT(200,305,'hp');IT(850,260,'hp');IT(1500,310,'hp');IT(2600,310,'hp');IT(3650,350,'hp');IT(4900,395,'hp');
+      IT(50,437,'power');IT(500,420,'shield');IT(1300,330,'power');IT(2400,340,'shield');IT(3800,360,'power');IT(5000,435,'shield');
+      IT(150,330,'chip');IT(700,255,'chip');IT(1700,285,'chip');IT(2900,290,'chip');IT(3900,340,'chip');IT(4700,380,'chip');
+      // 底部地面の敵配置（strong版）
+      E(1200,H-60-34,'brute');E(3000,H-60-34,'brute');E(5000,H-60-34,'brute');
+      break;
   }
   // 各ステージの穴配置（範囲）
   const holes_data=[
@@ -1842,7 +1874,7 @@ const STAGE_CFG=[
   {name:'深淵',        sub:'ABYSS',           bgMain:'#050205',bossType:'tsukuyomi',  bossHp:80, bossW:97,bossH:124,bossName:'鬼神ランカイ',
    tMain:'#0a0a0a',tHL:'#141414',tHL2:'#1a1a1a',tSide:'#050505',tAcc:'#1a0a20',nebula:['#0a0010','#100020'],gimmick:'void'},
   {name:'幻の祠',      sub:'PHANTOM SHRINE',  bgMain:'#0a0510',bossType:'rankaiPhase2',bossHp:110,bossW:97,bossH:124,bossName:'獣化ランカイ',
-   tMain:'#0f0f1a',tHL:'#1a1a2a',tHL2:'#151520',tSide:'#0a0a0f',tAcc:'#3a1a4a',nebula:['#150025','#250035'],gimmick:null},
+   tMain:'#0f0f1a',tHL:'#1a1a2a',tHL2:'#151520',tSide:'#0a0a0f',tAcc:'#3a1a4a',nebula:['#150025','#250035'],gimmick:'collapse'},
 ];
 const TOTAL_STAGES=STAGE_CFG.length;
 const STAGE_BRIEF=[
@@ -2619,6 +2651,11 @@ function update(){
       if(re.hp>0){const dx=(player.x+player.w/2)-(re.x+re.w/2),dy=(player.y+player.h/2)-(re.y+re.h/2),dist=Math.hypot(dx,dy)||1;
         eProjectiles.push({x:re.x+re.w/2,y:re.y+re.h*.3,vx:dx/dist*8,vy:dy/dist*8,w:9,h:9,life:90});}
     }
+  }
+  // Stage 6: 島崩壊ギミック（赤い岩と亀裂パーティクル）
+  if(gimmick==='collapse'&&gameTimer%60===0){
+    const debris_x=Math.random()*WORLD_W, debris_y=Math.random()*400-100;
+    particles.push({x:debris_x,y:debris_y,vx:(Math.random()-.5)*4,vy:Math.random()*3+2,col:'#ff4400',life:80});
   }
   // Stage 5: 溶岩池からの溶岩弾発射（キャッチボール軌跡）
   if(currentStage===5&&gameTimer%140===0){
