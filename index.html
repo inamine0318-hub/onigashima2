@@ -6644,9 +6644,20 @@ function drawEnding(){
   dr(0,H*.04,W,H*.12,gTop);
   const gBot=ctx.createLinearGradient(0,H*.84,0,H*.95);gBot.addColorStop(0,'transparent');gBot.addColorStop(1,'#01010a');
   dr(0,H*.84,W,H*.12,gBot);
-  if(endingDone&&Math.floor(frameTime/500)%2){
-    ctx.fillStyle='#8899bb';ctx.font=`bold ${Math.min(W*.030,16)}px monospace`;ctx.textAlign='center';
-    ctx.fillText('>> PRESS TO TITLE <<',W/2,H*.94);
+  if(endingDone){
+    if(Math.floor(frameTime/500)%2){
+      ctx.fillStyle='#8899bb';ctx.font=`bold ${Math.min(W*.030,16)}px monospace`;ctx.textAlign='center';
+      ctx.fillText('>> PRESS TO TITLE <<',W/2,H*.94);
+    }
+    // 隠しステージクリア時の「真のエンディング」表示
+    if(currentStage===6){
+      ctx.globalAlpha=0.8+Math.sin(frameTime/300)*.2;
+      ctx.fillStyle='#9900ff';ctx.font=`bold ${Math.min(W*.050,28)}px monospace`;ctx.textAlign='center';
+      ctx.fillText('TRUE ENDING',W/2,H*.25);
+      ctx.globalAlpha=1;
+      ctx.fillStyle='#aa66ff';ctx.font=`${Math.min(W*.025,14)}px monospace`;
+      ctx.fillText('〜 獣化の真実へ到達した 〜',W/2,H*.32);
+    }
   }
 }
 
@@ -6979,18 +6990,26 @@ function drawCharSelect(){
     // 隠しステージあり：二択ボタン
     const ngBtn=z.newgame, hidBtn=z.hidden;
     const sg=Math.sin(t/250)*.15+.85;
-    const drawModeBtn=(btn,label,isSelected)=>{
+    const drawModeBtn=(btn,label,isSelected,isHidden=false)=>{
+      const btnCol=isHidden?'#1a0a3a':'#0a1a44';
+      const borderCol=isSelected?(isHidden?'#aa00ff':'#ffffff'):(isHidden?'#6600cc':'#555');
       ctx.globalAlpha=isSelected?sg:0.5;
-      dr(btn.x,btn.y,btn.w,btn.h,'#0a1a44');
-      dr(btn.x,btn.y,btn.w,2,isSelected?AC:'#555');
-      dr(btn.x,btn.y,2,btn.h,isSelected?AC:'#555');
+      dr(btn.x,btn.y,btn.w,btn.h,btnCol);
+      dr(btn.x,btn.y,btn.w,2,borderCol);dr(btn.x,btn.y,2,btn.h,borderCol);
       dr(btn.x+btn.w-2,btn.y,2,btn.h,'#0a0a22');dr(btn.x,btn.y+btn.h-2,btn.w,2,'#0a0a22');
-      ctx.fillStyle=isSelected?'#ffffff':'#888888';ctx.font=`bold ${Math.min(W*.024,14)}px monospace`;ctx.textAlign='center';
+      // 隠しステージボタンのグロー
+      if(isHidden&&isSelected){
+        ctx.globalAlpha=sg*0.3;
+        dr(btn.x-3,btn.y-3,btn.w+6,btn.h+6,'#9900ff');
+        ctx.globalAlpha=1;
+      }
+      ctx.fillStyle=isSelected?(isHidden?'#ffaa00':'#ffffff'):(isHidden?'#aa66ff':'#888888');
+      ctx.font=`bold ${Math.min(W*.024,14)}px monospace`;ctx.textAlign='center';
       ctx.fillText(label,btn.x+btn.w/2,btn.y+btn.h*.65);
       ctx.globalAlpha=1;
     };
-    drawModeBtn(ngBtn,'▶  新規ゲーム',selGameMode===0);
-    drawModeBtn(hidBtn,'★  幻のステージ',selGameMode===1);
+    drawModeBtn(ngBtn,'▶  新規ゲーム',selGameMode===0,false);
+    drawModeBtn(hidBtn,'★  幻のステージ',selGameMode===1,true);
   }
 
 }
