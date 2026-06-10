@@ -1657,7 +1657,6 @@ function buildStageData(){
       P(3040,340,80);P(3500,335,80);P(3950,360,80);P(4300,315,80);
       P(4700,340,80);P(5100,390,80);
       SP(200,460,240,0);SP(1700,460,240,40);SP(2300,465,240,120);SP(3500,460,240,60);SP(4700,460,240,220);
-      MG(600,410,240,1,2);MG(3000,400,240,-1,1.5);MG(5000,410,240,1,2);
       DG(1100,450,240);DG(2900,455,240);
       // セクション1（0-1400px）：3敵 (E(650)は移動床の上に配置)
       E(200,428,'patrol');E(650,376,'charger');E(1100,328,'flyer');
@@ -6922,12 +6921,21 @@ function drawHazards(){
     const sx=Math.floor(sp.x-cam.x);
     if(sx<-40||sx>W+40)return;
     const sy=Math.floor(sp.y);
-    for(let i=-1;i<=1;i++){
-      const bx=sx+i*10;
-      dr(bx,sy-sp.ext,4,sp.ext,'#882200');
-      dr(bx+1,sy-sp.ext,2,2,'#ff6644');
-      if(sp.ext>10)dr(bx+1,sy-sp.ext+2,1,sp.ext*.4|0,'#cc4400');
-    }
+    // 1本の細い三角形の針
+    const tipX=sx, tipY=sy-sp.ext;
+    ctx.fillStyle='#cc2200';
+    ctx.beginPath();
+    ctx.moveTo(tipX-2, sy);
+    ctx.lineTo(tipX+2, sy);
+    ctx.lineTo(tipX, tipY);
+    ctx.fill();
+    // ハイライト（右側）
+    ctx.fillStyle='#ff6644';
+    ctx.beginPath();
+    ctx.moveTo(tipX, tipY);
+    ctx.lineTo(tipX+1, sy-sp.ext*.15|0);
+    ctx.lineTo(tipX+1, sy);
+    ctx.fill();
     if(sp.active){ctx.globalAlpha=0.22;dr(sx-9,sy-sp.ext-2,26,sp.ext+4,'#ff4400');ctx.globalAlpha=1;}
   });
 }
