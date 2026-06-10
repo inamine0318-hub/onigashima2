@@ -3114,6 +3114,7 @@ function update(){
     clearHp=player.hp;clearTime=gameTimer;clearResultTimer=150;
     saveScore(score,CHARS[player.ci].nick);bgmStop();state='stageclear';sfx('clear');
     if(currentStage===5)setHiddenStageUnlocked(true);
+    if(currentStage===6)setHiddenStageUnlocked(false);
   }
 }
 function tryRage(){
@@ -6538,7 +6539,49 @@ function drawEnding(){
   }
 
   const fs=Math.min(W*.056,22), lh=fs+12;
-  const lines=[
+
+  // Stage 6クリア時の「真のエンディング」テキスト
+  const trueEndingLines=currentStage===6?[
+    ['獣化したランカイは、遂に倒れた。','#ff9944',true],
+    ['','',''],
+    ['その獰猛な姿は消え、','#aabbcc',false],
+    ['元の鬼神の姿へ戻りつつあった。','#aabbcc',false],
+    ['','',''],
+    ['','',''],
+    ['「よく...ここまで来たな...」','#ff8888',true],
+    ['','',''],
+    ['ランカイの声が聞こえた。','#ccddcc',false],
+    ['','',''],
+    ['獣化とは呪いではなく、','#99aacc',false],
+    ['世界を守るための運命だった。','#99aacc',false],
+    ['','',''],
+    ['','',''],
+    ['鬼ヶ島の秘密。','#ddaa99',true],
+    ['','',''],
+    ['財宝の本当の目的。','#ddaa99',false],
+    ['','',''],
+    ['そして鬼神の悲しみ。','#dd9999',true],
+    ['','',''],
+    ['','',''],
+    ['「これからは...お前たちが...」','#ff8888',true],
+    ['','',''],
+    ['ランカイは消えていった。','#aabbaa',false],
+    ['','',''],
+    ['','',''],
+    ['十兵衛たちが知ったこと。','#ccccaa',true],
+    ['','',''],
+    ['この島は守られ続けるべき場所。','#ccccaa',false],
+    ['','',''],
+    ['そして彼らは、新しい守り手となった。','#ffffaa',true],
+    ['','',''],
+    ['','',''],
+    ['時は流れ。','#aabbcc',true],
+    ['','',''],
+    ['鬼ヶ島の物語は新章を迎えた。','#aabbcc',false],
+    ['','',''],
+    ['','',''],
+    ['かつてのランカイの想いとともに。','#99aacc',true],
+  ]:[
     ['鬼神ランカイは倒れた。','#dd8844',true],
     ['','',''],
     ['長い年月続いた封印も、','#aabbcc',false],
@@ -6622,6 +6665,7 @@ function drawEnding(){
     ['E N D','#aa8866',true],
     ['','',''],['','',''],['','',''],
   ];
+  const lines=trueEndingLines;
   const totalH=lines.length*lh;
   const speed=20;
   const scrollY=elapsed*speed;
