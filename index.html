@@ -1841,8 +1841,8 @@ const STAGE_CFG=[
    tMain:'#0a0a15',tHL:'#15151f',tHL2:'#1a1a2a',tSide:'#050508',tAcc:'#1a0a2a',nebula:['#110011','#220022'],gimmick:'seal'},
   {name:'深淵',        sub:'ABYSS',           bgMain:'#050205',bossType:'tsukuyomi',  bossHp:80, bossW:97,bossH:124,bossName:'鬼神ランカイ',
    tMain:'#0a0a0a',tHL:'#141414',tHL2:'#1a1a1a',tSide:'#050505',tAcc:'#1a0a20',nebula:['#0a0010','#100020'],gimmick:'void'},
-  {name:'幻の祠',      sub:'PHANTOM SHRINE',  bgMain:'#020005',bossType:'rankaiPhase2',bossHp:110,bossW:97,bossH:124,bossName:'獣化ランカイ',
-   tMain:'#050005',tHL:'#0a0a0f',tHL2:'#0f0f1a',tSide:'#030305',tAcc:'#2a0a30',nebula:['#0a0015','#150025'],gimmick:null},
+  {name:'幻の祠',      sub:'PHANTOM SHRINE',  bgMain:'#0a0510',bossType:'rankaiPhase2',bossHp:110,bossW:97,bossH:124,bossName:'獣化ランカイ',
+   tMain:'#0f0f1a',tHL:'#1a1a2a',tHL2:'#151520',tSide:'#0a0a0f',tAcc:'#3a1a4a',nebula:['#150025','#250035'],gimmick:null},
 ];
 const TOTAL_STAGES=STAGE_CFG.length;
 const STAGE_BRIEF=[
@@ -4876,11 +4876,13 @@ function drawBossTsukuyomi(bx,by,t){
   const legR=Math.sin(gameTimer/40+Math.PI)*3;  // 右脚
   function _f(col,x,y,w,h){ctx.fillStyle=col;ctx.fillRect(bx+x,by+y,w,h);}
 
-  // 脚（太く王様のような・交互動作）
-  _f('#1a0000',6,73+legL,24,24);   // 左脚
-  _f('#330000',8,74+legL,20,22);   // 左脚の明るい部分
-  _f('#1a0000',48,73+legR,24,24);  // 右脚
-  _f('#330000',50,74+legR,20,22);  // 右脚の明るい部分
+  // 脚（太く王様のような・交互動作） / 獣化時は紫
+  const legCol1=isPhase2Upgraded?'#330055':'#1a0000';
+  const legCol2=isPhase2Upgraded?'#550077':'#330000';
+  _f(legCol1,6,73+legL,24,24);   // 左脚
+  _f(legCol2,8,74+legL,20,22);   // 左脚の明るい部分
+  _f(legCol1,48,73+legR,24,24);  // 右脚
+  _f(legCol2,50,74+legR,20,22);  // 右脚の明るい部分
 
   // 足（黒い鬼の足・拡大）
   _f('#000000',4,93+walkBob,28,8);    // 左足
@@ -4888,13 +4890,17 @@ function drawBossTsukuyomi(bx,by,t){
   _f('#000000',46,93+walkBob,28,8);   // 右足
   _f('#111111',48,94+walkBob,24,6);   // 右足の明るい部分
 
-  // 腰
-  _f('#220000',4,65+walkBob,56,12);   // 腰部
-  _f('#440000',6,66+walkBob,52,10);   // 腰の明るい部分
+  // 腰 / 獣化時は紫
+  const waistCol1=isPhase2Upgraded?'#440066':'#220000';
+  const waistCol2=isPhase2Upgraded?'#660088':'#440000';
+  _f(waistCol1,4,65+walkBob,56,12);   // 腰部
+  _f(waistCol2,6,66+walkBob,52,10);   // 腰の明るい部分
 
-  // 胴体（非常に太い・王のような存在感・歩行で上下）
-  _f('#1a0000',0,40+walkBob,64,27);   // 胴体メイン（黒）
-  _f('#330000',2,42+walkBob,60,23);   // 胴体の赤部分
+  // 胴体（非常に太い・王のような存在感・歩行で上下） / 獣化時は紫
+  const bodyCol1=isPhase2Upgraded?'#330055':'#1a0000';
+  const bodyCol2=isPhase2Upgraded?'#550077':'#330000';
+  _f(bodyCol1,0,40+walkBob,64,27);   // 胴体メイン
+  _f(bodyCol2,2,42+walkBob,60,23);   // 胴体の明るい部分
 
   // 四本腕（上下2本ずつ・太く圧倒的・歩行アニメーション）
   // 左上腕
@@ -4917,16 +4923,20 @@ function drawBossTsukuyomi(bx,by,t){
   _f('#440000',62,57+walkBob,14,6);    // 右上の手
   _f('#440000',62,81+walkBob,14,6);    // 右下の手
 
-  // 肩（王様のような肩幅）
-  _f('#330000',-4,34+walkBob,16,10);   // 左肩
-  _f('#330000',52,34+walkBob,16,10);   // 右肩
+  // 肩（王様のような肩幅） / 獣化時は紫
+  const shoulderCol=isPhase2Upgraded?'#550077':'#330000';
+  _f(shoulderCol,-4,34+walkBob,16,10);   // 左肩
+  _f(shoulderCol,52,34+walkBob,16,10);   // 右肩
 
-  // 首
-  _f('#440000',24,28+walkBob,16,10);   // 首
+  // 首 / 獣化時は紫
+  const neckCol=isPhase2Upgraded?'#660088':'#440000';
+  _f(neckCol,24,28+walkBob,16,10);   // 首
 
-  // 頭（ラスボスにふさわしい大きさ・黒と赤）
-  _f('#220000',6,2+walkBob,62,32);     // 顔
-  _f('#440000',8,4+walkBob,58,28);     // 顔の明るい部分（深い赤）
+  // 頭（ラスボスにふさわしい大きさ・黒と赤） / 獣化時は紫
+  const headCol1=isPhase2Upgraded?'#440066':'#220000';
+  const headCol2=isPhase2Upgraded?'#660088':'#440000';
+  _f(headCol1,6,2+walkBob,62,32);     // 顔
+  _f(headCol2,8,4+walkBob,58,28);     // 顔の明るい部分
 
   // 角（巨大で威圧的・黒い四本角 / 獣化時は紫）
   const hornCol1=isPhase2Upgraded?'#330055':'#110000';
@@ -4955,13 +4965,15 @@ function drawBossTsukuyomi(bx,by,t){
 
   // 口（巨大で怖い・王のような口）
   _f('#000000',12,26+walkBob,40,10);   // 口
-  _f('#ff6600',14,26+walkBob,8,12);    // 左の牙（大きく）
-  _f('#ff6600',42,26+walkBob,8,12);    // 右の牙
+  const fangCol=isPhase2Upgraded?'#ff00ff':'#ff6600';
+  _f(fangCol,14,26+walkBob,8,12);    // 左の牙（大きく）
+  _f(fangCol,42,26+walkBob,8,12);    // 右の牙
 
-  // 王冠のような装飾（頭頂部）
-  _f('#DAA520',20,-8+walkBob,8,4);     // 左の装飾
-  _f('#DAA520',36,-8+walkBob,8,4);     // 右の装飾
-  _f('#DAA520',28,-10+walkBob,8,6);    // 中央の装飾
+  // 王冠のような装飾（頭頂部） / 獣化時は紫金
+  const crownCol=isPhase2Upgraded?'#aa00ff':'#DAA520';
+  _f(crownCol,20,-8+walkBob,8,4);     // 左の装飾
+  _f(crownCol,36,-8+walkBob,8,4);     // 右の装飾
+  _f(crownCol,28,-10+walkBob,8,6);    // 中央の装飾
 
   // 力の波動（身体周辺のエネルギー）
   ctx.globalAlpha=0.2;
