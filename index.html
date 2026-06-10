@@ -5046,6 +5046,27 @@ function drawBossTsukuyomi(bx,by,t){
     _f(phase2Col,-5,0,BW+10,BH);
     ctx.globalAlpha=1;
   }
+
+  // 獣化時のコウモリ羽
+  if(isPhase2Upgraded){
+    const wingCol='#bb44ff', wingDkCol='#7700aa';
+    const wingFlap=Math.sin(t/120)*.3+.7; // 羽ばたきアニメーション
+    // 左羽
+    ctx.globalAlpha=0.8;
+    _f(wingCol,-30,10+walkBob*wingFlap,20,40);
+    _f(wingCol,-35,15+walkBob*wingFlap,8,20);
+    _f(wingCol,-38,20+walkBob*wingFlap,6,15);
+    ctx.globalAlpha=0.5;
+    _f(wingDkCol,-32,12+walkBob*wingFlap,16,36);
+    // 右羽
+    ctx.globalAlpha=0.8;
+    _f(wingCol,BW+10,10+walkBob*wingFlap,20,40);
+    _f(wingCol,BW+27,15+walkBob*wingFlap,8,20);
+    _f(wingCol,BW+32,20+walkBob*wingFlap,6,15);
+    ctx.globalAlpha=0.5;
+    _f(wingDkCol,BW+12,12+walkBob*wingFlap,16,36);
+    ctx.globalAlpha=1;
+  }
 }
 
 // Stage6: タジカラオ (大地の熊神・力の化身)
