@@ -1824,7 +1824,7 @@ let gameTimer=0;
 let bossDefeated=false;
 const GOAL_X=8700;
 const ORB_COLORS=['#cc88ff','#4499ff','#ff5522','#22ffcc','#ddaaff','#ffaa22','#ffffff'];
-let boss=null,bossTriggered=false;
+let boss=null,bossTriggered=false,bossCutinTimer=0;
 let bossOrb=null;
 let orbsCollected=[];
 let HAZARD_LASERS=[],HAZARD_SPIKES=[],ZERO_G_ZONES=[];
@@ -3047,16 +3047,19 @@ function update(){
     shakeDy=(Math.random()-.5)*shakeAmt*2;
     shakeAmt*=0.82;if(shakeAmt<0.4)shakeAmt=0;
   }else{shakeDx=0;shakeDy=0;}
-  // ボストリガー (ステージ7のみカットシーン挟む)
+  // ボストリガー (ステージ7のみカットシーン挟む、ステージ6（隠しステージ）はカットイン)
   if(!bossTriggered&&player&&player.x>7000){
     bossTriggered=true;
     if(currentStage===7){
       bgmPlay('reveal');cutsceneStep=0;cutsceneTimer=90;cutsceneFlash=0;cutsceneDone=false;state='cutscene';
+    } else if(currentStage===6){
+      spawnBoss();bossCutinTimer=180;bgmPlay('boss');addShake(5);
     } else {
       spawnBoss();bgmPlay('boss');addShake(5);bossBannerTimer=170;
     }
   }
   if(bossBannerTimer>0)bossBannerTimer--;
+  if(bossCutinTimer>0)bossCutinTimer--;
   // ボス更新
   if(boss&&boss.hp>0)updateBoss();
   else if(boss&&boss.hp<=0&&!bossDefeated){
@@ -7781,8 +7784,68 @@ function draw(){
   else if(state==='gameover')drawGameOver();
   else if(state==='cutscene')drawCutscene();
   else if(state==='ending')drawEnding();
+
+  // カットイン描画（state='play'時のみ）
+  if(state==='play'&&bossCutinTimer>0)drawBossCutin();
+
   ctx.restore();
 }
+// ================================================================
+//  ボスカットイン描画（Stage 6隠しステージ用）
+// ================================================================
+function drawBossCutin(){
+  const t=bossCutinTimer, totalDur=180;
+  const progress=1-(t/totalDur); // 0→1
+  const alpha=Math.min(1,Math.max(0,1-progress*2)); // フェードイン・アウト
+
+  // 背景を暗くする
+  ctx.globalAlpha=alpha*0.8;
+  ctx.fillStyle='#000000';
+  ctx.fillRect(0,0,W,H);
+  ctx.globalAlpha=1;
+
+  // 赤い炎の効果（背景）
+  ctx.globalAlpha=alpha*0.4;
+  for(let i=0;i<5;i++){
+    const size=Math.random()*200+100;
+    const x=W/2+(Math.random()-.5)*300;
+    const y=H/2+(Math.random()-.5)*200;
+    ctx.fillStyle='#ff3300';
+    ctx.beginPath();
+    ctx.arc(x,y,size,0,Math.PI*2);
+    ctx.fill();
+  }
+  ctx.globalAlpha=1;
+
+  // ランカイ第二形態描画（大きく）
+  ctx.save();
+  ctx.globalAlpha=alpha;
+  ctx.translate(W/2,H/2);
+  ctx.scale(2.2,2.2);
+  drawBossTsukuyomi(-48,-62,frameTime);
+  ctx.restore();
+
+  // テキスト描画
+  ctx.globalAlpha=alpha;
+  ctx.fillStyle='#ff6600';
+  ctx.font=`bold ${Math.min(W*.05,32)}px monospace`;
+  ctx.textAlign='center';
+  ctx.shadowColor='#000000';
+  ctx.shadowBlur=10;
+  ctx.shadowOffsetX=2;
+  ctx.shadowOffsetY=2;
+
+  // テキスト行ごと
+  const texts=['よくここまで来れたな。','褒めてやろう。','我の真の姿を見せよう...'];
+  texts.forEach((txt,i)=>{
+    const y=H*.55+(i-1)*40;
+    ctx.fillText(txt,W/2,y);
+  });
+
+  ctx.globalAlpha=1;
+  ctx.shadowColor='transparent';
+}
+
 function loop(){frameTime=Date.now();try{update();draw();}catch(e){console.error('[LOOP]',e);}requestAnimationFrame(loop);}
 
 loop();
