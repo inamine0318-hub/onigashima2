@@ -4417,7 +4417,6 @@ function drawBoss(){
   // ヒットフラッシュ
   if(boss.flashTimer>0){ctx.globalAlpha=boss.flashTimer/8*0.7;dr(Math.floor(boss.x-cam.x)-8,Math.floor(boss.y)-8,boss.w+16,boss.h+16,'#ffffff');ctx.globalAlpha=1;}
   // HPバー共通
-  const ph2=boss.phase===2;
   const hbw=Math.min(W*.46,250),hbxb=(W-hbw)/2;
   dr(hbxb,8,hbw,12,'#220000');
   dr(hbxb,8,Math.ceil(hbw*(boss.hp/boss.maxHp)),12,ph2?'#ff2200':'#cc0066');
