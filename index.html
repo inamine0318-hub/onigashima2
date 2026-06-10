@@ -4986,36 +4986,69 @@ function drawBossTsukuyomi(bx,by,t){
   _f(headCol1,6,2+walkBob,62,32);     // 顔
   _f(headCol2,8,4+walkBob,58,28);     // 顔の明るい部分
 
-  // 角（巨大で威圧的・黒い四本角 / 獣化時は紫）
+  // 角（巨大で威圧的・黒い四本角 / 獣化時は紫・より大きく）
   const hornCol1=isPhase2Upgraded?'#330055':'#110000';
   const hornCol2=isPhase2Upgraded?'#440077':'#220000';
   const hornCol3=isPhase2Upgraded?'#550088':'#330000';
-  _f(hornCol1,8,-16+walkBob,12,20);   // 左上の角
-  _f(hornCol1,44,-16+walkBob,12,20);  // 右上の角
-  _f(hornCol2,14,-18+walkBob,8,22);   // 左奥の角
-  _f(hornCol2,44,-18+walkBob,8,22);   // 右奥の角
-  _f(hornCol3,10,-14+walkBob,10,16);  // 左角の暗い赤
-  _f(hornCol3,46,-14+walkBob,10,16);
+  if(isPhase2Upgraded){
+    // 獣化時：角をもっと大きく凶悪に
+    _f(hornCol1,6,-22+walkBob,14,28);   // 左上の角（大きく）
+    _f(hornCol1,44,-22+walkBob,14,28);  // 右上の角
+    _f(hornCol2,12,-26+walkBob,10,30);   // 左奥の角（長く）
+    _f(hornCol2,42,-26+walkBob,10,30);   // 右奥の角
+    _f(hornCol3,8,-18+walkBob,12,20);  // 左角の暗い赤
+    _f(hornCol3,44,-18+walkBob,12,20);
+  }else{
+    _f(hornCol1,8,-16+walkBob,12,20);   // 左上の角
+    _f(hornCol1,44,-16+walkBob,12,20);  // 右上の角
+    _f(hornCol2,14,-18+walkBob,8,22);   // 左奥の角
+    _f(hornCol2,44,-18+walkBob,8,22);   // 右奥の角
+    _f(hornCol3,10,-14+walkBob,10,16);  // 左角の暗い赤
+    _f(hornCol3,46,-14+walkBob,10,16);
+  }
 
-  // 目（赤く燃え盛る / 獣化時は紫青色）
+  // 目（赤く燃え盛る / 獣化時は紫青色・より凶悪に）
   const eyeCol1=isPhase2Upgraded?'#9900ff':'#ff0000';
   const eyeCol2=isPhase2Upgraded?'#00ffff':'#ffff00';
-  _f(eyeCol1,12,10+walkBob,14,10);   _f(eyeCol2,16,12+walkBob,6,6);   // 左目
-  _f(eyeCol1,38,10+walkBob,14,10);   _f(eyeCol2,42,12+walkBob,6,6);   // 右目
-  _f('#ffffff',14,11+walkBob,2,2);     _f('#ffffff',40,11+walkBob,2,2);   // 瞳孔の光
+  if(isPhase2Upgraded){
+    // 獣化時：目を大きく凶悪に
+    _f(eyeCol1,10,8+walkBob,18,14);   _f(eyeCol2,14,10+walkBob,10,10);   // 左目
+    _f(eyeCol1,36,8+walkBob,18,14);   _f(eyeCol2,40,10+walkBob,10,10);   // 右目
+    _f('#ffffff',18,13+walkBob,3,3);     _f('#ffffff',44,13+walkBob,3,3);   // 瞳孔の光
+    _f('#000000',12,10+walkBob,14,10);   _f('#000000',38,10+walkBob,14,10);  // 眼の黒目
+  }else{
+    _f(eyeCol1,12,10+walkBob,14,10);   _f(eyeCol2,16,12+walkBob,6,6);   // 左目
+    _f(eyeCol1,38,10+walkBob,14,10);   _f(eyeCol2,42,12+walkBob,6,6);   // 右目
+    _f('#ffffff',14,11+walkBob,2,2);     _f('#ffffff',40,11+walkBob,2,2);   // 瞳孔の光
+  }
 
-  // 眉（怒りと威厳）
-  _f('#1a0000',10,8+walkBob,18,3);     // 左眉
-  _f('#1a0000',36,8+walkBob,18,3);     // 右眉
+  // 眉（怒りと威厳 / 獣化時は太く）
+  if(isPhase2Upgraded){
+    _f('#1a0000',8,6+walkBob,22,5);     // 左眉（太く角度強く）
+    _f('#1a0000',34,6+walkBob,22,5);     // 右眉
+  }else{
+    _f('#1a0000',10,8+walkBob,18,3);     // 左眉
+    _f('#1a0000',36,8+walkBob,18,3);     // 右眉
+  }
 
-  // 鼻（大きく強そう）
-  _f('#880000',30,18+walkBob,4,4);     // 鼻
+  // 鼻（大きく強そう / 獣化時はより大きく）
+  _f('#880000',29,18+walkBob,isPhase2Upgraded?6:4,isPhase2Upgraded?6:4);     // 鼻
 
-  // 口（巨大で怖い・王のような口）
-  _f('#000000',12,26+walkBob,40,10);   // 口
+  // 口（巨大で怖い・王のような口 / 獣化時は超凶悪）
+  if(isPhase2Upgraded){
+    _f('#000000',10,26+walkBob,44,14);   // 口（大きく）
+    _f('#220000',10,28+walkBob,44,10);   // 口の内側（暗紅）
+  }else{
+    _f('#000000',12,26+walkBob,40,10);   // 口
+  }
   const fangCol=isPhase2Upgraded?'#ff00ff':'#ff6600';
-  _f(fangCol,14,26+walkBob,8,12);    // 左の牙（大きく）
-  _f(fangCol,42,26+walkBob,8,12);    // 右の牙
+  if(isPhase2Upgraded){
+    _f(fangCol,12,26+walkBob,10,14);    // 左の牙（大きく）
+    _f(fangCol,42,26+walkBob,10,14);    // 右の牙
+  }else{
+    _f(fangCol,14,26+walkBob,8,12);    // 左の牙（大きく）
+    _f(fangCol,42,26+walkBob,8,12);    // 右の牙
+  }
 
   // 王冠のような装飾（頭頂部） / 獣化時は紫金
   const crownCol=isPhase2Upgraded?'#aa00ff':'#DAA520';
