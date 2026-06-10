@@ -117,6 +117,13 @@ const _BGM={
     [165,1],[156,1],[147,1],[138,1],[130,2],[0,1],[110,1],
     [110,3],[0,1],[123,2],[0,1],[110,4],[0,4],
   ]},
+  lament:{ bpm:120, seq:[
+    [220,1],[196,0.5],[175,0.5],[165,1],[196,0.5],[220,0.5],[0,0.5],[220,1.5],
+    [220,1],[196,0.5],[175,0.5],[165,1],[147,0.5],[165,0.5],[0,0.5],[147,1.5],
+    [165,1],[147,0.5],[130,0.5],[123,1],[147,0.5],[165,0.5],[0,0.5],[165,1.5],
+    [220,1.5],[196,0.5],[175,1],[196,1],[220,1],[0,0.5],[220,1.5],
+    [196,1],[175,1],[147,1],[130,1],[110,2],[0,2],
+  ]},
 };
 let _bgmKey=null,_bgmStep=0,_bgmTid=null;
 function bgmNote(freq,dur){
@@ -3090,7 +3097,7 @@ function update(){
     if(currentStage===7){
       bgmPlay('reveal');cutsceneStep=0;cutsceneTimer=90;cutsceneFlash=0;cutsceneDone=false;state='cutscene';
     } else if(currentStage===6){
-      spawnBoss();bossCutinTimer=180;bgmPlay('boss');addShake(5);
+      spawnBoss();bossCutinTimer=180;bgmPlay('lament');addShake(5);
     } else {
       spawnBoss();bgmPlay('boss');addShake(5);bossBannerTimer=170;
     }
