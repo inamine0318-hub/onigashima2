@@ -1975,7 +1975,10 @@ canvas.addEventListener('touchstart',e=>{
   }
   if(state==='stageclear'){
     if(clearResultTimer>0)return;
-    if(currentStage<TOTAL_STAGES){
+    if(currentStage===5){
+      // Stage 5 クリア → スコア表示後、キャラ選択画面に戻す（隠しステージ選択待ち）
+      clearSave();state='charselect';bgmPlay('title');
+    }else if(currentStage<TOTAL_STAGES){
       const nxt=currentStage+1;
       setSave({stage:nxt,score,orbsCollected:[...orbsCollected],weaponLv:player?player.weaponLv:0,weaponArmor:player?(player.weaponArmor||3):3,weaponGauge:player?player.weaponGauge:0,char:selChar});
       currentStage=nxt;startGame();
@@ -5231,6 +5234,9 @@ function drawStageClear(){
   if(isLast){
     ctx.fillStyle='#ff44ff';ctx.font=`bold ${Math.min(W*.032,20)}px monospace`;
     ctx.fillText('★ 鬼ヶ島クリア! ★',W/2,H*.22+34);
+  } else if(currentStage===5){
+    ctx.fillStyle='#ffaa00';ctx.font=`bold ${Math.min(W*.032,20)}px monospace`;
+    ctx.fillText('★ 全ステージクリア! ★',W/2,H*.22+34);
   } else {
     const next=STAGE_CFG[currentStage];
     ctx.fillStyle='#7788cc';ctx.font=`${Math.min(W*.028,16)}px monospace`;
