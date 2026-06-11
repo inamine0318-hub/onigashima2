@@ -4924,9 +4924,9 @@ function drawBossTsukuyomi(bx,by,t){
   const legR=Math.sin(gameTimer/40+Math.PI)*3;  // 右脚
   function _f(col,x,y,w,h){ctx.fillStyle=col;ctx.fillRect(bx+x,by+y,w,h);}
 
-  // 脚（太く王様のような・交互動作） / 獣化時は紫
-  const legCol1=isPhase2Upgraded?'#330055':'#1a0000';
-  const legCol2=isPhase2Upgraded?'#550077':'#330000';
+  // 脚（太く王様のような・交互動作） / 獣化時は明るい赤
+  const legCol1=isPhase2Upgraded?'#ff3333':'#1a0000';
+  const legCol2=isPhase2Upgraded?'#ff6666':'#330000';
   _f(legCol1,6,73+legL,24,24);   // 左脚
   _f(legCol2,8,74+legL,20,22);   // 左脚の明るい部分
   _f(legCol1,48,73+legR,24,24);  // 右脚
@@ -4938,15 +4938,15 @@ function drawBossTsukuyomi(bx,by,t){
   _f('#000000',46,93+walkBob,28,8);   // 右足
   _f('#111111',48,94+walkBob,24,6);   // 右足の明るい部分
 
-  // 腰 / 獣化時は紫
-  const waistCol1=isPhase2Upgraded?'#440066':'#220000';
-  const waistCol2=isPhase2Upgraded?'#660088':'#440000';
+  // 腰 / 獣化時は明るい赤
+  const waistCol1=isPhase2Upgraded?'#ff3333':'#220000';
+  const waistCol2=isPhase2Upgraded?'#ff6666':'#440000';
   _f(waistCol1,4,65+walkBob,56,12);   // 腰部
   _f(waistCol2,6,66+walkBob,52,10);   // 腰の明るい部分
 
-  // 胴体（非常に太い・王のような存在感・歩行で上下） / 獣化時は紫
-  const bodyCol1=isPhase2Upgraded?'#330055':'#1a0000';
-  const bodyCol2=isPhase2Upgraded?'#550077':'#330000';
+  // 胴体（非常に太い・王のような存在感・歩行で上下） / 獣化時は明るい赤
+  const bodyCol1=isPhase2Upgraded?'#ff3333':'#1a0000';
+  const bodyCol2=isPhase2Upgraded?'#ff6666':'#330000';
   _f(bodyCol1,0,40+walkBob,64,27);   // 胴体メイン
   _f(bodyCol2,2,42+walkBob,60,23);   // 胴体の明るい部分
 
@@ -4971,25 +4971,25 @@ function drawBossTsukuyomi(bx,by,t){
   _f('#440000',62,57+walkBob,14,6);    // 右上の手
   _f('#440000',62,81+walkBob,14,6);    // 右下の手
 
-  // 肩（王様のような肩幅） / 獣化時は紫
-  const shoulderCol=isPhase2Upgraded?'#550077':'#330000';
+  // 肩（王様のような肩幅） / 獣化時は明るい赤
+  const shoulderCol=isPhase2Upgraded?'#ff6666':'#330000';
   _f(shoulderCol,-4,34+walkBob,16,10);   // 左肩
   _f(shoulderCol,52,34+walkBob,16,10);   // 右肩
 
-  // 首 / 獣化時は紫
-  const neckCol=isPhase2Upgraded?'#660088':'#440000';
+  // 首 / 獣化時は明るい赤
+  const neckCol=isPhase2Upgraded?'#ff6666':'#440000';
   _f(neckCol,24,28+walkBob,16,10);   // 首
 
-  // 頭（ラスボスにふさわしい大きさ・黒と赤） / 獣化時は紫
-  const headCol1=isPhase2Upgraded?'#440066':'#220000';
-  const headCol2=isPhase2Upgraded?'#660088':'#440000';
+  // 頭（ラスボスにふさわしい大きさ・黒と赤） / 獣化時は明るい赤
+  const headCol1=isPhase2Upgraded?'#ff3333':'#220000';
+  const headCol2=isPhase2Upgraded?'#ff6666':'#440000';
   _f(headCol1,6,2+walkBob,62,32);     // 顔
   _f(headCol2,8,4+walkBob,58,28);     // 顔の明るい部分
 
-  // 角（巨大で威圧的・黒い四本角 / 獣化時は紫・より大きく）
-  const hornCol1=isPhase2Upgraded?'#330055':'#110000';
-  const hornCol2=isPhase2Upgraded?'#440077':'#220000';
-  const hornCol3=isPhase2Upgraded?'#550088':'#330000';
+  // 角（巨大で威圧的・黒い四本角 / 獣化時は明るい赤・より大きく）
+  const hornCol1=isPhase2Upgraded?'#ff3333':'#110000';
+  const hornCol2=isPhase2Upgraded?'#ff6666':'#220000';
+  const hornCol3=isPhase2Upgraded?'#ff9999':'#330000';
   if(isPhase2Upgraded){
     // 獣化時：角をもっと大きく凶悪に
     _f(hornCol1,6,-22+walkBob,14,28);   // 左上の角（大きく）
@@ -5007,9 +5007,9 @@ function drawBossTsukuyomi(bx,by,t){
     _f(hornCol3,46,-14+walkBob,10,16);
   }
 
-  // 目（赤く燃え盛る / 獣化時は紫青色・より凶悪に）
-  const eyeCol1=isPhase2Upgraded?'#9900ff':'#ff0000';
-  const eyeCol2=isPhase2Upgraded?'#00ffff':'#ffff00';
+  // 目（赤く燃え盛る / 獣化時も赤く・より凶悪に）
+  const eyeCol1=isPhase2Upgraded?'#ff0000':'#ff0000';
+  const eyeCol2=isPhase2Upgraded?'#ffff00':'#ffff00';
   if(isPhase2Upgraded){
     // 獣化時：目を大きく凶悪に
     _f(eyeCol1,10,8+walkBob,18,14);   _f(eyeCol2,14,10+walkBob,10,10);   // 左目
@@ -5050,8 +5050,8 @@ function drawBossTsukuyomi(bx,by,t){
     _f(fangCol,42,26+walkBob,8,12);    // 右の牙
   }
 
-  // 王冠のような装飾（頭頂部） / 獣化時は紫金
-  const crownCol=isPhase2Upgraded?'#aa00ff':'#DAA520';
+  // 王冠のような装飾（頭頂部） / 獣化時も黄金
+  const crownCol=isPhase2Upgraded?'#DAA520':'#DAA520';
   _f(crownCol,20,-8+walkBob,8,4);     // 左の装飾
   _f(crownCol,36,-8+walkBob,8,4);     // 右の装飾
   _f(crownCol,28,-10+walkBob,8,6);    // 中央の装飾
@@ -5082,7 +5082,7 @@ function drawBossTsukuyomi(bx,by,t){
 
   // 獣化時のコウモリ羽
   if(isPhase2Upgraded){
-    const wingCol='#bb44ff', wingDkCol='#7700aa';
+    const wingCol='#ff3333', wingDkCol='#cc0000';
     const wingFlap=Math.sin(t/120)*.3+.7; // 羽ばたきアニメーション
     // 左羽
     ctx.globalAlpha=0.8;
