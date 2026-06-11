@@ -4494,7 +4494,16 @@ function drawBoss(){
     case 'takemikazu':drawBossTakemikazu(bx,by,t);break;
     case 'kagutsuchi':drawBossKagutsuchi(bx,by,t);break;
     case 'yamata':    drawBossYamata(bx,by,t);break;
-    case 'tsukuyomi':  drawBossTsukuyomi(bx,by,t);break;
+    case 'tsukuyomi': drawBossTsukuyomi(bx,by,t);break;
+    case 'rankaiPhase2':{
+      // ランカイ第二形態：カットイン時と同じ大きさで描画
+      ctx.save();
+      ctx.translate(W/2,H/2);
+      ctx.scale(2.2,2.2);
+      drawBossTsukuyomi(-48,-62,t);
+      ctx.restore();
+      break;
+    }
     case 'tajikarao':  drawBossTajikarao(bx,by,t);break;
     case 'izanami':    drawBossIzanami(bx,by,t);break;
   }
