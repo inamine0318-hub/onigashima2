@@ -505,11 +505,11 @@ function drawCharacter(sx,sy,ci,facing,walkFrame,moving,atkAnim,isJetting,isAirb
     // 頭（熊：円で表現）
     ctx.fillStyle=OL;ctx.beginPath();ctx.arc(15,5,11,0,Math.PI*2);ctx.fill();
     ctx.fillStyle=bearCol;ctx.beginPath();ctx.arc(15,5,10,0,Math.PI*2);ctx.fill();
-    // 耳
-    ctx.fillStyle=OL;ctx.beginPath();ctx.arc(5,0,5,0,Math.PI*2);ctx.fill();
-    ctx.fillStyle=bearCol;ctx.beginPath();ctx.arc(5,0,4,0,Math.PI*2);ctx.fill();
-    ctx.fillStyle=OL;ctx.beginPath();ctx.arc(25,0,5,0,Math.PI*2);ctx.fill();
-    ctx.fillStyle=bearCol;ctx.beginPath();ctx.arc(25,0,4,0,Math.PI*2);ctx.fill();
+    // 耳（楕円で丸く）
+    ctx.fillStyle=OL;ctx.beginPath();ctx.ellipse(5,0,5,6,0,0,Math.PI*2);ctx.fill();
+    ctx.fillStyle=bearCol;ctx.beginPath();ctx.ellipse(5,0,4,5,0,0,Math.PI*2);ctx.fill();
+    ctx.fillStyle=OL;ctx.beginPath();ctx.ellipse(25,0,5,6,0,0,Math.PI*2);ctx.fill();
+    ctx.fillStyle=bearCol;ctx.beginPath();ctx.ellipse(25,0,4,5,0,0,Math.PI*2);ctx.fill();
     // 鼻
     ctx.fillStyle='#000000';ctx.beginPath();ctx.arc(15,7,2.5,0,Math.PI*2);ctx.fill();
     // 目
