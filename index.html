@@ -7977,7 +7977,10 @@ function draw(){
   else if(state==='ending')drawEnding();
 
   // カットイン描画（state='play'時のみ）
-  if(state==='play'&&bossCutinTimer>0)drawBossCutin();
+  if(state==='play'&&bossCutinTimer>0){
+    drawBossCutin();
+    drawBossTalkBox();
+  }
 
   ctx.restore();
 }
@@ -8035,6 +8038,70 @@ function drawBossCutin(){
 
   ctx.globalAlpha=1;
   ctx.shadowColor='transparent';
+}
+
+// ================================================================
+//  ボストークボックス（Stage 6隠しステージ用セリフ表示）
+// ================================================================
+function drawBossTalkBox(){
+  const t=bossCutinTimer, totalDur=180;
+  const progress=Math.max(0,Math.min(1,(totalDur-t)/totalDur));
+
+  // セリフデータ
+  const talkLines=[
+    'よくここまで来れたな。',
+    '褒めてやろう。',
+    '我の真の姿を見せよう...'
+  ];
+
+  // テキストボックス背景（下部）
+  const boxH=H*.25, boxY=H-boxH;
+  ctx.fillStyle='#0a0a1a';
+  ctx.globalAlpha=0.95;
+  ctx.fillRect(0,boxY,W,boxH);
+
+  // 枠線
+  ctx.strokeStyle='#6600cc';
+  ctx.lineWidth=2;
+  ctx.strokeRect(W*.04,boxY+10,W*.92,boxH-20);
+
+  // コーナー装飾
+  const cornerSize=8;
+  ctx.fillStyle='#9900ff';
+  ctx.fillRect(W*.04,boxY+10,cornerSize,cornerSize);
+  ctx.fillRect(W*.96-cornerSize,boxY+10,cornerSize,cornerSize);
+  ctx.fillRect(W*.04,boxY+boxH-20-cornerSize,cornerSize,cornerSize);
+  ctx.fillRect(W*.96-cornerSize,boxY+boxH-20-cornerSize,cornerSize,cornerSize);
+
+  // キャラ名
+  ctx.fillStyle='#9900ff';
+  ctx.font=`bold ${Math.min(W*.03,14)}px monospace`;
+  ctx.textAlign='left';
+  ctx.fillText('獣化ランカイ',W*.08,boxY+28);
+
+  // セリフ表示
+  ctx.fillStyle='#ffffff';
+  ctx.font=`${Math.min(W*.032,16)}px monospace`;
+  ctx.textAlign='left';
+  const lineIdx=Math.floor(progress*talkLines.length);
+  for(let i=0;i<=lineIdx&&i<talkLines.length;i++){
+    const line=talkLines[i];
+    const isLast=i===lineIdx;
+    const charProgress=isLast?((progress*talkLines.length)%1):1;
+    const displayText=isLast?line.slice(0,Math.floor(line.length*charProgress)):line;
+    ctx.fillText(displayText,W*.08,boxY+60+i*28);
+  }
+
+  // 次へ進むインジケータ（終了時）
+  if(progress>0.95){
+    ctx.globalAlpha=Math.sin(frameTime/200)*.5+.5;
+    ctx.fillStyle='#ffff00';
+    ctx.font=`bold ${Math.min(W*.028,14)}px monospace`;
+    ctx.textAlign='center';
+    ctx.fillText('▼ TAP TO START BATTLE',W/2,boxY+boxH-12);
+  }
+
+  ctx.globalAlpha=1;
 }
 
 function loop(){frameTime=Date.now();try{update();draw();}catch(e){console.error('[LOOP]',e);}requestAnimationFrame(loop);}
