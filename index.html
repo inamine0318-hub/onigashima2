@@ -2539,6 +2539,11 @@ function spawnBoss(){
 function update(){
   if(state==='splash'){splashTimer++;if(splashTimer>300&&splashReady){state='title';splashTimer=0;}return;}
   if(clearResultTimer>0)clearResultTimer--;
+  if(state==='bosstalk'){
+    if(bossCutinTimer>0)bossCutinTimer--;
+    else{state='play';}
+    return;
+  }
   if(state!=='play'||!player||paused)return;
   if(hitStop>0){hitStop--;return;}
   gameTimer++;
@@ -3115,7 +3120,7 @@ function update(){
     if(currentStage===7){
       bgmPlay('reveal');cutsceneStep=0;cutsceneTimer=90;cutsceneFlash=0;cutsceneDone=false;state='cutscene';
     } else if(currentStage===6){
-      spawnBoss();bossCutinTimer=180;bgmPlay('lament');addShake(5);
+      spawnBoss();bossCutinTimer=180;bgmPlay('lament');addShake(5);state='bosstalk';
     } else {
       spawnBoss();bgmPlay('boss');addShake(5);bossBannerTimer=170;
     }
@@ -4500,7 +4505,9 @@ function drawBoss(){
       ctx.save();
       ctx.translate(W/2,H/2);
       ctx.scale(2.2,2.2);
-      drawBossTsukuyomi(-48,-62,t);
+      // 地面に立つようにY座標を調整（カットイン時と戦闘時で異なる）
+      const groundY = state==='bosstalk' ? -62 : 20;
+      drawBossTsukuyomi(-48,groundY,t);
       ctx.restore();
       break;
     }
@@ -7664,7 +7671,7 @@ function drawPlay(){
   });
   particles.forEach(p=>{ctx.globalAlpha=Math.max(0,p.life/22);dr(Math.floor(p.x-cam.x),Math.floor(p.y),P,P,p.col);});ctx.globalAlpha=1;
   drawEnemies();
-  if(boss&&boss.hp>0)drawBoss();
+  if(boss&&boss.hp>0&&bossCutinTimer<=0)drawBoss();
   if(player){
     // ジェットシールド (jetActive中は常に表示・点滅なし)
     if(player.jetActive){
@@ -7970,17 +7977,17 @@ function draw(){
   else if(state==='title')drawTitle();
   else if(state==='story')drawStory();
   else if(state==='charselect')drawCharSelect();
+  else if(state==='bosstalk'){
+    // ボストークシーン：背景のみ描画、敵は描画しない
+    drawPlay();
+    drawBossCutin();
+    drawBossTalkBox();
+  }
   else if(state==='play')drawPlay();
   else if(state==='stageclear')drawStageClear();
   else if(state==='gameover')drawGameOver();
   else if(state==='cutscene')drawCutscene();
   else if(state==='ending')drawEnding();
-
-  // カットイン描画（state='play'時のみ）
-  if(state==='play'&&bossCutinTimer>0){
-    drawBossCutin();
-    drawBossTalkBox();
-  }
 
   ctx.restore();
 }
