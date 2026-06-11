@@ -3217,7 +3217,8 @@ function updateBoss(){
   boss.vy+=GRAVITY*.65;if(boss.vy>18)boss.vy=18;
   boss.stateTimer--;
   const spd=(boss.phase===2?1.9:1.2)*(1+currentStage*.07);
-  const atkBase=[155,135,125,115,105,95,65][currentStage-1]||65;
+  let atkBase=[155,135,125,115,105,95,65][currentStage-1]||65;
+  if(boss.type==='rankaiPhase2')atkBase=45; // 獣化ランカイ：全ボス最速
   const col=['#cc00ff','#ffff00','#ff6600','#44ffff','#eeeeff','#cc6600','#9900ff'][currentStage-1];
 
   boss.weakPoint=false; // デフォルトは弱点なし
@@ -4501,14 +4502,8 @@ function drawBoss(){
     case 'yamata':    drawBossYamata(bx,by,t);break;
     case 'tsukuyomi': drawBossTsukuyomi(bx,by,t);break;
     case 'rankaiPhase2':{
-      // ランカイ第二形態：カットイン時と同じ大きさで描画
-      ctx.save();
-      ctx.translate(W/2,H/2);
-      ctx.scale(2.2,2.2);
-      // 地面に立つようにY座標を調整（カットイン時と戦闘時で異なる）
-      const groundY = state==='bosstalk' ? -62 : 20;
-      drawBossTsukuyomi(-48,groundY,t);
-      ctx.restore();
+      // ランカイ第二形態：通常サイズで描画、地面に着地
+      drawBossTsukuyomi(bx,by,t);
       break;
     }
     case 'tajikarao':  drawBossTajikarao(bx,by,t);break;
