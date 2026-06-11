@@ -3188,7 +3188,7 @@ function chooseBossAtk(){
       boss.state='blink';boss.stateTimer=p2?55:30;
       break;
     case 'rankaiPhase2': // 獣化: 瞬間移動+三日月弾+画面端火炎 (p2:常時複合攻撃)
-      if(Math.random()<0.4){boss.state='firewall';boss.stateTimer=85;boss.fireDir=boss.dir;}
+      if(Math.random()<0.2){boss.state='firewall';boss.stateTimer=85;boss.fireDir=boss.dir;}
       else{boss.state='blink';boss.stateTimer=p2?60:45;}
       break;
     case 'tajikarao': { // 大地: 超震動スラム+距離感知突進
@@ -3359,14 +3359,14 @@ function updateBoss(){
     boss.vx*=0.7;
     if(boss.stateTimer===75){
       addShake(6);sfx('explode');
-      for(let i=0;i<3;i++){
+      for(let i=0;i<2;i++){
         const startX=boss.fireDir>0?BOSS_ARENA_RIGHT-10:BOSS_ARENA_LEFT+10;
         const sy=150+Math.random()*250;
         eProjectiles.push({x:startX,y:sy,vx:boss.fireDir*-9,vy:-1+Math.random()*2,w:80,h:40,life:200,boss:true,firewall:true,stageCol:'#ff5500'});
       }
     }else if(boss.stateTimer===40){
       addShake(5);sfx('explode');
-      for(let i=0;i<2;i++){
+      for(let i=0;i<1;i++){
         const startX=boss.fireDir>0?BOSS_ARENA_RIGHT-10:BOSS_ARENA_LEFT+10;
         const sy=100+Math.random()*300;
         eProjectiles.push({x:startX,y:sy,vx:boss.fireDir*-8,vy:-1+Math.random()*2,w:90,h:35,life:200,boss:true,firewall:true,stageCol:'#ff7700'});
