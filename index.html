@@ -1540,7 +1540,7 @@ const CHARS=[
   {name:'タカ型',   nick:'弓手のカラス丸', dna:'鷹DNA',  col:'#c07828',w:30,h:42,spd:5.2,jmp:-8.8,maxHp:10,atkCd:16,atkLabel:'急降下斬',  glide:true, djump:true, wallSlide:false,ability:'滑空・二段J・空中ATKで急降下爆撃'},
   null,
   null,
-  {name:'サル型',   nick:'槍の十兵衛',     dna:'猿DNA',  col:'#aa7722',w:28,h:44,spd:6.8,jmp:-10.0,maxHp:10,atkCd:13,atkLabel:'電磁ムチ',  glide:false,djump:true, wallSlide:true, ability:'最速・電磁ムチ引寄せ・壁張付き・二段J・踏みつけトランポリン'},
+  {name:'サル型',   nick:'槍の十兵衛',     dna:'猿DNA',  col:'#aa7722',w:28,h:44,spd:6.8,jmp:-10.0,maxHp:10,atkCd:13,atkLabel:'槍突進',  glide:false,djump:true, wallSlide:true, ability:'最速・槍リーチ拡大・壁張付き・二段J・踏みつけトランポリン'},
   {name:'クマ型',   nick:'クマのマタキチ', dna:'熊DNA',  col:'#704214',w:36,h:46,spd:5.5,jmp:-9.0, maxHp:10, atkCd:15,atkLabel:'猛突進',    glide:false,djump:true, wallSlide:false,ability:'HP最大・攻撃1.5倍・ボス被ダメ軽減・突進無敵'},
   null,
   null,
@@ -2230,7 +2230,7 @@ function doAttack(){
     case 3:{ // 十兵衛 - 槍突進攻撃（穂先のみダメージ判定・レベル応じてリーチ拡大・通常攻撃と強攻撃で異なるリーチ）
       const wdmg=step<2?2:lv>=2?4:3;
       // 槍の穂先の位置と大きさ（レベルと攻撃種別に応じてリーチ拡大）
-      const reach=step<2?(lv>=2?24:lv>=1?20:16):(lv>=2?30:lv>=1?26:21);
+      const reach=step<2?(lv>=2?28:lv>=1?24:20):(lv>=2?36:lv>=1?31:26);
       const tipX=f>0?px+pw+reach:px-reach, tipY=py+12;
       const tipW=step<2?(lv>=2?16:lv>=1?13:10):(lv>=2?18:lv>=1?15:12);
       projectiles.push({x:tipX,y:tipY,vx:f*6,vy:0,w:tipW,h:8,col:'#8B7355',dmg:wdmg,life:6,hit:[],pierce:false,homing:false,whip:false,spear:true,knockback:f*(step<2?3:5)});
