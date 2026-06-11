@@ -2040,8 +2040,14 @@ document.addEventListener('keydown',e=>{
   if(state==='gameover'&&e.key==='Escape'){selGameMode=0;state='charselect';bgmPlay('title');return;}
   if(state==='stageclear'&&(e.key==='Enter'||e.key===' ')){
     if(clearResultTimer>0)return;
-    if(currentStage<5){currentStage++;startGame();}
-    else{clearSave();currentStage=1;endingStartTime=Date.now();endingDone=false;state='ending';bgmPlay('title');}return;
+    if(currentStage===5){
+      clearSave();state='charselect';bgmPlay('title');
+    }else if(currentStage<TOTAL_STAGES){
+      const nxt=currentStage+1;
+      setSave({stage:nxt,score,orbsCollected:[...orbsCollected],weaponLv:player?player.weaponLv:0,weaponArmor:player?(player.weaponArmor||3):3,weaponGauge:player?player.weaponGauge:0,char:selChar});
+      currentStage=nxt;startGame();
+    }else{clearSave();currentStage=1;endingStartTime=Date.now();endingDone=false;state='ending';bgmPlay('title');}
+    return;
   }
   if(state==='play'&&!paused){
     if(e.key==='ArrowUp'||e.key==='w'||e.key===' ')doJump();
@@ -2115,7 +2121,16 @@ function handleCSTap(e){
         else selChar=i;
       }
     });
-    const s=z.start;if(tx>=s.x&&tx<=s.x+s.w&&ty>=s.y&&ty<=s.y+s.h){tryFullscreen();startGame(true);}
+    // 隠しステージなし：STARTボタン
+    const hasHidden=getHiddenStageUnlocked();
+    if(!hasHidden){
+      const s=z.start;if(tx>=s.x&&tx<=s.x+s.w&&ty>=s.y&&ty<=s.y+s.h){tryFullscreen();selGameMode=0;currentStage=1;startGame(true);}
+    }else{
+      // 隠しステージあり：新規ゲーム/幻のステージ選択
+      const ngBtn=z.newgame,hidBtn=z.hidden;
+      if(tx>=ngBtn.x&&tx<=ngBtn.x+ngBtn.w&&ty>=ngBtn.y&&ty<=ngBtn.y+ngBtn.h){selGameMode=0;tryFullscreen();currentStage=1;startGame(true);}
+      if(tx>=hidBtn.x&&tx<=hidBtn.x+hidBtn.w&&ty>=hidBtn.y&&ty<=hidBtn.y+hidBtn.h){selGameMode=1;tryFullscreen();currentStage=6;startGame(true);}
+    }
   }
 }
 
