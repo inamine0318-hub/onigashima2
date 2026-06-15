@@ -2243,7 +2243,7 @@ function doAttack(){
     }
     case 4:{ // マタキチ - 猛突進（攻撃時無敵17フレーム）
       player.invincible=17;
-      const pdmg=step<2?2:lv>=2?4:3;
+      const pdmg=step<2?3:lv>=2?5:4;
       projectiles.push({x:f>0?px+pw:px,y:py+8,vx:f*8,vy:0,w:30,h:ph-16,col:'#704214',dmg:pdmg,life:5,hit:[],pierce:false,homing:false,punch:true});
       burst(f>0?px+pw+4:px-4,py+ph/2,'#8B6B47',pdmg>=3?8:4);
       sfx('hit');
