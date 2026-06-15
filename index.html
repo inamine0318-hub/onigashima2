@@ -1537,7 +1537,7 @@ function drawAnimalHead(ci,_r,AC,atk){
 //  キャラ定義
 // ================================================================
 const CHARS=[
-  {name:'タカ型',   nick:'弓手のカラス丸', dna:'鷹DNA',  col:'#c07828',w:30,h:42,spd:6.0,jmp:-8.8,maxHp:10,atkCd:16,atkLabel:'急降下斬',  glide:true, djump:true, wallSlide:false,ability:'滑空・二段J・空中ATKで急降下爆撃'},
+  {name:'タカ型',   nick:'弓手のカラス丸', dna:'鷹DNA',  col:'#c07828',w:30,h:42,spd:7.0,jmp:-10.5,maxHp:10,atkCd:16,atkLabel:'急降下斬',  glide:true, djump:true, wallSlide:false,ability:'滑空・二段J・空中ATKで急降下爆撃'},
   null,
   null,
   {name:'サル型',   nick:'槍の十兵衛',     dna:'猿DNA',  col:'#aa7722',w:28,h:44,spd:7.5,jmp:-10.0,maxHp:10,atkCd:13,atkLabel:'槍突進',  glide:false,djump:true, wallSlide:true, ability:'最速・槍リーチ拡大・壁張付き・二段J・踏みつけトランポリン'},
@@ -2176,15 +2176,15 @@ function doAttack(){
         burst(f>0?mx:mx-w/2,my,col,opts.n||4);sfx('arrow');
       };
       if(step<2){
-        ar(f*12,step===0?0:-1,step===0?22:26,10,'#ffcc44',step===0?2:3,{life:30,n:4});
+        ar(f*12,step===0?0:-1,step===0?22:26,10,'#ffcc44',step===0?3:4,{life:30,n:4});
       }else if(lv===0){
-        ar(f*13,0,28,10,'#ffee66',3,{life:32,pierce:true,n:7});
+        ar(f*13,0,28,10,'#ffee66',4,{life:32,pierce:true,n:7});
       }else if(lv===1){
-        ar(f*13,0,26,10,'#ffffff',3,{life:32,pierce:true,n:8});
+        ar(f*13,0,26,10,'#ffffff',4,{life:32,pierce:true,n:8});
         for(let k=0;k<2;k++)setTimeout(()=>{if(player){const f2=player.facing;const dy=k===0?-3:3;projectiles.push({x:f2>0?player.x+player.w:player.x-26,y:player.y+player.h*.3+dy*3,vx:f2*12,vy:dy,w:26,h:10,col:'#ffdd44',dmg:2,life:30,hit:[],pierce:false,homing:false,arrow:true});sfx('arrow');}},k*60);
         addShake(3);
       }else{
-        ar(f*13,0,28,10,'#ffffff',4,{life:32,pierce:true,n:10});
+        ar(f*13,0,28,10,'#ffffff',5,{life:32,pierce:true,n:10});
         for(let k=0;k<8;k++)setTimeout(()=>{if(player){const a=(k/8)*Math.PI*2;projectiles.push({x:player.x+player.w*.5,y:player.y+player.h*.3,vx:Math.cos(a)*14,vy:Math.sin(a)*14-2,w:20,h:8,col:k%2?'#ffdd44':'#ffffff',dmg:2,life:55,hit:[],pierce:false,homing:true,arrow:true});sfx('arrow');}},k*50);
         addShake(5);
       }
