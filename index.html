@@ -3091,7 +3091,7 @@ function update(){
     if(p.life<=0||p.y>H+100){eProjectiles.splice(i,1);continue;}
     if(player.invincible===0&&ov({x:p.x-p.w/2,y:p.y-p.h/2,w:p.w,h:p.h},player)){
       if(player.shieldActive){player.shieldActive=false;burst(player.x+player.w/2,player.y,'#44aaff',14);addShake(3);player.invincible=50;eProjectiles.splice(i,1);sfx('phit');continue;}
-      let epDmg=1;
+      let epDmg=p.boss&&currentStage>=3&&currentStage<=4?2:1;
       if(player.ci===5){player.armorCounter=(player.armorCounter||0)+1;if(player.armorCounter%2===0){epDmg=0;burst(player.x+player.w/2,player.y,'#ff6600',8);addShake(3);}}
       player.hp=Math.max(0,player.hp-epDmg);player.invincible=65;sfx('phit');burst(p.x,p.y,'#ff4400',6);addShake(5);if(epDmg>0){damageWeapon();if(player.ci===2)player.counterWindow=26;}
       eProjectiles.splice(i,1);
