@@ -2342,7 +2342,7 @@ function doAttack(){
       break;
     }
     case 7:{ // スーパー十兵衛 - 究極の広範囲超リーチ槍+フィニッシャー突進（複数段・円形・派手・無敵）
-      const wdmg=step<2?4:lv>=2?6:5;
+      const wdmg=step<2?6:lv>=2?8:7;
       const reach=step<2?(lv>=2?50:lv>=1?45:40):(lv>=2?65:lv>=1?60:55); // 超リーチ
       const tipX=f>0?px+pw+reach:px-reach, tipY=py+12;
       const tipW=step<2?(lv>=2?32:lv>=1?28:25):(lv>=2?38:lv>=1?35:32); // 超広幅
