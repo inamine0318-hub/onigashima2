@@ -2088,10 +2088,11 @@ function spawnEnemies(){
     if(type==='turret') return mkEnemy({id,type,x:d.x,y:d.y-34,w:28,h:34,vy:0,vx:0,dir:1,startX:d.x,range:0,hp:3,maxHp:3,onGround:false,dmgCd:0,shotCd:0,shotMax:300,flashTimer:0,hardStunTimer:0,poisoned:0,poisonTimer:0});
     if(type==='charger') return mkEnemy({id,type,x:d.x,y:d.y-34,w:32,h:34,vy:0,vx:0.7,dir:Math.random()<.5?1:-1,startX:d.x,range:90+Math.random()*40,hp:3,maxHp:3,onGround:false,dmgCd:0,charging:false,chargeCd:0,chargeDir:1,flashTimer:0,hardStunTimer:0,poisoned:0,poisonTimer:0});
     if(type==='flyer')  return mkEnemy({id,type,x:d.x,y:d.y,   w:28,h:34,vy:0,vx:1.1+Math.random()*.3,dir:Math.random()<.5?1:-1,startX:d.x,range:110+Math.random()*60,hp:1,maxHp:1,onGround:false,dmgCd:0,baseY:d.y,bob:Math.random()*Math.PI*2,flashTimer:0,hardStunTimer:0,poisoned:0,poisonTimer:0});
+    // flyer: HP 1（変更なし）
     if(type==='jumper') return mkEnemy({id,type,x:d.x,y:d.y-34,w:22,h:34,vy:0,vx:0,dir:1,startX:d.x,range:80,hp:1,maxHp:1,onGround:false,dmgCd:0,jumpCd:55,flashTimer:0,hardStunTimer:0,poisoned:0,poisonTimer:0});
     if(type==='sniper') return mkEnemy({id,type,x:d.x,y:d.y-34,w:26,h:34,vy:0,vx:0.5,dir:Math.random()<.5?1:-1,startX:d.x,range:25,hp:3,maxHp:3,onGround:false,dmgCd:0,shotCd:0,shotMax:380,flashTimer:0,hardStunTimer:0,poisoned:0,poisonTimer:0});
-    if(type==='bomber') return mkEnemy({id,type,x:d.x,y:d.y-34,w:26,h:34,vy:0,vx:0,dir:1,startX:d.x,range:200,hp:3,maxHp:3,onGround:false,dmgCd:0,fuseTimer:0,fuseActive:false,flashTimer:0,hardStunTimer:0,poisoned:0,poisonTimer:0});
-    if(type==='brute') return mkEnemy({id,type,x:d.x,y:d.y-34,w:38,h:34,vy:0,vx:1.0,dir:Math.random()<.5?1:-1,startX:d.x,range:70,hp:4,maxHp:4,onGround:false,dmgCd:0,punchCd:0,flashTimer:0,hardStunTimer:0,poisoned:0,poisonTimer:0});
+    if(type==='bomber') return mkEnemy({id,type,x:d.x,y:d.y-34,w:26,h:34,vy:0,vx:0,dir:1,startX:d.x,range:200,hp:5,maxHp:5,onGround:false,dmgCd:0,fuseTimer:0,fuseActive:false,flashTimer:0,hardStunTimer:0,poisoned:0,poisonTimer:0});
+    if(type==='brute') return mkEnemy({id,type,x:d.x,y:d.y-34,w:38,h:34,vy:0,vx:1.0,dir:Math.random()<.5?1:-1,startX:d.x,range:70,hp:5,maxHp:5,onGround:false,dmgCd:0,punchCd:0,flashTimer:0,hardStunTimer:0,poisoned:0,poisonTimer:0});
     return mkEnemy({id,type:'patrol',x:d.x,y:d.y-34,w:30,h:34,vy:0,vx:0.9+Math.random()*.5,dir:Math.random()<.5?1:-1,startX:d.x,range:70+Math.random()*50,hp:3,maxHp:3,onGround:false,dmgCd:0,flashTimer:0,hardStunTimer:0,poisoned:0,poisonTimer:0});
   });
 }
@@ -2228,7 +2229,7 @@ function doAttack(){
       break;
     }
     case 3:{ // 十兵衛 - 槍突進攻撃（穂先のみダメージ判定・レベル応じてリーチ拡大・通常攻撃と強攻撃で異なるリーチ）
-      const wdmg=step<2?4:lv>=2?6:5;
+      const wdmg=step<2?3:lv>=2?5:4;
       // 槍の穂先の位置と大きさ（レベルと攻撃種別に応じてリーチ拡大）
       const reach=step<2?(lv>=2?28:lv>=1?24:20):(lv>=2?36:lv>=1?31:26);
       const tipX=f>0?px+pw+reach:px-reach, tipY=py+12;
