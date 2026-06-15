@@ -2943,6 +2943,8 @@ function update(){
   // 敵 UPDATE (タイプ別)
   for(let i=0;i<enemies.length;i++){
     const e=enemies[i];if(e.hp<=0)continue;
+    // ヒット硬直中は行動をスキップ
+    if(e.hardStunTimer>0){e.hardStunTimer--;e.vx*=0.8;continue;}
     if(e.type==='turret'){
       // 砲台: 落下して地面に定着後、一定間隔で弾発射
       e.vy+=GRAVITY;if(e.vy>18)e.vy=18;
