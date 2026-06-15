@@ -2228,7 +2228,7 @@ function doAttack(){
       break;
     }
     case 3:{ // 十兵衛 - 槍突進攻撃（穂先のみダメージ判定・レベル応じてリーチ拡大・通常攻撃と強攻撃で異なるリーチ）
-      const wdmg=step<2?2:lv>=2?4:3;
+      const wdmg=step<2?4:lv>=2?6:5;
       // 槍の穂先の位置と大きさ（レベルと攻撃種別に応じてリーチ拡大）
       const reach=step<2?(lv>=2?28:lv>=1?24:20):(lv>=2?36:lv>=1?31:26);
       const tipX=f>0?px+pw+reach:px-reach, tipY=py+12;
