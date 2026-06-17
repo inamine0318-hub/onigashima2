@@ -1537,15 +1537,15 @@ function drawAnimalHead(ci,_r,AC,atk){
 //  キャラ定義
 // ================================================================
 const CHARS=[
-  {name:'タカ型',   nick:'弓手のカラス丸', dna:'鷹DNA',  col:'#c07828',w:30,h:42,spd:7.0,jmp:-10.5,maxHp:10,atkCd:16,atkLabel:'急降下斬',  glide:true, djump:true, wallSlide:false,ability:'滑空・二段J・空中ATKで急降下爆撃'},
+  {name:'タカ型',   nick:'弓手のカラス丸', dna:'鷹DNA',  col:'#c07828',w:30,h:42,spd:7.0,jmp:-10.5,maxHp:10,atkCd:16,atkLabel:'急降下斬',  glide:true, djump:true, wallSlide:false,ability:'遠距離型の弓使い。高い機動力で敵を翻弄する。'},
   null,
   null,
-  {name:'サル型',   nick:'槍の十兵衛',     dna:'猿DNA',  col:'#aa7722',w:28,h:44,spd:7.5,jmp:-10.0,maxHp:12,atkCd:13,atkLabel:'槍突進',  glide:false,djump:true, wallSlide:true, ability:'最速・槍リーチ拡大・壁張付き・二段J・踏みつけトランポリン'},
-  {name:'クマ型',   nick:'クマのマタキチ', dna:'熊DNA',  col:'#704214',w:36,h:46,spd:6.5,jmp:-9.0, maxHp:17, atkCd:14,atkLabel:'猛突進',    glide:false,djump:true, wallSlide:false,ability:'HP最大・攻撃1.5倍・ボス被ダメ軽減・突進無敵'},
+  {name:'サル型',   nick:'槍の十兵衛',     dna:'猿DNA',  col:'#aa7722',w:28,h:44,spd:7.5,jmp:-10.0,maxHp:12,atkCd:13,atkLabel:'槍突進',  glide:false,djump:true, wallSlide:true, ability:'最速型。槍のリーチで対応。最大強化時は避けボタン無限化。'},
+  {name:'クマ型',   nick:'クマのマタキチ', dna:'熊DNA',  col:'#704214',w:36,h:46,spd:6.5,jmp:-9.0, maxHp:17, atkCd:14,atkLabel:'猛突進',    glide:false,djump:true, wallSlide:false,ability:'耐久型。最高HPと1.5倍攻撃。ボス戦で大活躍。'},
   null,
   null,
-  {name:'スーパー十兵衛',nick:'スーパー十兵衛', dna:'猿DNA', col:'#aa7722',w:28,h:44,spd:8.5,jmp:-10.0,maxHp:12,atkCd:12,atkLabel:'超槍',glide:false,djump:true,wallSlide:true,ability:'全能力超強化・画面半分リーチ'},
-  {name:'からくり桃太郎',nick:'からくり桃太郎',dna:'機械DNA',col:'#ff4444',w:32,h:44,spd:9.0,jmp:-10.5,maxHp:13,atkCd:11,atkLabel:'団子砲',glide:false,djump:true,wallSlide:false,ability:'最強体力・最強攻撃・最速'},
+  {name:'スーパー十兵衛',nick:'スーパー十兵衛', dna:'猿DNA', col:'#aa7722',w:28,h:44,spd:8.5,jmp:-10.0,maxHp:12,atkCd:12,atkLabel:'超槍',glide:false,djump:true,wallSlide:true,ability:'全能力超強化版。画面半分のリーチで圧倒。'},
+  {name:'からくり桃太郎',nick:'からくり桃太郎',dna:'機械DNA',col:'#ff4444',w:32,h:44,spd:9.0,jmp:-10.5,maxHp:13,atkCd:11,atkLabel:'団子砲',glide:false,djump:true,wallSlide:false,ability:'最速・最強攻撃の完全体。ホーミング団子砲で無双。'},
 ];
 
 // ================================================================
@@ -7116,14 +7116,15 @@ function drawCharSelect(){
     ctx.fillStyle=col;ctx.font=`bold ${Math.min(W*.036,14)}px monospace`;
     ctx.fillText(grade(r),rx+bw2+8,sy+9);
   });
-  // ABILITY テキスト
-  ctx.fillStyle='#88bbdd';ctx.font=`bold ${Math.min(W*.026,10)}px monospace`;ctx.textAlign='left';
-  ctx.fillText('ABILITY:',rx,panY+panH-20);
-  ctx.fillStyle='#aaccee';ctx.font=`${Math.min(W*.024,10)}px monospace`;
+  // ABILITY テキスト（大きめフォント）
+  ctx.fillStyle='#88bbdd';ctx.font=`bold ${Math.min(W*.052,20)}px monospace`;ctx.textAlign='left';
+  ctx.fillText('ABILITY:',rx,panY+panH-26);
+  ctx.fillStyle='#aaccee';ctx.font=`${Math.min(W*.048,20)}px monospace`;
   const abl=c.ability||'';
-  const mid=Math.ceil(abl.length/2);
-  ctx.fillText(abl.slice(0,mid),rx,panY+panH-8);
-  ctx.fillText(abl.slice(mid),rx,panY+panH+4);
+  const lines=[];
+  const maxLineLen=25;
+  for(let i=0;i<abl.length;i+=maxLineLen)lines.push(abl.slice(i,i+maxLineLen));
+  lines.forEach((line,idx)=>{ctx.fillText(line,rx,panY+panH-8+idx*24);});
 
   // STARTボタン
   const hasHidden=getHiddenStageUnlocked();
