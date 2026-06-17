@@ -6398,7 +6398,7 @@ function drawBtns(){
   // 十兵衛Lv2時の∞マークを大きく描画
   if(jetLabel==='∞'&&player&&player.ci===3&&player.weaponLv===2){
     const b=z.jet;
-    const cx=b.x+b.s/2, cy=b.y+b.s/2;
+    const cx=b.x+b.s/2, cy=b.y+b.s/2+3;
     ctx.globalAlpha=0.95;
     ctx.fillStyle='#33ffaa';
     ctx.font=`bold ${Math.floor(b.s*1.5)}px monospace`;
