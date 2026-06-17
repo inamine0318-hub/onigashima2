@@ -6395,6 +6395,17 @@ function drawBtns(){
   btns.forEach(({b,lb,held,bg,hbg,br,hbr,tc})=>{
     drawCircleBtn(b,held,bg,hbg,br,hbr,tc,lb);
   });
+  // 十兵衛Lv2時の∞マークを大きく描画
+  if(jetLabel==='∞'&&player&&player.ci===3&&player.weaponLv===2){
+    const b=z.jet;
+    const cx=b.x+b.s/2, cy=b.y+b.s/2;
+    ctx.globalAlpha=0.95;
+    ctx.fillStyle='#33ffaa';
+    ctx.font=`bold ${Math.floor(b.s*1.5)}px monospace`;
+    ctx.textAlign='center';ctx.textBaseline='middle';
+    ctx.fillText('∞',cx,cy);
+    ctx.globalAlpha=1;
+  }
   // ATKクールダウン: 円弧で残量表示
   if(player&&player.atkCd>0){
     const cd=CHARS[player.ci].atkCd,b=z.atk;
