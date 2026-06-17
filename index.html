@@ -2423,7 +2423,7 @@ function doJet(){
   player.jetTimer=22;
   player._jetSpd=3.2;
   player.invincible=Math.max(player.invincible,22);
-  player.jetCd=180;
+  player.jetCd=(player.ci===0||player.ci===3||player.ci===4)?120:180;
   player.vx=player.facing*player.spd*3.2;
   if(!player.onGround)player.vy=Math.min(player.vy,-1);
   const ox=player.facing>0?player.x+player.w:player.x;
