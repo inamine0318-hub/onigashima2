@@ -6367,6 +6367,7 @@ function drawBtns(){
   const z=getBtns();
   const jetOn=player&&player.jetActive&&Math.floor(frameTime/60)%2;
   const jetBg='#081a12',jetHbg='#116644',jetBr='#224433',jetHbr='#33ffaa',jetTc='#33bb88';
+  const jetLabel=player&&player.ci===3&&player.weaponLv===2?'∞':'避';
   const btns=[
     {b:z.left,  lb:'◀',   held:touchHeld.left||keys['ArrowLeft']||keys['a'],
      bg:'#0f1828',hbg:'#2244aa',br:'#334466',hbr:'#55aaff',tc:'#8899cc'},
@@ -6376,9 +6377,21 @@ function drawBtns(){
      bg:'#0a1a44',hbg:'#1144dd',br:'#2255aa',hbr:'#66aaff',tc:'#6699ee'},
     {b:z.atk,   lb:'攻', held:false,
      bg:'#2a0a08',hbg:'#bb2200',br:'#662200',hbr:'#ff6644',tc:'#cc4422'},
-    {b:z.jet,   lb:'避', held:!!jetOn,
+    {b:z.jet,   lb:jetLabel, held:!!jetOn,
      bg:jetBg,hbg:jetHbg,br:jetBr,hbr:jetHbr,tc:jetTc},
   ];
+  // 十兵衛・最大強化時の避けボタン発光エフェクト
+  if(player&&player.ci===3&&player.weaponLv===2){
+    const b=z.jet;
+    const cx=b.x+b.s/2, cy=b.y+b.s/2;
+    ctx.globalAlpha=0.25;
+    ctx.fillStyle='#33ffaa';
+    ctx.beginPath();ctx.arc(cx,cy,b.s/2+8,0,Math.PI*2);ctx.fill();
+    ctx.globalAlpha=0.15;
+    ctx.fillStyle='#33ffaa';
+    ctx.beginPath();ctx.arc(cx,cy,b.s/2+16,0,Math.PI*2);ctx.fill();
+    ctx.globalAlpha=1;
+  }
   btns.forEach(({b,lb,held,bg,hbg,br,hbr,tc})=>{
     drawCircleBtn(b,held,bg,hbg,br,hbr,tc,lb);
   });
