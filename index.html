@@ -7076,8 +7076,6 @@ function drawCharSelect(){
     // キャラスプライト
     ctx.save();ctx.translate(b.x+b.w/2-13,b.y+4);ctx.scale(0.88,0.88);
     drawCharacter(0,0,i,1,0,false,0);ctx.restore();
-    ctx.fillStyle=sel?'#ffffff':'#778';ctx.font=`bold ${Math.min(W*.026,11)}px monospace`;ctx.textAlign='center';
-    ctx.fillText(c.nick,b.x+b.w/2,b.y+b.h-8);
   });
 
   // ── 選択キャラ 詳細パネル ──
