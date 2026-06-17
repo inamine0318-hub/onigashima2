@@ -7116,8 +7116,9 @@ function drawCharSelect(){
     ['JMP',  (-c.jmp-8.5)/2, '#ff88ff'],
   ];
   const grade=r=>r>=.85?'S':r>=.65?'A':r>=.40?'B':'C';
+  const bw2=Math.floor(rw*.42);
   stats.forEach(([lbl,ratio,col],si)=>{
-    const sy=ry+28+si*16, bw2=Math.floor(rw*.42), r=Math.min(1,Math.max(0,ratio));
+    const sy=ry+28+si*16, r=Math.min(1,Math.max(0,ratio));
     ctx.fillStyle='#1a1a2a';ctx.fillRect(rx,sy,bw2,10);
     ctx.fillStyle=col;ctx.fillRect(rx,sy,Math.floor(bw2*r),10);
     ctx.fillStyle='#aabbcc';ctx.font=`${Math.min(W*.036,15)}px monospace`;ctx.textAlign='left';
