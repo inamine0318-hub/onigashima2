@@ -7114,15 +7114,16 @@ function drawCharSelect(){
     ctx.fillStyle=col;ctx.font=`bold ${Math.min(W*.036,14)}px monospace`;
     ctx.fillText(grade(r),rx+bw2+8,sy+9);
   });
-  // ABILITY テキスト（大きめフォント）
+  // ABILITY テキスト（右側スペースに配置）
+  const ablX=rx+bw2+20;
   ctx.fillStyle='#88bbdd';ctx.font=`bold ${Math.min(W*.052,20)}px monospace`;ctx.textAlign='left';
-  ctx.fillText('ABILITY:',rx,panY+panH-26);
+  ctx.fillText('ABILITY:',ablX,ry+28);
   ctx.fillStyle='#aaccee';ctx.font=`${Math.min(W*.048,20)}px monospace`;
   const abl=c.ability||'';
-  const lines=[];
-  const maxLineLen=25;
-  for(let i=0;i<abl.length;i+=maxLineLen)lines.push(abl.slice(i,i+maxLineLen));
-  lines.forEach((line,idx)=>{ctx.fillText(line,rx,panY+panH-8+idx*24);});
+  const ablMaxLen=20;
+  const ablLines=[];
+  for(let i=0;i<abl.length;i+=ablMaxLen)ablLines.push(abl.slice(i,i+ablMaxLen));
+  ablLines.forEach((line,idx)=>{ctx.fillText(line,ablX,ry+52+idx*26);});
 
   // STARTボタン
   const hasHidden=getHiddenStageUnlocked();
