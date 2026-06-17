@@ -6357,7 +6357,7 @@ function drawCircleBtn(b,held,bg,hbg,br,hbr,tc,lb){
   // ラベル
   ctx.globalAlpha=1;
   ctx.fillStyle=held?'#ffffff':tc;
-  const isBigBtn=lb==='攻'||lb==='飛';
+  const isBigBtn=lb==='攻'||lb==='飛'||lb==='避';
   ctx.font=`bold ${Math.floor(Math.min(r*(isBigBtn?1.32:.66),isBigBtn?30:15))}px monospace`;
   ctx.textAlign='center';ctx.textBaseline='middle';
   ctx.fillText(lb,cx,cy+1);
